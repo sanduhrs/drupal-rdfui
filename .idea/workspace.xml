@@ -2,15 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2239d3dd-cf88-4971-a97e-024c6b286368" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/rdfui.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/EasyRdfConverter/ContentType.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/EasyRdfConverter/EasyRdfConverter.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/composer.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/encodings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/scopes/scope_settings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/EasyRdfConverter/TestRdfConverter.php" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/rdfa.txt" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/EasyRdfConverter/EasyRdfConverter.php" afterPath="$PROJECT_DIR$/EasyRdfConverter/EasyRdfConverter.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="rdfui.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -37,30 +32,13 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="composer.json" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/composer.json">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="4" column="24" selection-start="15" selection-end="26" vertical-scroll-proportion="-2.6666667" vertical-offset="0" max-vertical-offset="378">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ContentType.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/EasyRdfConverter/ContentType.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="10" column="0" selection-start="111" selection-end="111" vertical-scroll-proportion="-3.3333333" vertical-offset="0" max-vertical-offset="234">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="EasyRdfConverter.php" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="EasyRdfConverter.php" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/EasyRdfConverter/EasyRdfConverter.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="33" column="4" selection-start="801" selection-end="801" vertical-scroll-proportion="0.98579043" vertical-offset="39" max-vertical-offset="792">
+            <state line="69" column="38" selection-start="1713" selection-end="1718" vertical-scroll-proportion="-9.222222" vertical-offset="993" max-vertical-offset="2196">
               <folding>
-                <element signature="e#6#72#0" expanded="true" />
+                <element signature="n#addType#0;n#EasyRdfConverter#0;n#!!top" expanded="false" />
+                <element signature="n#arrayProperties#0;n#EasyRdfConverter#0;n#!!top" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -69,7 +47,7 @@
       <file leaf-file-name="rdfa.txt" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/rdfa.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="183870">
+            <state line="397" column="0" selection-start="13802" selection-end="13802" vertical-scroll-proportion="0.0" vertical-offset="6577" max-vertical-offset="183870">
               <folding />
             </state>
           </provider>
@@ -78,16 +56,27 @@
       <file leaf-file-name="Graph.php" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/vendor/easyrdf/easyrdf/lib/EasyRdf/Graph.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="299" column="40" selection-start="10330" selection-end="10330" vertical-scroll-proportion="-14.962963" vertical-offset="4384" max-vertical-offset="29196">
+            <state line="265" column="16" selection-start="9067" selection-end="9067" vertical-scroll-proportion="-4.5747128" vertical-offset="4372" max-vertical-offset="29790">
+              <folding>
+                <element signature="e#7#1737#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TestRdfConverter.php" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/EasyRdfConverter/TestRdfConverter.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="20" column="43" selection-start="501" selection-end="501" vertical-scroll-proportion="0.60913706" vertical-offset="0" max-vertical-offset="591">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Format.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/vendor/easyrdf/easyrdf/lib/EasyRdf/Format.php">
+      <file leaf-file-name="rdfPhp.txt" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/rdfPhp.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="262" column="27" selection-start="9309" selection-end="9309" vertical-scroll-proportion="-9.925926" vertical-offset="3854" max-vertical-offset="11898">
+            <state line="37264" column="25" selection-start="1137848" selection-end="1137848" vertical-scroll-proportion="-8.483334" vertical-offset="670243" max-vertical-offset="1424934">
               <folding />
             </state>
           </provider>
@@ -108,7 +97,13 @@
       <list>
         <option value="$PROJECT_DIR$/composer.json" />
         <option value="$PROJECT_DIR$/EasyRdfConverter/ContentType.php" />
+        <option value="$PROJECT_DIR$/Test/TestRdfConverter.php" />
+        <option value="$PROJECT_DIR$/EasyRdfConverter/tests/TestRdfConverter.php" />
+        <option value="$PROJECT_DIR$/vendor/easyrdf/easyrdf/lib/EasyRdf/Graph.php" />
+        <option value="$PROJECT_DIR$/rdfa.txt" />
+        <option value="$PROJECT_DIR$/rdfPhp.txt" />
         <option value="$PROJECT_DIR$/EasyRdfConverter/EasyRdfConverter.php" />
+        <option value="$PROJECT_DIR$/EasyRdfConverter/TestRdfConverter.php" />
       </list>
     </option>
   </component>
@@ -120,9 +115,9 @@
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="64" />
-    <option name="y" value="24" />
+    <option name="y" value="-4" />
     <option name="width" value="1303" />
-    <option name="height" value="745" />
+    <option name="height" value="773" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -178,6 +173,68 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="vendor" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="rdfui" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="rdfui" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="vendor" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="easyrdf" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="easyrdf" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="rdfui" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="rdfui" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="vendor" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="easyrdf" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="easyrdf" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="lib" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="rdfui" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="rdfui" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="EasyRdfConverter" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -192,6 +249,11 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../drupal-7" />
     <property name="recentsLimit" value="5" />
     <property name="restartRequiresConfirmation" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/EasyRdfConverter" />
+    </key>
   </component>
   <component name="RunManager" selected="JavaScript Debug.EasyRdfConverter.php">
     <configuration default="false" name="EasyRdfConverter.php" type="JavascriptDebugType" factoryName="JavaScript Debug" editBeforeRun="true" singleton="true" temporary="true" uri="http://localhost:63342/rdfui/EasyRdfConverter/EasyRdfConverter.php">
@@ -231,12 +293,13 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="64" y="24" width="1303" height="745" extended-state="7" />
+    <frame x="64" y="-4" width="1303" height="773" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3287037" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24940239" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -248,7 +311,6 @@
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -291,13 +353,6 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/composer.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="24" selection-start="15" selection-end="26" vertical-scroll-proportion="-2.6666667" vertical-offset="0" max-vertical-offset="378">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/vendor/easyrdf/easyrdf/lib/EasyRdf/Format.php">
       <provider selected="true" editor-type-id="text-editor">
         <state line="262" column="27" selection-start="9309" selection-end="9309" vertical-scroll-proportion="-9.925926" vertical-offset="3854" max-vertical-offset="11898">
@@ -305,33 +360,99 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/vendor/easyrdf/easyrdf/lib/EasyRdf/Graph.php">
+    <entry file="file://$PROJECT_DIR$/rdfui.info">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="299" column="40" selection-start="10330" selection-end="10330" vertical-scroll-proportion="-14.962963" vertical-offset="4384" max-vertical-offset="29196">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="593">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/rdfa.txt">
+    <entry file="file://$PROJECT_DIR$/vendor/easyrdf/easyrdf/lib/EasyRdf/Parser/Exception.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="183870">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="882">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/easyrdf/easyrdf/lib/EasyRdf/Exception.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="46" column="6" selection-start="2000" selection-end="2000" vertical-scroll-proportion="0.41342756" vertical-offset="0" max-vertical-offset="566">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/EasyRdfConverter/ContentType.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="0" selection-start="111" selection-end="111" vertical-scroll-proportion="-3.3333333" vertical-offset="0" max-vertical-offset="234">
+        <state line="10" column="0" selection-start="111" selection-end="111" vertical-scroll-proportion="0.1590106" vertical-offset="0" max-vertical-offset="566">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/easyrdf/easyrdf/lib/EasyRdf.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="53" column="26" selection-start="2020" selection-end="2020" vertical-scroll-proportion="0.2862191" vertical-offset="144" max-vertical-offset="3852">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/composer.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="4" column="24" selection-start="15" selection-end="26" vertical-scroll-proportion="0.12182741" vertical-offset="0" max-vertical-offset="591">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rdfaMappings.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="22" column="13" selection-start="4617" selection-end="4617" vertical-scroll-proportion="0.6851211" vertical-offset="0" max-vertical-offset="211860">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$APPLICATION_HOME_DIR$/plugins/php/lib/php.jar!/com/jetbrains/php/lang/psi/stubs/data/standard_5.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1143" column="9" selection-start="33404" selection-end="33404" vertical-scroll-proportion="0.79757786" vertical-offset="20113" max-vertical-offset="20718">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/easyrdf/easyrdf/lib/EasyRdf/Graph.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="265" column="16" selection-start="9067" selection-end="9067" vertical-scroll-proportion="-4.5747128" vertical-offset="4372" max-vertical-offset="29790">
+          <folding>
+            <element signature="e#7#1737#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rdfa.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="397" column="0" selection-start="13802" selection-end="13802" vertical-scroll-proportion="0.0" vertical-offset="6577" max-vertical-offset="183870">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/EasyRdfConverter/EasyRdfConverter.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="33" column="4" selection-start="801" selection-end="801" vertical-scroll-proportion="0.98579043" vertical-offset="39" max-vertical-offset="792">
+        <state line="69" column="38" selection-start="1713" selection-end="1718" vertical-scroll-proportion="-9.222222" vertical-offset="993" max-vertical-offset="2196">
           <folding>
-            <element signature="e#6#72#0" expanded="true" />
+            <element signature="n#addType#0;n#EasyRdfConverter#0;n#!!top" expanded="false" />
+            <element signature="n#arrayProperties#0;n#EasyRdfConverter#0;n#!!top" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rdfPhp.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="37264" column="25" selection-start="1137848" selection-end="1137848" vertical-scroll-proportion="-8.483334" vertical-offset="670243" max-vertical-offset="1424934">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/EasyRdfConverter/TestRdfConverter.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="20" column="43" selection-start="501" selection-end="501" vertical-scroll-proportion="0.60913706" vertical-offset="0" max-vertical-offset="591">
+          <folding />
         </state>
       </provider>
     </entry>
