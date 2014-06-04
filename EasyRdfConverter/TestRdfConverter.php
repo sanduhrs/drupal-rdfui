@@ -9,14 +9,27 @@ include 'EasyRdfConverter.php';
     /*
      * Start timestamp
      */
+    $iterations=1000;
     $start = microtime(true);;
 
-    $converter=new EasyRdfConverter();
-    $converter->createGraph($uri,$type);
-    /*$converter->serializeGraph();*/
-    $converter->iterate();
-    $converter->printProperties();
-    $converter->printTypes();
+    for($x=0;$x<$iterations;$x++){
+        print_r("\nIteration ".$x);
+        $converter=new EasyRdfConverter();
+        $converter->createGraph($uri,$type);
+
+        //$converter->serializeGraph();
+
+       /*Iteration using Php array*/
+       /* $converter->iterate();
+        $converter->printProperties();
+        $converter->printTypes();*/
+
+        $converter->IterateGraph();
+        $converter->printProperties();
+        $converter->printTypes();
+    }
 
     $time_taken = microtime(true) - $start;
-    print_r("total time : $time_taken");
+    print_r("total time (micro seconds) : $time_taken"."\n");
+    $avg=$time_taken/$iterations;
+    print_r("average time (micro seconds): ".$avg);
