@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2239d3dd-cf88-4971-a97e-024c6b286368" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/EasyRdfConverter/EasyRdfConverter.php" afterPath="$PROJECT_DIR$/EasyRdfConverter/EasyRdfConverter.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/EasyRdfConverter/TestRdfConverter.php" afterPath="$PROJECT_DIR$/EasyRdfConverter/TestRdfConverter.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-    </list>
+    <list default="true" id="2239d3dd-cf88-4971-a97e-024c6b286368" name="Default" comment="" />
     <ignored path="rdfui.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="TRACKING_ENABLED" value="true" />
