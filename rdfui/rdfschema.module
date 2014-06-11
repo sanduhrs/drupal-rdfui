@@ -1,0 +1,11 @@
+<?php
+
+function rdfui_menu() {
+    $items['rdfui']=array(
+        'title' => 'Schema Mapping',
+        'route_name'=>'rdfui.mappinglisting'
+    );
+
+    return  $items;
+}
+

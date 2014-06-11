@@ -1,0 +1,14 @@
+name: Rdf UI
+type: module
+description: 'Allow the site builders to integrate schema.org mappings to Drupal 8 sites'
+package: Custom
+version: VERSION
+core: 8.x
+hidden: false
+
+dependencies:
+
+
+
+
+

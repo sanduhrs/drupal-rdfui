@@ -1,0 +1,6 @@
+rdfui.mappinglisting:
+  path: '/rdfui'
+  defaults:
+    _content: 'Drupal\rdfui\Controller\MappingListingController::mappingListingPage'
+  requirements:
+    _permission: 'access content'
