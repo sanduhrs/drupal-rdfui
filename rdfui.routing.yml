@@ -1,5 +1,5 @@
 rdfui.mappinglisting:
-  path: '/rdfui'
+  path: 'rdfui'
   defaults:
     _content: 'Drupal\rdfui\Controller\MappingListingController::mappingListingPage'
   requirements:
