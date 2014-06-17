@@ -6,6 +6,11 @@ function rdfui_menu() {
         'route_name'=>'rdfui.mappinglisting'
     );
 
+    $items['/admin/config/types']=array(
+        'title'=>'List all Content types',
+        'route_name'=>'rdfui.overview_types',
+    );
+
     return  $items;
 }
 

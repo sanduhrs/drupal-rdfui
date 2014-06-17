@@ -4,3 +4,20 @@ rdfui.mappinglisting:
     _content: 'Drupal\rdfui\Controller\MappingListingController::mappingListingPage'
   requirements:
     _permission: 'access content'
+
+rdfui.overview_types:
+  path: '/admin/config/types'
+  defaults:
+    _content: '\Drupal\Core\Entity\Controller\EntityListController::listing'
+    entity_type: 'field_type'
+    _title: 'Content types'
+  requirements:
+    _permission: 'administer content types'
+
+rdfui.mapping_form:
+  path: '/rdfui/form'
+  defaults:
+    _form: '\Drupal\rdfui\Form\FieldMappingForm'
+    _title: 'Field Mapping Form'
+  requirements:
+    _permission: 'access content'
