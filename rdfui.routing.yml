@@ -1,3 +1,4 @@
+#delete test methods start
 rdfui.mappinglisting:
   path: 'rdfui'
   defaults:
@@ -15,9 +16,17 @@ rdfui.overview_types:
     _permission: 'administer content types'
 
 rdfui.mapping_form:
-  path: '/rdfui/form'
+  path: 'admin/rdfui/form'
   defaults:
     _form: '\Drupal\rdfui\Form\FieldMappingForm'
     _title: 'Field Mapping Form'
   requirements:
-    _permission: 'access content'
+    _permission: 'administer content types'
+#delete end
+
+rdfui.type_edit_rdf:
+  path: '/admin/structure/types/manage/{node_type}/rdf'
+  defaults:
+    _entity_form: 'node_type.rdf'
+  requirements:
+    _permission: 'administer content types'
