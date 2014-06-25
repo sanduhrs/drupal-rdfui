@@ -11,6 +11,15 @@ function rdfui_menu() {
         'route_name'=>'rdfui.overview_types',
     );
 
+
     return  $items;
+}
+/**
+ * Implements hook_entity_type_build().
+ */
+function rdfui_entity_type_build(array &$entity_types) {
+    /** @var \Drupal\Core\Config\Entity\ConfigEntityType[] $entity_types */
+    $entity_types['node_type']
+        ->setFormClass('rdf','Drupal\rdfui\FieldRdfForm');
 }
 

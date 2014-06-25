@@ -1,0 +1,5 @@
+rdfui.mapping_tab:
+  route_name: rdfui.type_edit_rdf
+  title: 'Rdf Mappings'
+  base_route : node.type_edit
+  weight: 10
