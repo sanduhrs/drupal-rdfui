@@ -14,6 +14,7 @@ rdfui.overview_types:
     _title: 'Content types'
   requirements:
     _permission: 'administer content types'
+#delete end
 
 rdfui.mapping_form:
   path: 'admin/rdfui/form'
@@ -22,11 +23,12 @@ rdfui.mapping_form:
     _title: 'Field Mapping Form'
   requirements:
     _permission: 'administer content types'
-#delete end
+
 
 rdfui.type_edit_rdf:
   path: '/admin/structure/types/manage/{node_type}/rdf'
   defaults:
     _entity_form: 'node_type.rdf'
+    _title: 'Rdf Mapping'
   requirements:
     _permission: 'administer content types'
