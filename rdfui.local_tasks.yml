@@ -3,6 +3,6 @@ rdfui.mapping_tab:
   title: 'Rdf Mappings'
   base_route : node.type_edit
   weight: 10
-rdfui.fields:
-  class: \Drupal\Core\Menu\LocalTaskDefault
-  derivative: \Drupal\rdfui\Plugin\Derivative\RdfUiLocalTask
+#rdfui.fields:
+#  class: \Drupal\Core\Menu\LocalTaskDefault
+#  derivative: \Drupal\rdfui\Plugin\Derivative\RdfUiLocalTask

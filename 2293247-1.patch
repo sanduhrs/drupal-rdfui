@@ -1,0 +1,23 @@
+diff --git a/core/modules/field_ui/src/Routing/RouteSubscriber.php b/core/modules/field_ui/src/Routing/RouteSubscriber.php
+index c8de23f..15f2c98 100644
+--- a/core/modules/field_ui/src/Routing/RouteSubscriber.php
++++ b/core/modules/field_ui/src/Routing/RouteSubscriber.php
+@@ -97,6 +97,18 @@ protected function alterRoutes(RouteCollection $collection) {
+         );
+         $collection->add("field_ui.form_display_overview_$entity_type_id", $route);
+ 
++        // Temporary route to expose a RDF mapping form in field UI.
++        // @see https://www.drupal.org/node/2293247
++        $route = new Route(
++          "$path/fields-rdf",
++          array(
++            '_form' => '\Drupal\rdfui\Form\FieldMappings', // replace by your controller here.
++            '_title' => 'Manage fields RDF',
++          ) + $defaults,
++          array('_field_ui_form_mode_access' => 'administer ' . $entity_type_id . ' form display')
++        );
++        $collection->add("field_ui.field_rdf_$entity_type_id", $route);
++
+         $route = new Route(
+           "$path/form-display/{form_mode_name}",
+           array(
