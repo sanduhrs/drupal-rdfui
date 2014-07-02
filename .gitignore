@@ -5,5 +5,5 @@
 /EasyRdf/vendor
 /EasyRdf/composer.*	
 /.idea
-
+/src/Plugin/*
 
