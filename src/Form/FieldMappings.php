@@ -16,6 +16,7 @@ use Drupal\field_ui\OverviewBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\FieldInstanceConfigInterface;
+use Drupal\rdfui\EasyRdfConverter;
 
 /**
  * Rdf Ui Rdf Mapping form.
@@ -30,6 +31,12 @@ class FieldMappings extends OverviewBase {
   protected $fieldTypeManager;
 
   /**
+   *  The Easy Rdf Converter
+   * @var \Drupal\rdfui\EasyRdfConverter
+   */
+  protected $rdfConverter;
+
+  /**
    * Constructs a new FieldOverview.
    *
    * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
@@ -40,6 +47,7 @@ class FieldMappings extends OverviewBase {
   public function __construct(EntityManagerInterface $entity_manager, FieldTypePluginManagerInterface $field_type_manager) {
     parent::__construct($entity_manager);
     $this->fieldTypeManager = $field_type_manager;
+    $this->rdfConverter=new EasyRdfConverter();
   }
 
   /**
@@ -118,10 +126,13 @@ class FieldMappings extends OverviewBase {
         ),
         'label' => array(
           '#markup' => check_plain($instance->getLabel()),
-        ),/*
-        'field_name' => array(
-          '#markup' => $instance->getName(),
         ),
+        'rdf-predicate' => array(
+          '#type' => 'select',
+          '#title_display' => 'invisible',
+          '#options' => $this->rdfConverter->getListProperties(),
+          '#default_value' => '--select predicate--',
+        ),/*
         'type' => array(
           '#type' => 'link',
           '#title' => $field_types[$field->getType()]['label'],
