@@ -94,11 +94,6 @@ class FieldMappings extends OverviewBase {
 
     $mappings=rdf_get_mapping($this->entity_type,$this->bundle);
 
-    $field_types = $this->fieldTypeManager->getDefinitions();
-
-    // Field prefix.
-    $field_prefix = \Drupal::config('field_ui.settings')->get('field_prefix');
-
     $form += array(
       '#entity_type' => $this->entity_type,
       '#bundle' => $this->bundle,
@@ -183,10 +178,24 @@ class FieldMappings extends OverviewBase {
    */
   public function submitForm(array &$form, array &$form_state) {
     $error = FALSE;
-    $form_values = $form_state['values']['fields'];
-    $destinations = array();
+    //validate
 
-    drupal_set_message($this->t('Form submit method has not been implemented yet.'));
+    $form_values = $form_state['values']['fields'];
+    $x=array();
+    $mapping = rdf_get_mapping($this->entity_type, $this->bundle);
+
+    foreach($form_values as $key=>$value){
+        if(!empty($value['rdf-predicate'])){
+            $mapping->setFieldMapping($key, array(
+                'properties' => array($value['rdf-predicate']),
+                )
+            );
+        }
+        $x[$key]=$value['rdf-predicate'];
+    }
+    $mapping->save();
+
+    drupal_set_message($this->t('Your settings have been saved.'));
   }
 
 }
