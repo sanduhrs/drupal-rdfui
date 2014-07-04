@@ -49,7 +49,6 @@ class EasyRdfConverter
         $this->arrayProperties = array();
         $this->arrayTypes = array();
         $this->listProperties = array();
-        array_push($this->listProperties,'--select predicate--');
         $this->listTypes = array();
         $uri="/home/sachini/workspace/rdfui/RDFaLiteReflection.html";
         $type="rdfa";
@@ -125,11 +124,11 @@ class EasyRdfConverter
      * Add Property label to list
      * Type is identified by the uppercase letter at the beginning
      */
-    private function addType(\EasyRdf_Resource $type)
+    private function addType(\EasyRdf_Resource $type, $key)
     {
         if ($type != null) {
             array_push($this->arrayTypes, $type);
-            array_push($this->listTypes, $type->shorten());
+            $this->listTypes[$key]=$type->shorten();
         }
     }
 
@@ -137,13 +136,13 @@ class EasyRdfConverter
      * Add Property label to list
      *
      * @param EasyRdf_Resource
-     *   key
+     *   value
      */
-    private function addProperties(\EasyRdf_Resource $key)
+    private function addProperties(\EasyRdf_Resource $value, $key)
     {
         if ($key != null) {
-            array_push($this->arrayProperties, $key);
-            array_push($this->listProperties, $key->shorten());
+            array_push($this->arrayProperties, $value);
+            $this->listProperties[$value->shorten()]=$value->label();
         }
     }
 
@@ -153,30 +152,13 @@ class EasyRdfConverter
     function iterateGraph()
     {
         $typeList = $this->graph->resources();
-        print_r(sizeof($typeList));
 
         foreach($typeList as $key=>$value)
         {
             if($value->isA("rdf:Property")){
-                $this->addProperties($value);
+                $this->addProperties($value, $key);
             }else{
-                $this->addType($value);
-            }
-        }
-
-    }
-
-    /**
-     * Iterate Php Array - not needed
-     */
-    function iterate()
-    {
-        foreach ($this->output as $key => $value) {
-            $word = $value['http://www.w3.org/2000/01/rdf-schema#label'][0]['value'];
-            if (ctype_upper($word[0])) {
-                $this->addProperties($word);
-            } else {
-                $this->addType($word);
+                $this->addType($value,$key);
             }
         }
     }

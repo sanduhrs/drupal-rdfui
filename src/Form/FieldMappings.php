@@ -91,6 +91,9 @@ class FieldMappings extends OverviewBase {
     $instances = array_filter(\Drupal::entityManager()->getFieldDefinitions($this->entity_type, $this->bundle), function ($field_definition) {
       return $field_definition instanceof FieldInstanceConfigInterface;
     });
+
+    $mappings=rdf_get_mapping($this->entity_type,$this->bundle);
+
     $field_types = $this->fieldTypeManager->getDefinitions();
 
     // Field prefix.
@@ -120,6 +123,7 @@ class FieldMappings extends OverviewBase {
 
     // Fields.
     foreach ($instances as $name => $instance) {
+      $property=$mappings->getFieldMapping($name)['properties'][0];
       $table[$name] = array(
         '#attributes' => array(
           'id' => drupal_html_class($name),
@@ -129,33 +133,28 @@ class FieldMappings extends OverviewBase {
         ),
         'rdf-predicate' => array(
           '#type' => 'select',
+          '#title' => $this->t('Rdf Property'),
           '#title_display' => 'invisible',
+          '#empty_option' => $this->t('- Select Predicate -'),
+          '#default_value' =>$property,
           '#options' => $this->rdfConverter->getListProperties(),
-          '#default_value' => '--select predicate--',
-        ),/*
+        ),
         'type' => array(
-          '#type' => 'link',
-          '#title' => $field_types[$field->getType()]['label'],
-          '#route_name' => 'field_ui.field_edit_' . $this->entity_type,
-          '#route_parameters' => $route_parameters,
-          '#options' => array('attributes' => array('title' => $this->t('Edit field settings.'))),
-        ),*/
+         // '#type' => 'link',
+          '#title' => 'Data Type',
+          '#title_display' => 'invisible',
+          /*'#route_name' => 'field_ui.field_edit_' . $this->entity_type,
+          '#route_parameters' => $route_parameters,*/
+          '#markup'=>$this->t('Text'),
+        ),
+        'status'=>array(
+            '#title' => 'Status',
+            '#title_display' => 'invisible',
+            '#markup'=>$property?'Mapped':'Unmapped',
+        ),
       );
-
-      /*$table[$name]['operations']['data'] = array(
-        '#type' => 'operations',
-        '#links' => $this->entityManager->getListBuilder('field_instance_config')->getOperations($instance),
-      );
-
-      if (!empty($field->locked)) {
-        $table[$name]['operations'] = array('#markup' => $this->t('Locked'));
-        $table[$name]['#attributes']['class'][] = 'menu-disabled';
-      }*/
     }
 
-    // We can set the 'rows_order' element, needed by theme_field_ui_table(),
-    // here instead of a #pre_render callback because this form doesn't have the
-    // tabledrag behavior anymore.
     $table['#regions']['content']['rows_order'] = array();
     foreach (Element::children($table) as $name) {
       $table['#regions']['content']['rows_order'][] = $name;
@@ -183,6 +182,10 @@ class FieldMappings extends OverviewBase {
    * Overrides \Drupal\field_ui\OverviewBase::submitForm().
    */
   public function submitForm(array &$form, array &$form_state) {
+    $error = FALSE;
+    $form_values = $form_state['values']['fields'];
+    $destinations = array();
+
     drupal_set_message($this->t('Form submit method has not been implemented yet.'));
   }
 
