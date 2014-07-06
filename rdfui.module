@@ -20,8 +20,10 @@ function rdfui_menu() {
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function rdfui_form_node_type_add_form_alter(&$form, &$form_state,$form_id){
+function rdfui_form_node_type_add_form_alter(&$form, &$form_state){
     $form+=ContentMappings::alter_form($form,$form_state);
+    //$form['#validate'][] = ContentMappings::form_validate($form,$form_state);
+    $form['#submit'][] = ContentMappings::submitForm($form,$form_state);
 }
 
 /**
@@ -29,4 +31,6 @@ function rdfui_form_node_type_add_form_alter(&$form, &$form_state,$form_id){
  */
 function rdfui_form_node_type_edit_form_alter(&$form, &$form_state,$form_id){
     $form+=ContentMappings::alter_form($form,$form_state);
+    //$form['#validate'][] = ContentMappings::form_validate($form,$form_state);
+    $form['#submit'][] = ContentMappings::submitForm($form,$form_state);
 }

@@ -128,7 +128,7 @@ class EasyRdfConverter
     {
         if ($type != null) {
             array_push($this->arrayTypes, $type);
-            $this->listTypes[$key]=$type->shorten();
+            $this->listTypes[$type->shorten()]=$type->label();
         }
     }
 
