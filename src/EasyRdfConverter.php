@@ -50,7 +50,7 @@ class EasyRdfConverter
         $this->arrayTypes = array();
         $this->listProperties = array();
         $this->listTypes = array();
-        $uri="/home/sachini/workspace/rdfui/RDFaLiteReflection.html";
+        $uri="http://schema.org/docs/schema_org_rdfa.html";
         $type="rdfa";
         $this->createGraph($uri,$type);
     }
