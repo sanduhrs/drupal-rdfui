@@ -70,15 +70,16 @@ class ContentMappings{
 
         $entity_type=$form_state['controller']->getEntity();
         $mapping=rdf_get_mapping('node',$entity_type->id());
-        /*if(!$entity_type->isNew()){
-          $mappin=rdf_get_mapping('node',$entity_type->id())->getBundleMapping()['types'][0];
-        }*/
+        if($entity_type->isNew()){
+          $mapping=rdf_get_mapping('node',$form_state['input']['type']);
+        }
 
 
 
         if(!empty($form_state['input']['types'])){
             $mapping->setBundleMapping(array('types' => array($form_state['input']['types'])))->save();
         }
+          echo 'here';
       }
     }
 
