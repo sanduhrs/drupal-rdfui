@@ -1,11 +1,12 @@
 diff --git a/core/modules/field_ui/src/Routing/RouteSubscriber.php b/core/modules/field_ui/src/Routing/RouteSubscriber.php
-index c8de23f..15f2c98 100644
+index 57f7efd..9a90681 100644
 --- a/core/modules/field_ui/src/Routing/RouteSubscriber.php
 +++ b/core/modules/field_ui/src/Routing/RouteSubscriber.php
-@@ -97,6 +97,18 @@ protected function alterRoutes(RouteCollection $collection) {
+@@ -109,6 +109,19 @@ protected function alterRoutes(RouteCollection $collection) {
          );
          $collection->add("field_ui.form_display_overview_$entity_type_id", $route);
  
++
 +        // Temporary route to expose a RDF mapping form in field UI.
 +        // @see https://www.drupal.org/node/2293247
 +        $route = new Route(

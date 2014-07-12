@@ -37,6 +37,7 @@ class EasyRdfConverter
     {
         $this->listProperties = array();
         $this->listTypes = array();
+
         //$uri="http://schema.org/docs/schema_org_rdfa.html";
         $uri="//home/sachini/workspace/RDFaLiteReflection.html";
         $type="rdfa";
