@@ -118,7 +118,7 @@ class FieldMappings extends OverviewBase {
 
     // Fields.
     foreach ($instances as $name => $instance) {
-      $property=$mappings->getFieldMapping($name)['properties'][0];
+      $property=$mappings->getFieldMapping($name);
       $table[$name] = array(
         '#attributes' => array(
           'id' => drupal_html_class($name),
@@ -131,7 +131,7 @@ class FieldMappings extends OverviewBase {
           '#title' => $this->t('Rdf Property'),
           '#title_display' => 'invisible',
           '#empty_option' => $this->t('- Select Predicate -'),
-          '#default_value' =>$property,
+          '#default_value' =>!empty($property)?$property['properties'][0]:'',
           '#options' => $this->rdfConverter->getListProperties(),
         ),
         'type' => array(
