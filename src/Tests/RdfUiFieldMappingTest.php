@@ -10,7 +10,7 @@ namespace Drupal\rdfui\Tests;
 use Drupal\field_ui\Tests\FieldUiTestBase;
 
 /**
- * Tests the functionality of the Field UI route subscriber.
+ * Tests the functionality of the RdfUI Field Mapping form.
  */
 class RdfUiFieldMappingTest extends FieldUiTestBase {
 /*@TODO extends FieldUITestBase*/
@@ -18,14 +18,14 @@ class RdfUiFieldMappingTest extends FieldUiTestBase {
     /**
      * Modules to enable.
      */
-    public static $modules = array('rdfui', 'node', 'rdf', 'field');
+    public static $modules = array('rdfui', 'rdf', 'field');
 
     /**
      * {@inheritdoc}
      */
     public static function getInfo() {
         return array(
-            'name' => 'RdfUi Field Mapping',
+            'name' => 'RdfUI Field Mapping',
             'description' => 'Tests the functionality of the FieldMapping Form.',
             'group' => 'RdfUI',
         );
