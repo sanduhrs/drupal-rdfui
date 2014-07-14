@@ -13,7 +13,7 @@ use Drupal\rdfui\EasyRdfConverter;
 /**
  * Tests the RDFa markup of Nodes.
  */
-class EasyRdfConverterTest extends DrupalUnitTestBase {        /*@ TODO extend UnitTestBase*/
+class EasyRdfConverterTest extends DrupalUnitTestBase {
 
   /**
    * Modules to enable.

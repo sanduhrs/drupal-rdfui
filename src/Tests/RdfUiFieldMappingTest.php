@@ -13,7 +13,6 @@ use Drupal\field_ui\Tests\FieldUiTestBase;
  * Tests the functionality of the RdfUI Field Mapping form.
  */
 class RdfUiFieldMappingTest extends FieldUiTestBase {
-/*@TODO extends FieldUITestBase*/
 
     /**
      * Modules to enable.
