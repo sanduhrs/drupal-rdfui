@@ -40,7 +40,7 @@ class EasyRdfConverterTest extends DrupalUnitTestBase {
       $this->assertTrue(in_array("Person",$types), 'Schema.Org types loaded correctly');
       $this->assertTrue(in_array("Event",$types), 'Schema.Org types loaded correctly');
       $this->assertTrue(in_array("Recipe",$types), 'Schema.Org types loaded correctly');
-      $this->assertFalse(in_array("name" ,$types), 'Schema.Org types loaded correctly');
+      $this->assertFalse(in_array("name" ,$types), 'Properties are not in the list of Types');
   }
 
   function testSchemaProperty() {
@@ -48,7 +48,7 @@ class EasyRdfConverterTest extends DrupalUnitTestBase {
     $this->assertTrue(in_array("name",$properties), 'Schema.Org properties loaded correctly');
     $this->assertTrue(in_array("url",$properties), 'Schema.Org properties loaded correctly');
     $this->assertTrue(in_array("image",$properties), 'Schema.Org properties loaded correctly');
-    $this->assertFalse(in_array("Person",$properties), 'Schema.Org properties loaded correctly');
+    $this->assertFalse(in_array("Person",$properties), 'Types are not in the list of Properties');
   }
 
 
