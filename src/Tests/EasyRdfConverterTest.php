@@ -33,6 +33,7 @@ class EasyRdfConverterTest extends DrupalUnitTestBase {
   public function setUp() {
     parent::setUp();
      $this->graph = new EasyRdfConverter();
+     $this->graph->createGraph();
   }
 
   function testSchemaTypes() {
@@ -49,6 +50,14 @@ class EasyRdfConverterTest extends DrupalUnitTestBase {
     $this->assertTrue(in_array("url",$properties), 'Schema.Org properties loaded correctly');
     $this->assertTrue(in_array("image",$properties), 'Schema.Org properties loaded correctly');
     $this->assertFalse(in_array("Person",$properties), 'Types are not in the list of Properties');
+  }
+
+  function testPropertiesOfType(){
+      $properties=$this->graph->getTypeProperties("schema:Article");
+      $this->assertTrue(in_array("wordCount",$properties), 'Properties of Type(Article) loaded.');
+      $this->assertTrue(in_array("author",$properties), 'Properties of parent Type(CreativeWork)loaded.');
+      $this->assertTrue(in_array("name",$properties), 'Properties of base Type(Thing) loaded.');
+      $this->assertFalse(in_array("birthDate",$properties), 'Properties not in the Type are not loaded.');
   }
 
 
