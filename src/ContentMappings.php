@@ -28,7 +28,7 @@ class ContentMappings{
 
         $existingType='';
         if(!$entity_type->isNew()){
-            $existingType=rdf_get_mapping('node',$entity_type->id())->getBundleMapping()['types'][0];
+            $existingType=rdf_get_mapping('node',$entity_type->id())->getBundleMapping();
         }
 
         $form['rdf-mapping'] = array(
@@ -44,7 +44,7 @@ class ContentMappings{
             '#title' => t('Schema.org Type'),
             '#options' => $typeOptions->getListTypes(),
             '#empty_option' => t('- Select Predicate -'),
-            '#default_value' =>$existingType,
+            '#default_value' =>!empty($existingType)?$existingType['types'][0]:'',
             '#description' => t('Specify the type you want to associated to this content type e.g. Article, Blog, etc.'),
         );
 

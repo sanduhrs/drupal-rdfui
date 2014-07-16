@@ -6,6 +6,7 @@
  */
 
 namespace Drupal\rdfui;
+use Doctrine\Common\Proxy\Exception\InvalidArgumentException;
 
 /**
  * Extracts details of RDF resources from an RDFa document
@@ -20,12 +21,6 @@ class EasyRdfConverter
     private $graph;
 
     /**
-     * list of Properties specified in Schema.org as EasyRdf_Resource
-     * @var array()
-     */
-    private $arrayProperties;
-
-    /**
     * list of Types specified in Schema.org as string
     * @var array()
     */
@@ -37,40 +32,15 @@ class EasyRdfConverter
      */
     private $listProperties;
 
-    /**
-     * list of Types specified in Schema.org as EasyRdf_Resource
-     * @var array()
-     */
-    private $arrayTypes;
-
     /*constructor*/
     function __construct()
     {
-        $this->arrayProperties = array();
-        $this->arrayTypes = array();
         $this->listProperties = array();
         $this->listTypes = array();
+
 //        $uri="http://schema.org/docs/schema_org_rdfa.html";
 //        $type="rdfa";
 //        $this->createGraph($uri,$type);
-    }
-
-    /**
-     * Returns an array of properties as resources
-     * @return array
-     */
-    public function getArrayProperties()
-    {
-        return $this->arrayProperties;
-    }
-
-    /**
-     * Returns an array of types as resources
-     * @return array
-     */
-    public function getArrayTypes()
-    {
-        return $this->arrayTypes;
     }
 
     /**
@@ -84,7 +54,7 @@ class EasyRdfConverter
      */
     public function createGraph($uri="http://schema.org/docs/schema_org_rdfa.html",$type="rdfa")
     {
-        $uri="/home/sachini/workspace/RDFaLiteReflection.html";
+        //$uri="/home/sachini/workspace/RDFaLiteReflection.html";
         /*
          * Initialize an EasyRdf_Graph object using
          *  _construct(string $uri = null, string $data = null, string $format = null)
@@ -97,38 +67,32 @@ class EasyRdfConverter
             throw new InvalidArgumentException("\$uri should be a string and cannot be null or empty");
         }
 
-        /*insert try-catch*/
-        if (preg_match('#^http#i', $uri) === 1) {
-            $this->graph = new \EasyRdf_Graph($uri, null, $type);
-            $this->graph->load();
-        } else {
-            $this->graph = new \EasyRdf_Graph(null);
-            $this->graph->parseFile($uri);
+
+        try{
+            if (preg_match('#^http#i', $uri) === 1) {
+                $this->graph = new \EasyRdf_Graph($uri, null, $type);
+                $this->graph->load();
+            } else {
+                $this->graph = new \EasyRdf_Graph(null);
+                $this->graph->parseFile($uri);
+            }
+            $this->iterateGraph();
+        }catch (\Exception $e){
+            throw new InvalidArgumentException("Invalid uri + $e");
         }
 
-        $this->iterateGraph();
-      //  $this->output = $this->graph->toRdfPhp();
+
     }
 
     /**
-     * Serialize the graph as a text file
+     * Add Type label to list
+     *
+     * @param \EasyRdf_Resource $type
+     *  an EasyRdf_Resource which is a type
      */
-    public function serializeGraph()
-    {
-        //  file_put_contents("rdfaMappings.html",$this->graph->dump());
-        $printContent = print_r($this->graph->serialise(\EasyRdf_Format::getFormat("turtle")), true);
-        file_put_contents("rdfa.txt", $printContent);
-        file_put_contents("rdfPhp.txt", print_r($this->output, true));
-    }
-
-    /**
-     * Add Property label to list
-     * Type is identified by the uppercase letter at the beginning
-     */
-    private function addType(\EasyRdf_Resource $type, $key)
+    private function addType(\EasyRdf_Resource $type)
     {
         if ($type != null) {
-            //$this->arrayTypes[$type->shorten()]=$type;
             $this->listTypes[$type->shorten()]=$type->label();
         }
     }
@@ -136,13 +100,12 @@ class EasyRdfConverter
     /**
      * Add Property label to list
      *
-     * @param EasyRdf_Resource
-     *   value
+     * @param \EasyRdf_Resource $value
+     *  an EasyRdf_Resource which is a property
      */
-    private function addProperties(\EasyRdf_Resource $value, $key)
+    private function addProperties(\EasyRdf_Resource $value)
     {
-        if ($key != null) {
-            array_push($this->arrayProperties, $value);
+        if ($value != null) {
             $this->listProperties[$value->shorten()]=$value->label();
         }
     }
@@ -159,7 +122,7 @@ class EasyRdfConverter
             if($value->isA("rdf:Property") || $value->isA("rdfs:Property") ){
                 $this->addProperties($value, $key);
             }else{
-                $this->addType($value,$key);
+                $this->addType($value);
             }
         }
 
@@ -167,28 +130,7 @@ class EasyRdfConverter
 
     /**
      * return list of Schema.org types
-     */
-    function printTypes()
-    {
-        print_r(" Types : " . sizeof($this->arrayTypes)."\t");
-     /*   foreach($this->arrayTypes as $key=>$value){
-            print_r($value->label()."\t");
-        }*/
-    }
-
-    /**
-     * return list of Schema.org properties
-     */
-    function printProperties()
-    {
-        print_r(" Properties" . sizeof($this->arrayProperties)."\t");
-        /*foreach($this->arrayProperties as $key=>$value){
-            print_r($value->label()."\t");
-        }*/
-    }
-
-    /**
-     * return list of Schema.org types
+     * @return array
      */
     function getListTypes()
     {
@@ -197,6 +139,7 @@ class EasyRdfConverter
 
     /**
      * return list of Schema.org properties
+     * @return array
      */
     function getListProperties()
     {
