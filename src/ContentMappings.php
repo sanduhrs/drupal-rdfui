@@ -23,6 +23,7 @@ class ContentMappings{
      */
     public static function alter_form($form, &$form_state){
         $typeOptions=new EasyRdfConverter();
+        $typeOptions->createGraph();
         $entity_type=$form_state['controller']->getEntity();
 
         $existingType='';

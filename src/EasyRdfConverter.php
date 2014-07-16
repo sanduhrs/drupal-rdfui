@@ -50,9 +50,9 @@ class EasyRdfConverter
         $this->arrayTypes = array();
         $this->listProperties = array();
         $this->listTypes = array();
-        $uri="http://schema.org/docs/schema_org_rdfa.html";
-        $type="rdfa";
-        $this->createGraph($uri,$type);
+//        $uri="http://schema.org/docs/schema_org_rdfa.html";
+//        $type="rdfa";
+//        $this->createGraph($uri,$type);
     }
 
     /**
@@ -82,8 +82,9 @@ class EasyRdfConverter
      * @param type string
      * format of the document
      */
-    public function createGraph($uri, $type)
+    public function createGraph($uri="http://schema.org/docs/schema_org_rdfa.html",$type="rdfa")
     {
+        $uri="/home/sachini/workspace/RDFaLiteReflection.html";
         /*
          * Initialize an EasyRdf_Graph object using
          *  _construct(string $uri = null, string $data = null, string $format = null)
@@ -127,7 +128,7 @@ class EasyRdfConverter
     private function addType(\EasyRdf_Resource $type, $key)
     {
         if ($type != null) {
-            array_push($this->arrayTypes, $type);
+            //$this->arrayTypes[$type->shorten()]=$type;
             $this->listTypes[$type->shorten()]=$type->label();
         }
     }
@@ -155,12 +156,13 @@ class EasyRdfConverter
 
         foreach($typeList as $key=>$value)
         {
-            if($value->isA("rdf:Property")){
+            if($value->isA("rdf:Property") || $value->isA("rdfs:Property") ){
                 $this->addProperties($value, $key);
             }else{
                 $this->addType($value,$key);
             }
         }
+
     }
 
     /**
@@ -199,6 +201,61 @@ class EasyRdfConverter
     function getListProperties()
     {
         return $this->listProperties;
+    }
+
+    /**
+     * Fetch web resource of the specified type and extract properties
+     * @param string type
+     *  Schema.Org type of which the properties should be listed (eg. "schema:Person")
+     *
+     * @return array options
+     *  list of properties
+    */
+    function ofType($type){
+        $tokens=explode(":",$type);
+        $prefixes=rdf_get_namespaces();
+        $uri=$prefixes[$tokens[0]].$tokens[1];
+        try{
+            $resource=new EasyRdfConverter();
+            $resource->createGraph($uri,'rdfa');
+            return $resource->getListProperties();
+        }catch (\Exception $e){
+            throw new InvalidArgumentException("\$type cannot be found");
+        }
+    }
+
+    /**
+     * Extract properties of a given type
+     * @param string type
+     *  Schema.Org type of which the properties should be listed (eg. "schema:Person")
+     *
+     * @return array options
+     *  list of properties
+     */
+    function getTypeProperties($type){
+        $tokens=explode(":",$type);
+        $prefixes=rdf_get_namespaces();
+        $uri=$prefixes[$tokens[0]].$tokens[1];
+        $options=array();
+        $options+=$this->getProperties($uri);
+        asort($options);
+        return $options;
+    }
+
+    private function getProperties($uri){
+        $resource=array("type"=>"uri","value"=>$uri);
+        $props=$this->graph->resourcesMatching("http://schema.org/domainIncludes",$resource);
+        $options=array();
+
+        foreach ($props as $key=>$value){
+            $options[$value->shorten()]=$value->label();
+        }
+
+        $parents=$this->graph->all($uri,"rdfs:subClassOf");
+        foreach($parents as $key=>$value){
+            $options+=$this->getProperties($value->getUri());
+        }
+        return $options;
     }
 
 }

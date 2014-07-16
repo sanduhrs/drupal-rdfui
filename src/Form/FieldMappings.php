@@ -13,6 +13,7 @@ use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Field\FieldTypePluginManagerInterface;
 use Drupal\Core\Render\Element;
 use Drupal\field_ui\OverviewBase;
+use SebastianBergmann\Exporter\Exception;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\FieldInstanceConfigInterface;
@@ -48,6 +49,7 @@ class FieldMappings extends OverviewBase {
     parent::__construct($entity_manager);
     $this->fieldTypeManager = $field_type_manager;
     $this->rdfConverter=new EasyRdfConverter();
+    $this->rdfConverter->createGraph();
   }
 
   /**
@@ -93,6 +95,13 @@ class FieldMappings extends OverviewBase {
     });
 
     $mappings=rdf_get_mapping($this->entity_type,$this->bundle);
+    $options=null;
+    try{
+        $type=$mappings->getBundleMapping()['types']['0'];
+        $options=$this->rdfConverter->getTypeProperties($type);
+    }catch(Exception $e){
+        $options=$this->rdfConverter->getListProperties();
+    }
 
     $form += array(
       '#entity_type' => $this->entity_type,
@@ -118,7 +127,7 @@ class FieldMappings extends OverviewBase {
 
     // Fields.
     foreach ($instances as $name => $instance) {
-      $property=$mappings->getFieldMapping($name)['properties'][0];
+      $property=$mappings->getFieldMapping($name);
       $table[$name] = array(
         '#attributes' => array(
           'id' => drupal_html_class($name),
@@ -131,8 +140,8 @@ class FieldMappings extends OverviewBase {
           '#title' => $this->t('Rdf Property'),
           '#title_display' => 'invisible',
           '#empty_option' => $this->t('- Select Predicate -'),
-          '#default_value' =>$property,
-          '#options' => $this->rdfConverter->getListProperties(),
+          '#default_value' =>!empty($property)?$property['properties'][0]:'',
+          '#options' => $options,
         ),
         'type' => array(
          // '#type' => 'link',
@@ -145,7 +154,7 @@ class FieldMappings extends OverviewBase {
         'status'=>array(
             '#title' => 'Status',
             '#title_display' => 'invisible',
-            '#markup'=>$property?'Mapped':'Unmapped',
+            '#markup'=>!empty($property['properties'][0])?'Mapped':'Unmapped',
         ),
       );
     }
@@ -185,12 +194,10 @@ class FieldMappings extends OverviewBase {
     $mapping = rdf_get_mapping($this->entity_type, $this->bundle);
 
     foreach($form_values as $key=>$value){
-        if(!empty($value['rdf-predicate'])){
-            $mapping->setFieldMapping($key, array(
-                'properties' => array($value['rdf-predicate']),
-                )
-            );
-        }
+        $mapping->setFieldMapping($key, array(
+            'properties' => array($value['rdf-predicate']),
+            )
+        );
         $x[$key]=$value['rdf-predicate'];
     }
     $mapping->save();
