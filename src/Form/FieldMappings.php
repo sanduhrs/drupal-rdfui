@@ -96,10 +96,11 @@ class FieldMappings extends OverviewBase {
 
     $mappings=rdf_get_mapping($this->entity_type,$this->bundle);
     $options=null;
-    try{
-        $type=$mappings->getBundleMapping()['types']['0'];
+    $bundle=$mappings->getBundleMapping();
+    if(!empty($bundle)){
+        $type=$bundle['types']['0'];
         $options=$this->rdfConverter->getTypeProperties($type);
-    }catch(Exception $e){
+    }else{
         $options=$this->rdfConverter->getListProperties();
     }
 
