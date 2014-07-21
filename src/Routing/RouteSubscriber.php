@@ -61,7 +61,7 @@ class RouteSubscriber extends RouteSubscriberBase {
           $defaults['bundle'] = $entity_type_id;
         }
         $route = new Route(
-          "$path/fields-rdf",
+          "$path/fields/rdf",
           array(
             '_form' => '\Drupal\rdfui\Form\FieldMappings',
             '_title' => 'Manage fields RDF',
