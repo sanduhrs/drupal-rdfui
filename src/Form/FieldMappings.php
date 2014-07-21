@@ -7,13 +7,13 @@
 
 namespace Drupal\rdfui\Form;
 
+use Drupal\Component\Utility\String;
 use Drupal\Core\Entity\EntityListBuilderInterface;
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Field\FieldTypePluginManagerInterface;
 use Drupal\Core\Render\Element;
 use Drupal\field_ui\OverviewBase;
-use SebastianBergmann\Exporter\Exception;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\FieldInstanceConfigInterface;
@@ -134,7 +134,7 @@ class FieldMappings extends OverviewBase {
           'id' => drupal_html_class($name),
         ),
         'label' => array(
-          '#markup' => check_plain($instance->getLabel()),
+          '#markup' => String::checkPlain($instance->getLabel()),
         ),
         'rdf-predicate' => array(
           '#type' => 'select',
