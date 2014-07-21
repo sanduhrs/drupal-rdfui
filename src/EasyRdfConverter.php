@@ -37,24 +37,22 @@ class EasyRdfConverter
     {
         $this->listProperties = array();
         $this->listTypes = array();
-
-//        $uri="http://schema.org/docs/schema_org_rdfa.html";
-//        $type="rdfa";
-//        $this->createGraph($uri,$type);
     }
 
     /**
      * Creates an EasyRdf_Graph object from the given uri
      *
-     * @param uri string
-     * uri of a web resource or path of the cached file
+     * @param string $uri
+     *     uri of a web resource or path of the cached file
      *
-     * @param type string
-     * format of the document
+     * @param  string $type
+     *    format of the document
+     *
+     * @throws \Doctrine\Common\Proxy\Exception\InvalidArgumentException
      */
     public function createGraph($uri="http://schema.org/docs/schema_org_rdfa.html",$type="rdfa")
     {
-        //$uri="/home/sachini/workspace/RDFaLiteReflection.html";
+        $uri="/home/sachini/workspace/RDFaLiteReflection.html";
         /*
          * Initialize an EasyRdf_Graph object using
          *  _construct(string $uri = null, string $data = null, string $format = null)
@@ -148,12 +146,14 @@ class EasyRdfConverter
 
     /**
      * Fetch web resource of the specified type and extract properties
-     * @param string type
+     *
+     * @param String type
      *  Schema.Org type of which the properties should be listed (eg. "schema:Person")
      *
+     * @throws \Doctrine\Common\Proxy\Exception\InvalidArgumentException
      * @return array options
      *  list of properties
-    */
+     */
     function ofType($type){
         $tokens=explode(":",$type);
         $prefixes=rdf_get_namespaces();

@@ -81,7 +81,7 @@ class RdfUiLocalTask extends DeriverBase implements ContainerDeriverInterface {
                 $this->derivatives['rdf_'.$entity_type_id] = array(
                     'route_name' => "field_ui.field_rdf_$entity_type_id",
                     'weight' => 2,
-                    'title' => $this->t('Rdf Mappings'),
+                    'title' => $this->t('RDF Mappings'),
                     'parent_id' => "field_ui.fields:overview_$entity_type_id",
                 );
 
