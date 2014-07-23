@@ -85,12 +85,32 @@ class FieldMappings extends OverviewBase
         $mappings = rdf_get_mapping($this->entity_type, $this->bundle);
         $options = null;
         $bundle = $mappings->getBundleMapping();
+
         if (!empty($bundle)) {
             $type = $bundle['types']['0'];
             $options = $this->rdfConverter->getTypeProperties($type);
         } else {
             $options = $this->rdfConverter->getListProperties();
         }
+
+        $ops=array(
+            'options'=>array_values($options),
+        );
+
+        $form['#attached']=array(
+           'library' => array(
+              'rdfui/drupal.rdfui.autocomplete',
+           ),
+           // Add custom JavaScript.
+           'js' => array(
+                array(
+                    'data' => array(
+                        'rdfui'=>$ops,
+                    ),
+                    'type' => 'setting',
+                ),
+            ),
+        );
 
         $form += array(
             '#entity_type' => $this->entity_type,
@@ -125,12 +145,13 @@ class FieldMappings extends OverviewBase
                     '#markup' => String::checkPlain($instance->getLabel()),
                 ),
                 'rdf-predicate' => array(
-                    '#type' => 'select',
+                    '#id' => 'rdf-pred',
+                    '#type'=>'textfield',
                     '#title' => $this->t('Rdf Property'),
                     '#title_display' => 'invisible',
-                    '#empty_option' => $this->t('- Select Predicate -'),
-                    '#default_value' => !empty($property) ? $property['properties'][0] : '',
-                    '#options' => $options,
+                    /*'#empty_option' => $this->t('- Select Predicate -'),
+                    '#default_value' => !empty($property) ? $property['properties'][0] : '',*/
+                    //'#options' => $options,
                 ),
                 'type' => array(
                     // '#type' => 'link',

@@ -1,0 +1,9 @@
+drupal.rdfui.autocomplete:
+  version: VERSION
+  js:
+    js/rdfui.test.js: {}
+  dependencies:
+    - core/drupal.autocomplete
+    - core/jquery
+
+

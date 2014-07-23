@@ -85,7 +85,7 @@ class EasyRdfConverter
      */
     public function createGraph($uri = "http://schema.org/docs/schema_org_rdfa.html", $type = "rdfa")
     {
-        $uri = "/home/sachini/workspace/RDFaLiteReflection.html";
+        //$uri = "/home/sachini/workspace/RDFaLiteReflection.html";
         /*
          * Initialize an EasyRdf_Graph object using
          *  _construct(string $uri = null, string $data = null, string $format = null)
@@ -141,7 +141,7 @@ class EasyRdfConverter
     private function addProperties(\EasyRdf_Resource $value)
     {
         if ($value != null) {
-            $this->listProperties[$value->shorten()] = $value->label();
+            $this->listProperties[$value->shorten()] = $value->localName();
         }
     }
 
@@ -193,7 +193,7 @@ class EasyRdfConverter
         $options = array();
 
         foreach ($props as $key => $value) {
-            $options[$value->shorten()] = $value->label();
+            $options[$value->shorten()] = $value->localname();
         }
 
         $parents = $this->graph->all($uri, "rdfs:subClassOf");
