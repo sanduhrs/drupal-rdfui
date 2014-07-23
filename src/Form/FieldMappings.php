@@ -97,12 +97,17 @@ class FieldMappings extends OverviewBase
             'options'=>array_values($options),
         );
 
-        $form['#attached']=array(
+        /*$form['#attached']=array(
            'library' => array(
               'rdfui/drupal.rdfui.autocomplete',
            ),
-           // Add custom JavaScript.
-           'js' => array(
+           'css' =>array(
+               drupal_get_path('module','rdfui').'/css/rdfui.autocomplete.css',
+           ),
+        );*/
+
+        // Add custom JavaScript.
+        /*   'js' => array(
                 array(
                     'data' => array(
                         'rdfui'=>$ops,
@@ -110,7 +115,7 @@ class FieldMappings extends OverviewBase
                     'type' => 'setting',
                 ),
             ),
-        );
+        );*/
 
         $form += array(
             '#entity_type' => $this->entity_type,
@@ -145,13 +150,21 @@ class FieldMappings extends OverviewBase
                     '#markup' => String::checkPlain($instance->getLabel()),
                 ),
                 'rdf-predicate' => array(
-                    '#id' => 'rdf-pred',
-                    '#type'=>'textfield',
+                    '#id' => 'rdf-predicate',
+                    '#type'=>'select',
                     '#title' => $this->t('Rdf Property'),
                     '#title_display' => 'invisible',
-                    /*'#empty_option' => $this->t('- Select Predicate -'),
-                    '#default_value' => !empty($property) ? $property['properties'][0] : '',*/
-                    //'#options' => $options,
+                    //'#empty_option' => $this->t('- Select Predicate -'),
+                    //'#default_value' => !empty($property) ? $property['properties'][0] : '',
+                    '#options' => $options,
+                    '#attached' => array(
+                        'library' => array(
+                            'rdfui/drupal.rdfui.autocomplete',
+                        ),
+                        'css' => array(
+                            drupal_get_path('module','rdfui') . '/css/rdfui.autocomplete.css',
+                        ),
+                    ),
                 ),
                 'type' => array(
                     // '#type' => 'link',
