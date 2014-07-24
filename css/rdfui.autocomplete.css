@@ -33,3 +33,14 @@
 .ui-widget-content a {
     color: #222222;
 }
+
+.ui-autocomplete {
+    max-height: 100px;
+    overflow-y: auto;
+
+    overflow-x: hidden;
+}
+
+* html .ui-autocomplete {
+    height: 100px;
+}
