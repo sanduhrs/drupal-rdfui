@@ -41,10 +41,19 @@ class ContentMappings
         );
 
         $form['rdf-mapping']['types'] = array(
+            '#id'=>'rdf-predicate',
             '#type' => 'select',
             '#title' => t('Schema.org Type'),
             '#options' => $typeOptions->getListTypes(),
-            '#empty_option' => t('- Select Predicate -'),
+            '#empty_option' => '',
+            '#attached' => array(
+                'library' => array(
+                    'rdfui/drupal.rdfui.autocomplete',
+                ),
+                'css' => array(
+                    drupal_get_path('module','rdfui') . '/css/rdfui.autocomplete.css',
+                ),
+            ),
             '#default_value' => !empty($existingType) ? $existingType['types'][0] : '',
             '#description' => t('Specify the type you want to associated to this content type e.g. Article, Blog, etc.'),
         );

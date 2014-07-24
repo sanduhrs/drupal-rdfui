@@ -43,7 +43,7 @@ class RdfUiFieldMappingTest extends FieldUiTestBase
     function testUnmappedTypeFieldUI()
     {
         $manage_fields = 'admin/structure/types/manage/' . $this->type;
-        $rdf_mappings = $manage_fields . '/fields-rdf';
+        $rdf_mappings = $manage_fields . '/fields/rdf';
 
         // Create a field, and a node with some data for the field.
         $initial_edit = array(
@@ -79,7 +79,7 @@ class RdfUiFieldMappingTest extends FieldUiTestBase
         $mapping->setBundleMapping(array('types' => array(0 => "schema:Person")))->save();
 
         $manage_fields = 'admin/structure/types/manage/' . $this->type;
-        $rdf_mappings = $manage_fields . '/fields-rdf';
+        $rdf_mappings = $manage_fields . '/fields/rdf';
 
         // Create a field, and a node with some data for the field.
         $initial_edit = array(

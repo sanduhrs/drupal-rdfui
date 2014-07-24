@@ -93,29 +93,6 @@ class FieldMappings extends OverviewBase
             $options = $this->rdfConverter->getListProperties();
         }
 
-        $ops=array(
-            'options'=>array_values($options),
-        );
-
-        /*$form['#attached']=array(
-           'library' => array(
-              'rdfui/drupal.rdfui.autocomplete',
-           ),
-           'css' =>array(
-               drupal_get_path('module','rdfui').'/css/rdfui.autocomplete.css',
-           ),
-        );*/
-
-        // Add custom JavaScript.
-        /*   'js' => array(
-                array(
-                    'data' => array(
-                        'rdfui'=>$ops,
-                    ),
-                    'type' => 'setting',
-                ),
-            ),
-        );*/
 
         $form += array(
             '#entity_type' => $this->entity_type,
@@ -154,9 +131,8 @@ class FieldMappings extends OverviewBase
                     '#type'=>'select',
                     '#title' => $this->t('Rdf Property'),
                     '#title_display' => 'invisible',
-                    //'#empty_option' => $this->t('- Select Predicate -'),
-                    //'#default_value' => !empty($property) ? $property['properties'][0] : '',
                     '#options' => $options,
+                    '#empty_option' => '',
                     '#attached' => array(
                         'library' => array(
                             'rdfui/drupal.rdfui.autocomplete',
@@ -165,6 +141,7 @@ class FieldMappings extends OverviewBase
                             drupal_get_path('module','rdfui') . '/css/rdfui.autocomplete.css',
                         ),
                     ),
+                    '#default_value' => !empty($property) ? $property['properties'][0] : '',
                 ),
                 'type' => array(
                     // '#type' => 'link',

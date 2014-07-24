@@ -118,7 +118,7 @@
             });
 
 
-            $("#rdf-predicate" ).combobox();
+            $('[id="rdf-predicate"]' ).combobox();
             $("#toggle" ).click(function() {
                 $( "#combobox" ).toggle();
             });
