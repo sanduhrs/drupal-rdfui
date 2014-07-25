@@ -122,6 +122,7 @@
             $("#toggle" ).click(function() {
                 $( "#combobox" ).toggle();
             });
+            $('.custom-combobox-input').attr("placeholder", "-Select Predicate-");
         }
 
     }
