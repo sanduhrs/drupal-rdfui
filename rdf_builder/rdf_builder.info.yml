@@ -1,0 +1,15 @@
+name: Rdf Builder
+type: module
+description: 'Schema.org driven Content Typr Builder for Drupal 8'
+package: Custom
+version: VERSION
+core: 8.x
+hidden: false
+
+dependencies:
+  - rdfui
+
+
+
+
+
