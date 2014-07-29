@@ -10,14 +10,12 @@ namespace Drupal\rdf_builder\Form;
 
 
 use Drupal\Component\Utility\String;
-use Drupal\Core\Field\FieldTypePluginManager;
-use Drupal\Core\Field\FieldTypePluginManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Render\Element;
 use Drupal\rdfui\EasyRdfConverter;
-use Symfony\Component\Validator\Constraints\True;
 
 class ContentBuilderForm extends FormBase{
+    /*@TODO Resolve naming conflicts and long field/content_type names     */
 
     /**
      * @var /Drupal/rdfui/EasyRdfConverter
@@ -27,18 +25,24 @@ class ContentBuilderForm extends FormBase{
     /**
      *  The field type manager.
      *
-     * @var \Drupal\Core\Field\FieldTypePluginManagerInterface
+     * @var \Drupal\node\Entity\NodeType
      */
-    //protected $fieldTypeManager;
+    protected $entity;
+
+    /**
+     * @var array
+     */
+    protected $properties;
+
+    /**
+     * @var \Drupal\rdf\Entity\RdfMapping
+     */
+    protected  $rdf_mapping;
 
     /**
      * Constructs a new ContentBuilder.
-     * @param \Drupal\Core\Field\FieldTypePluginManagerInterface $field_type_manager
-     *   The field type manager
-     * FieldTypePluginManagerInterface $field_type_manager
      */
     public function __construct( ) {
-        //$this->fieldTypeManager = $field_type_manager;
         $this->converter=new EasyRdfConverter();
         $this->converter->createGraph();
     }
@@ -268,7 +272,16 @@ class ContentBuilderForm extends FormBase{
      */
     public function validateForm(array &$form, array &$form_state)
     {
-        /*To be implemented*/
+        $this->properties=array();
+        foreach($form_state['values']['fields'] as $key=>$property){
+            if($property['enable']===1){
+                if(empty($property['type'])){
+                    $this->setFormError('fields][$key][type', $form_state, $this->t('Create field: you need to provide a data type for %field.',array('%field'=>$key)));
+                }
+                $this->properties[$key]=$property;
+            }
+        }
+
     }
 
 
@@ -280,21 +293,94 @@ class ContentBuilderForm extends FormBase{
     public function submitForm(array &$form, array &$form_state) {
         $page_one_values = $form_state['page_values'][1];
         $rdf_type=$page_one_values['rdf-type'];
+        //$this->entity=
+        $this->createNodeType(explode(':',$rdf_type)[1]);
 
-        $properties=array();
-        foreach($form_state['values']['fields'] as $key=>$property){
-            if($property['enable']===1){
-                $properties[$key]=$property;
-            }
-        }
+        $this->rdf_mapping=rdf_get_mapping('node',$this->entity->id());
+        $this->rdf_mapping->setBundleMapping(array('types' => array($rdf_type)));
 
+        $this->createField();
+        $this->rdf_mapping->save();
 
-
-        drupal_set_message('Content Type creation not implemented yet.');
-        drupal_set_message('Schema type ='.$rdf_type);
-        drupal_set_message(print_r($properties,true));
+        drupal_set_message('Content Type %label created',array('%label'=>$this->entity->label()));
 
         $form_state['redirect_route']['route_name'] = 'node.overview_types';
     }
 
+    /**
+     * @param $rdf_type
+     * //@return \Drupal\node\Entity\NodeType $entity
+     */
+    protected function createNodeType($rdf_type){
+        $values=array(
+            'name'=>$rdf_type,
+            'type'=>strtolower($rdf_type),
+        );
+
+        try{
+            $this->entity=entity_create('node_type',$values);
+            $this->entity->save();
+        }catch (\Exception $e){
+            $this->setFormError('type', $form_state, $this->t("Error saving content type %invalid.", array('%invalid' => $rdf_type)));
+        }
+        //return $entity;
+    }
+
+    protected function createField(){
+        $entity_type='node';
+        $bundle=$this->entity->id();
+        foreach($this->properties as $key=>$value){
+            $label=explode(':',$key)[1];
+            // Add the field prefix.
+            $field_name = \Drupal::config('field_ui.settings')->get('field_prefix') . strtolower($label);
+
+            $field_storage = array(
+                'name' => $field_name,
+                'entity_type' => $entity_type,
+                'type' => $value['type'],
+                'translatable' => TRUE,
+            );
+            $instance = array(
+                'field_name' => $field_name,
+                'entity_type' => $entity_type,
+                'bundle' => $bundle,
+                'label' => $label,
+                // Field translatability should be explicitly enabled by the users.
+                'translatable' => FALSE,
+            );
+
+            // Create the field and instance.
+            try {
+                $field=entity_create('field_storage_config',$field_storage)->save();
+                $ins=entity_create('field_instance_config',$instance)->save();
+
+
+                // Make sure the field is displayed in the 'default' form mode (using
+                // default widget and settings). It stays hidden for other form modes
+                // until it is explicitly configured.
+                entity_get_form_display($entity_type, $bundle, 'default')
+                    ->setComponent($field_name)
+                    ->save();
+
+                // Make sure the field is displayed in the 'default' view mode (using
+                // default formatter and settings). It stays hidden for other view
+                // modes until it is explicitly configured.
+                entity_get_display($entity_type, $bundle, 'default')
+                    ->setComponent($field_name)
+                    ->save();
+
+                //rdf-mapping
+                $this->rdf_mapping->setFieldMapping($field_name, array(
+                        'properties' => array($key),
+                    )
+                );
+
+            }
+            catch (\Exception $e) {
+                $error = TRUE;
+                drupal_set_message($this->t('There was a problem creating field %label: !message', array('%label' => $instance['label'], '!message' => $e->getMessage())), 'error');
+            }
+        }
+
+    }
 }
