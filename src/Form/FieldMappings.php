@@ -207,7 +207,6 @@ class FieldMappings extends OverviewBase
         //validate
 
         $form_values = $form_state['values']['fields'];
-        $x = array();
         $mapping = rdf_get_mapping($this->entity_type, $this->bundle);
 
         foreach ($form_values as $key => $value) {
@@ -215,7 +214,6 @@ class FieldMappings extends OverviewBase
                     'properties' => array($value['rdf-predicate']),
                 )
             );
-            $x[$key] = $value['rdf-predicate'];
         }
         $mapping->save();
 
