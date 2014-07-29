@@ -9,8 +9,11 @@
 namespace Drupal\rdf_builder\Form;
 
 
+use Drupal\Component\Utility\String;
+use Drupal\Core\Field\FieldTypePluginManager;
 use Drupal\Core\Field\FieldTypePluginManagerInterface;
 use Drupal\Core\Form\FormBase;
+use Drupal\Core\Render\Element;
 use Drupal\rdfui\EasyRdfConverter;
 use Symfony\Component\Validator\Constraints\True;
 
@@ -73,6 +76,7 @@ class ContentBuilderForm extends FormBase{
             '#required'=>TRUE,
             '#options' => $this->converter->getListTypes(),
             '#empty_option' => '',
+            '#default'=>$form_state['values']['rdf-predicate'],
             '#attached' => array(
                 'library' => array(
                     'rdfui/drupal.rdfui.autocomplete',
@@ -101,9 +105,9 @@ class ContentBuilderForm extends FormBase{
     function buildForm_page_two($form, &$form_state) {
         $rdf_type=$form_state['page_values'][1]['rdf-type'];
         $properties=$this->converter->getTypeProperties($rdf_type);
+        //$widgets=\Drupal::service('plugin.manager.field.widget')->getDefinitions();
+        $field_types=\Drupal::service('plugin.manager.field.field_type')->getUiDefinitions();
 
-        // Gather valid field types.
-        /*$field_types = $this->fieldTypeManager->getDefinitions();
         $field_type_options = array();
         foreach ($field_types as $name => $field_type) {
             // Skip field types which should not be added via user interface.
@@ -111,33 +115,80 @@ class ContentBuilderForm extends FormBase{
                 $field_type_options[$name] = $field_type['label'];
             }
         }
-        asort($field_type_options);*/
-        $field_type_options=array(
-            'text'=>'Text',
-            'boolean'=>'Boolean',
+        asort($field_type_options);
+
+        $table = array(
+            '#type' => 'field_ui_table', //theme element used in field_ui_theme() hook
+            '#tree' => TRUE,
+            '#header' => array(
+                $this->t('Enable'),
+                $this->t('Property'),
+                $this->t('Data Type'),
+            ),
+            '#regions' => array(),
+            '#attributes' => array(
+                'class' => array('rdfui-field-mappings'),
+                'id' => 'rdf-builder',
+            ),
         );
 
-        $form['#title'] = $this->t('Content types');
+        foreach($properties as $key=>$value){
+            $table[$key] = array(
+                '#attributes' => array(
+                    'id'=> drupal_html_class($key),
+                ),
+                'enable' => array(
+                    '#type'=>'checkbox',
+                    '#title'=>$this->t('Enable'),
+                    '#title_display' => 'invisible',
+                ),
+                'property' => array(
+                    '#markup' => String::checkPlain($value),
+                ),
+                'type' => array(
+                    '#type' => 'select',
+                    '#title' => $this->t('Data Type'),
+                    '#title_display' => 'invisible',
+                    '#options' => $field_type_options,
+                    '#empty_option' => $this->t('- Select a field type -'),
+                    '#attributes' => array('class' => array('field-type-select')),
+                    '#prefix' => '<div class="add-new-placeholder">&nbsp;</div>',
+                ),
+            );
+        }
+        // Fields.
+
+        $table['#regions']['content']['rows_order'] = array();
+        foreach (Element::children($table) as $name) {
+            $table['#regions']['content']['rows_order'][] = $name;
+        }
+
+        $form['fields'] = $table;
+
+
+/*        $form['#title'] = $this->t('Content types');
         $form['description'] = array(
             '#type' => 'item',
             '#title' => t('Choose fields to start with'),
         );
-
-        $field_options=array();
+*/
+        /*$field_options=array();
         foreach($properties as $key=>$value){
+
             $field_options[$key]=array(
+            //    '#parents' => array('frequent_options'),
                 'name'=>array(
                     '#markup' => $this->t($value),
                 ),
                 'enable'=>array(
                     '#type'=>'checkbox',
                     '#title'=>$this->t('Enable'),
-                    '#title_display' => 'invisible',
+                    //'#title_display' => 'invisible',
                 ),
                 'type'=>array(
                     '#type' => 'select',
-                    '#title' => $this->t('Type of new field'),
-                    '#title_display' => 'invisible',
+                    '#title' => $this->t($key),
+                    //'#title_display' => 'invisible',
                     '#options' => $field_type_options,
                     '#empty_option' => $this->t('- Select a field type -'),
                     '#attributes' => array('class' => array('field-type-select')),
@@ -151,16 +202,12 @@ class ContentBuilderForm extends FormBase{
             '#title' => t('More frequently used fields'),
             '#type' => 'details',
             '#open' => TRUE,
-            '#header' => array(
-                array('data' => $this->t('Enable'), 'class' => array('checkbox', 'visually-hidden')),
-                array('data' => $this->t('Name'), 'class' => array('name', 'visually-hidden')),
-                array('data' => $this->t('Data Type'), 'class' => array('select', 'visually-hidden', RESPONSIVE_PRIORITY_LOW)),
-            ),
-            '#attributes' => array('class' => array('package-listing')),
-            //'#theme' => '',
+          //  '#attributes' => array('class' => array('package-listing')),
+           // '#theme' => 'views_view_grid',
+            //'#options'=>$field_options,
         );
 
-        $form['fields']['frequent_options']+=$field_options;
+        $form['fields']['frequent_options']+=$field_options;*/
 
         $form['actions'] = array('#type' => 'actions');
         $form['actions']['submit'] = array(
@@ -173,8 +220,6 @@ class ContentBuilderForm extends FormBase{
             '#type' => 'submit',
             '#value' => t('<< Back'),
             '#submit' => array('page_two_back'),
-            // We won't bother validating the required 'color' field, since they
-            // have to come back to this page to submit anyway.
             '#limit_validation_errors' => array(),
         );
         return $form;
@@ -195,9 +240,6 @@ class ContentBuilderForm extends FormBase{
      */
     function next_submit($form, &$form_state) {
 
-        // Values are saved for each page.
-        // to carry forward to subsequent pages in the form.
-        // and we tell FAPI to rebuild the form.
         $form_state['page_values'][1] = $form_state['values'];
 
         if (!empty($form_state['page_values'][2])) {
@@ -240,14 +282,17 @@ class ContentBuilderForm extends FormBase{
         $rdf_type=$page_one_values['rdf-type'];
 
         $properties=array();
-        foreach($form_state['values']['fields']['frequent_options'] as $property){
+        foreach($form_state['values']['fields'] as $key=>$property){
             if($property['enable']===1){
-                $properties[$property];
+                $properties[$key]=$property;
             }
-
         }
 
+
+
         drupal_set_message('Content Type creation not implemented yet.');
+        drupal_set_message('Schema type ='.$rdf_type);
+        drupal_set_message(print_r($properties,true));
 
         $form_state['redirect_route']['route_name'] = 'node.overview_types';
     }
