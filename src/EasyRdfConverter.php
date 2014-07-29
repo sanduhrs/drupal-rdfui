@@ -124,12 +124,11 @@ class EasyRdfConverter
 
         foreach ($typeList as $key => $value) {
             if ($value->isA("rdf:Property") || $value->isA("rdfs:Property")) {
-                $this->addProperties($value, $key);
+                $this->addProperties($value);
             } else {
                 $this->addType($value);
             }
         }
-
     }
 
     /**
@@ -154,7 +153,7 @@ class EasyRdfConverter
     private function addType(\EasyRdf_Resource $type)
     {
         if ($type != null) {
-            $this->listTypes[$type->shorten()] = $type->label();
+            $this->listTypes[$type->shorten()] = $type->localName();
         }
     }
 
