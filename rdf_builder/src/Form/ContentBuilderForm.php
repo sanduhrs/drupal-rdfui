@@ -12,6 +12,7 @@ namespace Drupal\rdf_builder\Form;
 use Drupal\Component\Utility\String;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Render\Element;
+use Drupal\node\Entity\NodeType;
 use Drupal\rdfui\EasyRdfConverter;
 
 class ContentBuilderForm extends FormBase{
