@@ -16,7 +16,10 @@ use Drupal\node\Entity\NodeType;
 use Drupal\rdfui\EasyRdfConverter;
 
 class ContentBuilderForm extends FormBase{
-    /*@TODO Resolve naming conflicts and long field/content_type names     */
+    /*@TODO Resolve naming conflicts and long field/content_type names     
+     * length-machine name-32
+     * max. length name type-32, property-26
+     */
 
     /**
      * @var /Drupal/rdfui/EasyRdfConverter
@@ -81,7 +84,7 @@ class ContentBuilderForm extends FormBase{
             '#required'=>TRUE,
             '#options' => $this->converter->getListTypes(),
             '#empty_option' => '',
-            '#default'=>$form_state['values']['rdf-predicate'],
+            '#default'=>!empty($form_state['values']['rdf-predicate'])?$form_state['values']['rdf-predicate']:'',
             '#attached' => array(
                 'library' => array(
                     'rdfui/drupal.rdfui.autocomplete',
@@ -277,7 +280,7 @@ class ContentBuilderForm extends FormBase{
         foreach($form_state['values']['fields'] as $key=>$property){
             if($property['enable']===1){
                 if(empty($property['type'])){
-                    $this->setFormError('fields][$key][type', $form_state, $this->t('Create field: you need to provide a data type for %field.',array('%field'=>$key)));
+                    $this->setFormError('fields][$key][type', $form_state, $this->t('Create field: you need to provide a data type for %field.',array('%field'=>explode(':',$key)[1])));
                 }
                 $this->properties[$key]=$property;
             }
@@ -303,8 +306,8 @@ class ContentBuilderForm extends FormBase{
         $this->createField();
         $this->rdf_mapping->save();
 
-        drupal_set_message('Content Type %label created',array('%label'=>$this->entity->label()));
-
+        drupal_set_message($this->t('Content Type %label created',array('%label'=>$this->entity->label())));
+        /*@TODO Revert all saved content type and fields in case of error*/
         $form_state['redirect_route']['route_name'] = 'node.overview_types';
     }
 
