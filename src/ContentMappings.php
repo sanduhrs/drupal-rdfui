@@ -6,6 +6,7 @@
  */
 
 namespace Drupal\rdfui;
+use Drupal\Core\Form\FormStateInterface;
 
 
 /**
@@ -21,7 +22,7 @@ class ContentMappings
      * @see form_submit()
      * @ingroup forms
      */
-    public static function alter_form($form, &$form_state)
+    public static function alter_form(array &$form, FormStateInterface $form_state)
     {
         $typeOptions = new EasyRdfConverter();
         $typeOptions->createGraph();
@@ -65,7 +66,7 @@ class ContentMappings
     /**
      * Validate Schema.org mappings in \Drupal\node\NodeTypeForm
      */
-    public static function form_validate(array &$form, array &$form_state)
+    public static function form_validate(array &$form, FormStateInterface $form_state)
     {
         /*To be implemented*/
     }
@@ -73,7 +74,7 @@ class ContentMappings
     /**
      * Saves Schema.org mappings in \Drupal\node\NodeTypeForm
      */
-    public static function submitForm(array &$form, array &$form_state)
+    public static function submitForm(array &$form, FormStateInterface $form_state)
     {
         if (isset($form_state['input']['types'])) {
             $error = FALSE;

@@ -10,6 +10,7 @@ namespace Drupal\rdfui\Form;
 use Drupal\Component\Utility\String;
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Field\FieldTypePluginManagerInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\field\FieldInstanceConfigInterface;
 use Drupal\field_ui\OverviewBase;
@@ -19,8 +20,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Rdf Ui Rdf Mapping form.
  */
-class FieldMappings extends OverviewBase
-{
+class FieldMappings extends OverviewBase {
 
     /**
      *  The field type manager.
@@ -73,8 +73,7 @@ class FieldMappings extends OverviewBase
     /**
      * {@inheritdoc}
      */
-    public function buildForm(array $form, array &$form_state, $entity_type_id = NULL, $bundle = NULL)
-    {
+    public function buildForm(array $form, FormStateInterface $form_state, $entity_type_id = NULL, $bundle = NULL) {
         parent::buildForm($form, $form_state, $entity_type_id, $bundle);
 
         // Gather bundle information.
@@ -193,16 +192,16 @@ class FieldMappings extends OverviewBase
     /**
      * {@inheritdoc}
      */
-    public function validateForm(array &$form, array &$form_state)
-    {
+    public function validateForm(array &$form, FormStateInterface $form_state) {
+
         /*To be implemented*/
     }
 
     /**
      * Overrides \Drupal\field_ui\OverviewBase::submitForm().
      */
-    public function submitForm(array &$form, array &$form_state)
-    {
+    public function submitForm(array &$form, FormStateInterface $form_state) {
+
         $error = FALSE;
         //validate
 
