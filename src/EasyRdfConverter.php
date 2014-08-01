@@ -112,7 +112,6 @@ class EasyRdfConverter
             throw new InvalidArgumentException("Invalid uri + $e");
         }
 
-
     }
 
     /**
@@ -120,9 +119,13 @@ class EasyRdfConverter
      */
     function iterateGraph()
     {
+        /*@TODO use rdfs:label not local name*/
         $typeList = $this->graph->resources();
 
         foreach ($typeList as $key => $value) {
+            if($value->prefix()!=="schema"){
+                continue;
+            }
             if ($value->isA("rdf:Property") || $value->isA("rdfs:Property")) {
                 $this->addProperties($value);
             } else {
@@ -140,7 +143,7 @@ class EasyRdfConverter
     private function addProperties(\EasyRdf_Resource $value)
     {
         if ($value != null) {
-            $this->listProperties[$value->shorten()] = $value->localName();
+            $this->listProperties[$value->shorten()] = $value->label();
         }
     }
 
@@ -153,7 +156,7 @@ class EasyRdfConverter
     private function addType(\EasyRdf_Resource $type)
     {
         if ($type != null) {
-            $this->listTypes[$type->shorten()] = $type->localName();
+            $this->listTypes[$type->shorten()] = $type->label();
         }
     }
 
@@ -176,11 +179,11 @@ class EasyRdfConverter
      */
     function getTypeProperties($type)
     {
-        $tokens = explode(":", $type);
+        /*$tokens = explode(":", $type);
         $prefixes = rdf_get_namespaces();
         $uri = $prefixes[$tokens[0]] . $tokens[1];
-        $options = array();
-        $options += $this->getProperties($uri);
+        */$options = array();
+        $options += $this->getProperties($type);
         asort($options);
         return $options;
     }
@@ -192,7 +195,7 @@ class EasyRdfConverter
         $options = array();
 
         foreach ($props as $key => $value) {
-            $options[$value->shorten()] = $value->localname();
+            $options[$value->shorten()] = $value->get("rdfs:label")->getValue();
         }
 
         $parents = $this->graph->all($uri, "rdfs:subClassOf");
@@ -202,6 +205,42 @@ class EasyRdfConverter
         return $options;
     }
 
+    /**
+     * Returns description of the resource
+     *
+     * @param $uri string
+     * @return mixed    Description of the resource or null
+     */
+    public function Description($uri){
+        if (empty($uri)){
+            drupal_set_message("Invalid uri");
+            return null;
+        }
+
+        $comment=$this->graph->get($uri,"rdfs:comment");
+        if(!empty($comment) ){
+            return $comment->getValue();
+        }
+        return null;
+    }
+
+    /**
+     * Returns label of the resource
+     *
+     * @param $uri string
+     * @return string Label of the resource, if not shortened name
+     */
+    public function Label($uri){
+        if (empty($uri)){
+            drupal_set_message("Invalid uri");
+            return null;
+        }
+        $label=$this->graph->label($uri);
+        if(!empty($comment) ){
+            return $label;
+        }
+        return explode(":",$uri)[1];
+    }
 }
 
 
