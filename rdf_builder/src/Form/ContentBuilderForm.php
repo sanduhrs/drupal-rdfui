@@ -228,8 +228,9 @@ class ContentBuilderForm extends FormBase{
         $form['actions']['previous'] = array(
             '#type' => 'submit',
             '#value' => t('<< Back'),
-            '#submit' => array('page_two_back'),
+            '#submit' => array(array($this,'page_two_back_submit')),
             '#limit_validation_errors' => array(),
+            '#validate' => array(array($this,'page_two_back_validate')),
         );
         return $form;
     }
@@ -246,7 +247,7 @@ class ContentBuilderForm extends FormBase{
      * Capture the values from page one and store them away so they can be used
      * at final submit time.
      */
-    public function next_submit(array &$form, array &$form_state) {
+    public function next_submit(array &$form, FormStateInterface &$form_state) {
 
         $form_state['page_values'][1] = $form_state['values'];
 
@@ -260,12 +261,14 @@ class ContentBuilderForm extends FormBase{
     }
 
     /**
-     * Back button handler submit handler.
-     *
-     * Since #limit_validation_errors = array() is set, values from page 2
-     * will be discarded. We load the page 1 values instead.
+     * Validate handler for the back button on second page.
      */
-    public function page_two_back(array &$form, array &$form_state)  {
+    public function page_two_back_validate(array $form, FormStateInterface $form_state) {    }
+
+    /**
+     * Back button handler submit handler.
+     */
+    public function page_two_back_submit(array &$form, FormStateInterface &$form_state) {
         $form_state['values'] = $form_state['page_values'][1];
         $form_state['page_num'] = 1;
         $form_state['rebuild'] = TRUE;
@@ -274,14 +277,12 @@ class ContentBuilderForm extends FormBase{
     /**
      *@inheritdoc
      */
-    public function validate(array $form, FormStateInterface $form_state){
-        $this->properties=array();
+    public function validateForm(array &$form, FormStateInterface $form_state) {
         foreach($form_state['values']['fields'] as $key=>$property){
             if($property['enable']===1){
                 if(empty($property['type'])){
                     $this->setFormError('fields][$key][type', $form_state, $this->t('Create field: you need to provide a data type for %field.',array('%field'=>explode(':',$key)[1])));
                 }
-                $this->properties[$key]=$property;
             }
         }
 
@@ -289,35 +290,15 @@ class ContentBuilderForm extends FormBase{
 
 
     /**
-     * @inheritdoc
-     *
-     * This is the final submit handler. Gather all the data together and create new content type
-     */
-    public function submitForm(array &$form, FormStateInterface $form_state){
-        $page_one_values = $form_state['page_values'][1];
-        $rdf_type=$page_one_values['rdf-type'];
-        //$this->entity=
-        $this->createNodeType(explode(':',$rdf_type)[1]);
-
-        $this->rdf_mapping=rdf_get_mapping('node',$this->entity->id());
-        $this->rdf_mapping->setBundleMapping(array('types' => array($rdf_type)));
-
-        $this->createField();
-        $this->rdf_mapping->save();
-
-        drupal_set_message($this->t('Content Type %label created',array('%label'=>$this->entity->label())));
-        /*@TODO Revert all saved content type and fields in case of error*/
-        $form_state['redirect_route']['route_name'] = 'node.overview_types';
-    }
-
-    /**
-     * @param $rdf_type
+     * @param string $rdf_type uri of the resource
      * //@return \Drupal\node\Entity\NodeType $entity
      */
     protected function createNodeType($rdf_type){
+        $type=explode(':',$rdf_type)[1];
         $values=array(
-            'name'=>$rdf_type,
-            'type'=>strtolower($rdf_type),
+            'name'=>$this->converter->Label($rdf_type),
+            'type'=>strtolower($type),
+            'description'=>$this->converter->Description($rdf_type),
         );
 
         try{
@@ -333,7 +314,7 @@ class ContentBuilderForm extends FormBase{
         $entity_type='node';
         $bundle=$this->entity->id();
         foreach($this->properties as $key=>$value){
-            $label=explode(':',$key)[1];
+            $label=$this->converter->Label($key);
             // Add the field prefix.
             $field_name = \Drupal::config('field_ui.settings')->get('field_prefix') . strtolower($label);
 
@@ -385,6 +366,39 @@ class ContentBuilderForm extends FormBase{
             }
         }
 
+    }
+
+    /**
+     * @inheritdoc
+     *
+     * This is the final submit handler. Gather all the data together and create new content type
+     */
+    public function submitForm(array &$form, FormStateInterface $form_state){
+
+        $this->properties=array();
+        foreach($form_state['values']['fields'] as $key=>$property){
+            if($property['enable']===1){
+                if(empty($property['type'])){
+                    $this->setFormError('fields][$key][type', $form_state, $this->t('Create field: you need to provide a data type for %field.',array('%field'=>explode(':',$key)[1])));
+                }
+                $this->properties[$key]=$property;
+            }
+        }
+
+        $page_one_values = $form_state['page_values'][1];
+        $rdf_type=$page_one_values['rdf-type'];
+        //$this->entity=
+        $this->createNodeType($rdf_type);
+
+        $this->rdf_mapping=rdf_get_mapping('node',$this->entity->id());
+        $this->rdf_mapping->setBundleMapping(array('types' => array($rdf_type)));
+
+        $this->createField();
+        $this->rdf_mapping->save();
+
+        drupal_set_message($this->t('Content Type %label created',array('%label'=>$this->entity->label())));
+        /*@TODO Revert all saved content type and fields in case of error*/
+        $form_state['redirect_route']['route_name'] = 'node.overview_types';
     }
 
 
