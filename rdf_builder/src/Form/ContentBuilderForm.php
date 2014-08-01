@@ -11,6 +11,7 @@ namespace Drupal\rdf_builder\Form;
 
 use Drupal\Component\Utility\String;
 use Drupal\Core\Form\FormBase;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\node\Entity\NodeType;
 use Drupal\rdfui\EasyRdfConverter;
@@ -61,7 +62,7 @@ class ContentBuilderForm extends FormBase{
     /**
      * @inheritdoc
      */
-    public function buildForm(array $form, array &$form_state){
+    public function buildForm(array $form, FormStateInterface $form_state){
 
         // Display page 2 if $form_state['page_num'] == 2
         if (!empty($form_state['page_num']) && $form_state['page_num'] == 2) {
@@ -237,8 +238,7 @@ class ContentBuilderForm extends FormBase{
     /**
      * Validate handler for the next button on first page.
      */
-    function next_validate($form, &$form_state) {
-    }
+    public function next_validate(array $form, FormStateInterface $form_state) {    }
 
     /**
      * Submit handler for Content Builder next button.
@@ -246,7 +246,7 @@ class ContentBuilderForm extends FormBase{
      * Capture the values from page one and store them away so they can be used
      * at final submit time.
      */
-    function next_submit($form, &$form_state) {
+    public function next_submit(array &$form, array &$form_state) {
 
         $form_state['page_values'][1] = $form_state['values'];
 
@@ -265,7 +265,7 @@ class ContentBuilderForm extends FormBase{
      * Since #limit_validation_errors = array() is set, values from page 2
      * will be discarded. We load the page 1 values instead.
      */
-    function page_two_back($form, &$form_state) {
+    public function page_two_back(array &$form, array &$form_state)  {
         $form_state['values'] = $form_state['page_values'][1];
         $form_state['page_num'] = 1;
         $form_state['rebuild'] = TRUE;
@@ -274,8 +274,7 @@ class ContentBuilderForm extends FormBase{
     /**
      *@inheritdoc
      */
-    public function validateForm(array &$form, array &$form_state)
-    {
+    public function validate(array $form, FormStateInterface $form_state){
         $this->properties=array();
         foreach($form_state['values']['fields'] as $key=>$property){
             if($property['enable']===1){
@@ -294,7 +293,7 @@ class ContentBuilderForm extends FormBase{
      *
      * This is the final submit handler. Gather all the data together and create new content type
      */
-    public function submitForm(array &$form, array &$form_state) {
+    public function submitForm(array &$form, FormStateInterface $form_state){
         $page_one_values = $form_state['page_values'][1];
         $rdf_type=$page_one_values['rdf-type'];
         //$this->entity=
@@ -325,7 +324,7 @@ class ContentBuilderForm extends FormBase{
             $this->entity=entity_create('node_type',$values);
             $this->entity->save();
         }catch (\Exception $e){
-            $this->setFormError('type', $form_state, $this->t("Error saving content type %invalid.", array('%invalid' => $rdf_type)));
+            drupal_set_message('type', $this->t("Error saving content type %invalid.", array('%invalid' => $rdf_type)));
         }
         //return $entity;
     }
@@ -387,4 +386,7 @@ class ContentBuilderForm extends FormBase{
         }
 
     }
+
+
+
 }
