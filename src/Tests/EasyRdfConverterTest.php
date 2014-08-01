@@ -66,5 +66,5 @@ class EasyRdfConverterTest extends DrupalUnitTestBase
         $this->assertFalse(in_array("birthDate", $properties), 'Properties not in the Type are not loaded.');
     }
 
-
+    /*@TODO test Lable() & Description() methods*/
 }

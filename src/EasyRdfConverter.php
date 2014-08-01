@@ -85,7 +85,7 @@ class EasyRdfConverter
      */
     public function createGraph($uri = "http://schema.org/docs/schema_org_rdfa.html", $type = "rdfa")
     {
-        //$uri = "/home/sachini/workspace/RDFaLiteReflection.html";
+        $uri = "/home/sachini/workspace/RDFaLiteReflection.html";
         /*
          * Initialize an EasyRdf_Graph object using
          *  _construct(string $uri = null, string $data = null, string $format = null)
@@ -179,11 +179,12 @@ class EasyRdfConverter
      */
     function getTypeProperties($type)
     {
-        /*$tokens = explode(":", $type);
+        $tokens = explode(":", $type);
         $prefixes = rdf_get_namespaces();
         $uri = $prefixes[$tokens[0]] . $tokens[1];
-        */$options = array();
-        $options += $this->getProperties($type);
+
+        $options = array();
+        $options += $this->getProperties($uri);
         asort($options);
         return $options;
     }
