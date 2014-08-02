@@ -1,7 +1,13 @@
+/**
+ * @file
+ * Styles for rdfui custom combobox.
+ */
+
 .custom-combobox {
     display: inline-block;
     position: relative;
 }
+
 .custom-combobox-toggle {
     bottom: 0;
     margin-left: -1px;
@@ -9,6 +15,7 @@
     position: absolute;
     top: 0;
 }
+
 .custom-combobox-input {
     margin: 0;
     padding: 0.3em;
@@ -30,6 +37,7 @@
     border: 1px solid #aaaaaa;
     color: #222222;
 }
+
 .ui-widget-content a {
     color: #222222;
 }
