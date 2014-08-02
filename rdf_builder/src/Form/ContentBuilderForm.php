@@ -85,7 +85,7 @@ class ContentBuilderForm extends FormBase{
             '#required'=>TRUE,
             '#options' => $this->converter->getListTypes(),
             '#empty_option' => '',
-            '#default'=>!empty($form_state['values']['rdf-predicate'])?$form_state['values']['rdf-predicate']:'',
+            '#default_value'=>!empty($form_state['values']['rdf-type'])?$form_state['values']['rdf-type']:'',
             '#attached' => array(
                 'library' => array(
                     'rdfui/drupal.rdfui.autocomplete',
@@ -112,6 +112,12 @@ class ContentBuilderForm extends FormBase{
      * Returns the form for the second page.
      */
     function buildForm_page_two($form, &$form_state) {
+        $form['#title'] = $this->t('Content types');
+        $form['description'] = array(
+            '#type' => 'item',
+            '#title' => t('Choose fields to start with.'),
+        );
+
         $rdf_type=$form_state['page_values'][1]['rdf-type'];
         $properties=$this->converter->getTypeProperties($rdf_type);
         //$widgets=\Drupal::service('plugin.manager.field.widget')->getDefinitions();
