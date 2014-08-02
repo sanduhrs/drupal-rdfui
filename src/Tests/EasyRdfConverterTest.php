@@ -11,7 +11,9 @@ use Drupal\rdfui\EasyRdfConverter;
 use Drupal\simpletest\DrupalUnitTestBase;
 
 /**
- * Tests the RDFa markup of Nodes.
+ * Tests the Easy Rdf Converter Class.
+ *
+ * @group RdfUI
  */
 class EasyRdfConverterTest extends DrupalUnitTestBase
 {

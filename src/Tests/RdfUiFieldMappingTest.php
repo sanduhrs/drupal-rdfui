@@ -11,6 +11,8 @@ use Drupal\field_ui\Tests\FieldUiTestBase;
 
 /**
  * Tests the functionality of the RdfUI Field Mapping form.
+ *
+ * @group RdfUI
  */
 class RdfUiFieldMappingTest extends FieldUiTestBase
 /* @TODO update tests to verify combobox options*/

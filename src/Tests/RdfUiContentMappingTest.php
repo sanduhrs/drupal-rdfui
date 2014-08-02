@@ -11,7 +11,9 @@ use Drupal\field\Entity\FieldInstanceConfig;
 use Drupal\node\Tests\NodeTestBase;
 
 /**
- * Tests related to node types.
+ * Tests related to adding and editing rdf mappings for node types.
+ *
+ * @group RdfUI
  */
 class RdfUiContentMappingTest extends NodeTestBase
 {
