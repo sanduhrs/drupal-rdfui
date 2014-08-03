@@ -86,7 +86,6 @@ class ContentMappings {
         $mapping->setBundleMapping(array('types' => array($form_state['input']['types'])))
           ->save();
       }
-      echo 'here';
     }
   }
 

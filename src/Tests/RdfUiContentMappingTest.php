@@ -36,7 +36,6 @@ class RdfUiContentMappingTest extends NodeTestBase {
    * Tests creating a content type mapping via UI.
    */
   protected function testNodeTypeCreation() {
-    /*@TODO make the test pass*/
     // Create a content type via the user interface.
     $web_user = $this->drupalCreateUser(array(
       'bypass node access',
@@ -52,6 +51,9 @@ class RdfUiContentMappingTest extends NodeTestBase {
     $this->drupalPostForm('admin/structure/types/add', $edit, t('Save and manage fields'));
     $type_exists = (bool) entity_load('node_type', 'foo');
     $this->assertTrue($type_exists, 'The new content type has been created in the database.');
+    $mapping = rdf_get_mapping('node', 'foo');
+    $type = $mapping->getBundleMapping()['types'][0];
+    $this->assertEqual($type, $edit['types'], 'Content mapping saved correctly.');
   }
 
   /**
