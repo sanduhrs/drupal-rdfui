@@ -210,7 +210,9 @@ class EasyRdfConverter {
     if (!empty($comment)) {
       return $label;
     }
-    return explode(":", $uri)[1];
+
+    $names=explode(":", $uri);
+    return $names[1];
   }
 }
 

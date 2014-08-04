@@ -68,7 +68,8 @@ class RdfUiFieldMappingTest extends FieldUiTestBase {
     $this->assertFieldByXPath('//table[@id="rdf-mapping"]//tr[@id="field-test"]/td[4]', 'Mapped', 'Status displayed correctly when field is mapped.');
 
     $mapping = rdf_get_mapping('node', $this->type);
-    $this->assertEqual($mapping->getFieldMapping('field_test')['properties'][0], $mapped_value, "Selected Rdf mappings saved.");
+    $bundle_mapping=$mapping->getFieldMapping('field_test');
+    $this->assertEqual($bundle_mapping['properties'][0], $mapped_value, "Selected Rdf mappings saved.");
   }
 
   /**
@@ -104,6 +105,7 @@ class RdfUiFieldMappingTest extends FieldUiTestBase {
     $this->assertFieldByXPath('//table[@id="rdf-mapping"]//tr[@id="field-test"]/td[4]', 'Mapped', 'Status displayed correctly when field is mapped.');
 
     $mapping = rdf_get_mapping('node', $this->type);
-    $this->assertEqual($mapping->getFieldMapping('field_test')['properties'][0], $mapped_value, "Selected Rdf mappings saved.");
+    $bundle_mapping=$mapping->getFieldMapping('field_test');
+    $this->assertEqual($bundle_mapping['properties'][0], $mapped_value, "Selected Rdf mappings saved.");
   }
 }

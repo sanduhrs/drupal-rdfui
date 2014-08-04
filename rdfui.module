@@ -5,14 +5,35 @@
  * rdf data from Schema.org.
  */
 
+use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\rdfui\ContentMappings;
+
+/**
+ * Implements hook_help().
+ */
+function rdfui_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    case 'help.page.rdfui':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('The RDF UI module provides an administrative user interface (UI) for mapping content types and fields with RDF schema. The module currently supports schemas from <a href="@schema">Schema.org</a>.',array('@schema' => url('http://schema.org/'))). '</p>';
+      $output .= '<h3>' . t('Specifying Mappings') . '</h3>';
+      $output .= '<dl>';
+      $output .= '<dt>' . t('Content Types') . '</dt>';
+      $output .= '<dd>' . t('Content types are mapped with Schema.org types') . '<dl>';
+      $output .= '<dt>' . t('Fields') . '</dt>';
+      $output .= '<dd>' . t('Fields will be mapped with Schema.org properties') . '</li>';
+      $output .= '</dl>';
+      return $output;
+  }
+}
 
 /**
  * Implements hook_form_FORM_ID_alter().
  */
 function rdfui_form_node_type_add_form_alter(&$form, &$form_state) {
   $form += ContentMappings::alter_form($form, $form_state);
-  //$form['actions']['save_continue']['#validate'][] = <method>;
+  // $form['actions']['save_continue']['#validate'][] = <method>;
   $form['actions']['submit']['#submit'][] = 'rdfui_node_type_form_submit';
   $form['actions']['save_continue']['#submit'][] = 'rdfui_node_type_form_submit';
 }
@@ -22,7 +43,7 @@ function rdfui_form_node_type_add_form_alter(&$form, &$form_state) {
  */
 function rdfui_form_node_type_edit_form_alter(&$form, &$form_state, $form_id) {
   $form += ContentMappings::alter_form($form, $form_state);
-  //$form['actions']['submit']['#validate'][] = <method>;
+  // $form['actions']['submit']['#validate'][] = <method>;
   $form['actions']['submit']['#submit'][] = 'rdfui_node_type_form_submit';
 }
 

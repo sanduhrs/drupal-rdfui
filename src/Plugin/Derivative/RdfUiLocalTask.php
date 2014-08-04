@@ -19,7 +19,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Provides local task definitions for all entity bundles.
  */
 class RdfUiLocalTask extends DeriverBase implements ContainerDeriverInterface {
-  use StringTranslationTrait;
+
 
   /**
    * The route provider.
