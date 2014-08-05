@@ -100,7 +100,7 @@ class RdfUiLocalTask extends DeriverBase implements ContainerDeriverInterface {
    * @param array $local_tasks
    *   An array of local tasks plugin definitions, keyed by plugin ID.
    */
-  public function alterLocalTasks(&$local_tasks) {
+  public function alterLocalTasks(array &$local_tasks) {
     foreach ($this->entityManager->getDefinitions() as $entity_type => $entity_info) {
       if ($entity_info->isFieldable() && $entity_info->hasLinkTemplate('admin-form')) {
         $admin_form = $entity_info->getLinkTemplate('admin-form');

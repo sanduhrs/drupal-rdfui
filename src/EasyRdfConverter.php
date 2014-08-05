@@ -127,18 +127,20 @@ class EasyRdfConverter {
   }
 
   /**
-   * Return list of Schema.org properties.
+   * Get list of Schema.org properties.
    *
    * @return array
+   *    Array of all properties in the graph.
    */
   public function getListProperties() {
     return $this->listProperties;
   }
 
   /**
-   * Return list of Schema.org types.
+   * Get list of Schema.org types.
    *
    * @return array
+   *    Array of all properties in the graph.
    */
   public function getListTypes() {
     return $this->listTypes;
@@ -147,7 +149,7 @@ class EasyRdfConverter {
   /**
    * Extract properties of a given type
    *
-   * @param $type string
+   * @param string $type
    *   Schema.Org type of which the properties should be listed.
    *   (eg. "schema:Person")
    *
@@ -170,7 +172,7 @@ class EasyRdfConverter {
     $props = $this->graph->resourcesMatching("http://schema.org/domainIncludes", $resource);
     $options = array();
 
-    foreach ($props as $key => $value) {
+    foreach ($props as $value) {
       $options[$value->shorten()] = $value->get("rdfs:label")->getValue();
     }
 
@@ -182,9 +184,11 @@ class EasyRdfConverter {
   }
 
   /**
-   * Returns description of the resource.
+   * Get description of the resource.
    *
    * @param string $uri
+   *   Uri of the resource (eg: schema:Person).
+   *
    * @return mixed
    *   Description of the resource or null.
    */
@@ -202,10 +206,13 @@ class EasyRdfConverter {
   }
 
   /**
-   * Returns label of the resource.
+   * Get label of the resource.
    *
-   * @param  $uri string.
-   * @return string label of the resource, if not shortened name.
+   * @param string $uri
+   *   Uri of the resource (eg: schema:Person).
+   *
+   * @return string
+   *   Label of the resource, if not shortened name.
    */
   public function label($uri) {
     if (empty($uri)) {

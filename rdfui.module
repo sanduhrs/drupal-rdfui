@@ -47,11 +47,15 @@ function rdfui_form_node_type_edit_form_alter(&$form, &$form_state, $form_id) {
 }
 
 /**
- * Handles submission of forms altered by rdfui_form_node_type_add_form_alter
- * and rdfui_form_node_type_edit_form_alter hooks.
+ * Handles submission the altered NodeTypeForm
  *
- * @param $form
- * @param $form_state
+ * @see rdfui_form_node_type_add_form_alter()
+ * @see rdfui_form_node_type_edit_form_alter()
+ *
+ * @param array $form
+ *   An associative array containing the structure of the form.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The current state of the form.
  */
 function rdfui_node_type_form_submit(&$form, &$form_state) {
   ContentMappings::submitForm($form, $form_state);

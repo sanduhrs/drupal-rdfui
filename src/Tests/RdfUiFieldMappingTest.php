@@ -54,7 +54,7 @@ class RdfUiFieldMappingTest extends FieldUiTestBase {
     $this->fieldUIAddNewField($manage_fields, $initial_edit);
 
     // Display the "Manage fields RDF" screen and check that the expected fields
-    //  are displayed.
+    // are displayed.
     $this->drupalGet($rdf_mappings);
     $label = $initial_edit['fields[_add_new_field][label]'];
     $this->assertFieldByXPath('//table[@id="rdf-mapping"]//tr/td[1]', $label, 'Field is displayed in manage field RDF page.');
@@ -74,8 +74,7 @@ class RdfUiFieldMappingTest extends FieldUiTestBase {
   }
 
   /**
-   * Tests Field Mapping Form and save function for content type mapped
-   * to a rdf type.
+   * Tests FieldMappingForm for content type mapped to a rdf type.
    */
   protected function testMappedTypeFieldUI() {
     $mapping = rdf_get_mapping('node', $this->type);

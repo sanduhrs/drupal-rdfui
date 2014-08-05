@@ -77,7 +77,7 @@ class FieldMappings extends OverviewBase {
     // Gather bundle information.
     $instances = array_filter(\Drupal::entityManager()
     ->getFieldDefinitions($this->entity_type, $this->bundle), function ($field_definition) {
-    return $field_definition instanceof FieldInstanceConfigInterface;
+      return $field_definition instanceof FieldInstanceConfigInterface;
     });
 
     $mappings = rdf_get_mapping($this->entity_type, $this->bundle);
@@ -100,7 +100,6 @@ class FieldMappings extends OverviewBase {
 
     $table = array(
       '#type' => 'field_ui_table',
-      // theme element used in field_ui_theme() hook.
       '#tree' => TRUE,
       '#header' => array(
         $this->t('Label'),
