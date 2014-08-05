@@ -10,52 +10,55 @@ namespace Drupal\rdfui;
 use Doctrine\Common\Proxy\Exception\InvalidArgumentException;
 
 /**
- * Extracts details of RDF resources from an RDFa document
+ * Extracts details of RDF resources from an RDFa document.
  */
 class EasyRdfConverter {
 
   /**
+   * EasyRdf Graph of the loaded resource.
+   *
    * @var \EasyRdf_Graph
    */
   private $graph;
 
   /**
-   * list of Types specified in Schema.org as string
+   * list of Types specified in Schema.org as string.
+   *
    * @var array()
    */
   private $listTypes;
 
   /**
-   * list of Properties specified in Schema.org as string
+   * list of Properties specified in Schema.org as string.
+   *
    * @var array()
    */
   private $listProperties;
 
-  /*constructor*/
+  /**
+   * Constructor.
+   */
   public function __construct() {
     $this->listProperties = array();
     $this->listTypes = array();
   }
 
   /**
-   * Creates an EasyRdf_Graph object from the given uri
+   * Creates an EasyRdf_Graph object from the given uri.
    *
    * @param string $uri
-   *     uri of a web resource or path of the cached file
+   *     uri of a web resource or path of the cached file.
    *
    * @param string $type
-   *    format of the document
+   *    format of the document.
    *
    * @throws \Doctrine\Common\Proxy\Exception\InvalidArgumentException
    */
   public function createGraph($uri = "http://schema.org/docs/schema_org_rdfa.html", $type = "rdfa") {
-    //$uri = "/home/sachini/workspace/RDFaLiteReflection.html";
-
     /*
      * Initialize an EasyRdf_Graph object using
-     *  _construct(string $uri = null, string $data = null, string $format = null)
-     * eg: $graph = new EasyRdf_Graph("http://schema.org/docs/schema_org_rdfa.html",null,'rdfa');
-     * */
+     * _construct(string $uri = null, string $data = null, string $format = null)
+     */
     if (!is_string($type) or $type == NULL or $type == '') {
       throw new InvalidArgumentException("\$type should be a string and cannot be null or empty");
     }
@@ -84,10 +87,9 @@ class EasyRdfConverter {
    * Identify all types and properties of the graph separately
    */
   private function iterateGraph() {
-    /*@TODO use rdfs:label not local name*/
-    $typeList = $this->graph->resources();
+    $resource_list = $this->graph->resources();
 
-    foreach ($typeList as $key => $value) {
+    foreach ($resource_list as $value) {
       if ($value->prefix() !== "schema") {
         continue;
       }
@@ -101,10 +103,10 @@ class EasyRdfConverter {
   }
 
   /**
-   * Add Property label to list
+   * Add Property label to list.
    *
    * @param \EasyRdf_Resource $value
-   *  an EasyRdf_Resource which is a property
+   *  an EasyRdf_Resource which is a property.
    */
   private function addProperties(\EasyRdf_Resource $value) {
     if ($value != NULL) {
@@ -113,10 +115,10 @@ class EasyRdfConverter {
   }
 
   /**
-   * Add Type label to list
+   * Add Type label to list.
    *
    * @param \EasyRdf_Resource $type
-   *  an EasyRdf_Resource which is a type
+   *  an EasyRdf_Resource which is a type.
    */
   private function addType(\EasyRdf_Resource $type) {
     if ($type != NULL) {
@@ -125,7 +127,8 @@ class EasyRdfConverter {
   }
 
   /**
-   * return list of Schema.org properties
+   * Return list of Schema.org properties.
+   *
    * @return array
    */
   public function getListProperties() {
@@ -133,7 +136,8 @@ class EasyRdfConverter {
   }
 
   /**
-   * return list of Schema.org types
+   * Return list of Schema.org types.
+   *
    * @return array
    */
   public function getListTypes() {
@@ -143,8 +147,9 @@ class EasyRdfConverter {
   /**
    * Extract properties of a given type
    *
-   * @param string type
-   *  Schema.Org type of which the properties should be listed (eg. "schema:Person")
+   * @param $type string
+   *  Schema.Org type of which the properties should be listed.
+   *  (eg. "schema:Person")
    *
    * @return array options
    *  list of properties
@@ -177,14 +182,14 @@ class EasyRdfConverter {
   }
 
   /**
-   * Returns description of the resource
+   * Returns description of the resource.
    *
    * @param  $uri string
-   * @return mixed    Description of the resource or null
+   * @return mixed    Description of the resource or null.
    */
   public function description($uri) {
     if (empty($uri)) {
-      drupal_set_message("Invalid uri");
+      drupal_set_message($this->t("Invalid uri"));
       return NULL;
     }
 
@@ -196,14 +201,14 @@ class EasyRdfConverter {
   }
 
   /**
-   * Returns label of the resource
+   * Returns label of the resource.
    *
-   * @param  $uri string
-   * @return string label of the resource, if not shortened name
+   * @param  $uri string.
+   * @return string label of the resource, if not shortened name.
    */
   public function label($uri) {
     if (empty($uri)) {
-      drupal_set_message("Invalid uri");
+      drupal_set_message($this->t("Invalid uri"));
       return NULL;
     }
     $label = $this->graph->label($uri);
@@ -215,7 +220,3 @@ class EasyRdfConverter {
     return $names[1];
   }
 }
-
-
-
-

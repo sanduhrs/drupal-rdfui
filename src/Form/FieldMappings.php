@@ -23,14 +23,15 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class FieldMappings extends OverviewBase {
 
   /**
-   *  The field type manager.
+   * The field type manager.
    *
    * @var \Drupal\Core\Field\FieldTypePluginManagerInterface
    */
   protected $fieldTypeManager;
 
   /**
-   *  The Easy Rdf Converter
+   * The Easy Rdf Converter.
+   *
    * @var \Drupal\rdfui\EasyRdfConverter
    */
   protected $rdfConverter;
@@ -41,7 +42,7 @@ class FieldMappings extends OverviewBase {
    * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
    *   The entity manager.
    * @param \Drupal\Core\Field\FieldTypePluginManagerInterface $field_type_manager
-   *   The field type manager
+   *   The field type manager.
    */
   public function __construct(EntityManagerInterface $entity_manager, FieldTypePluginManagerInterface $field_type_manager) {
     parent::__construct($entity_manager);
@@ -77,7 +78,8 @@ class FieldMappings extends OverviewBase {
     $instances = array_filter(\Drupal::entityManager()
       ->getFieldDefinitions($this->entity_type, $this->bundle), function ($field_definition) {
         return $field_definition instanceof FieldInstanceConfigInterface;
-      });
+      }
+    );
 
     $mappings = rdf_get_mapping($this->entity_type, $this->bundle);
     $options = NULL;
@@ -99,7 +101,7 @@ class FieldMappings extends OverviewBase {
 
     $table = array(
       '#type' => 'field_ui_table',
-      //theme element used in field_ui_theme() hook
+      // theme element used in field_ui_theme() hook.
       '#tree' => TRUE,
       '#header' => array(
         $this->t('Label'),
@@ -168,7 +170,7 @@ class FieldMappings extends OverviewBase {
     $form['actions']['submit'] = array(
       '#type' => 'submit',
       '#button_type' => 'primary',
-      '#value' => $this->t('Save')
+      '#value' => $this->t('Save'),
     );
 
     return $form;
@@ -183,7 +185,7 @@ class FieldMappings extends OverviewBase {
         'title' => $this->t('Content'),
         'invisible' => TRUE,
         // @todo Bring back this message in https://drupal.org/node/1963340.
-        //'message' => $this->t('No fields are present yet.'),
+        // 'message' => $this->t('No fields are present yet.'),
       ),
     );
   }
@@ -201,9 +203,7 @@ class FieldMappings extends OverviewBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
 
-    $error = FALSE;
-    //validate
-
+    // Validate form.
     $form_values = $form_state['values']['fields'];
     $mapping = rdf_get_mapping($this->entity_type, $this->bundle);
 

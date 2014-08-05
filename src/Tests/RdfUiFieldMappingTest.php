@@ -40,7 +40,7 @@ class RdfUiFieldMappingTest extends FieldUiTestBase {
   }
 
   /**
-   * Tests Field Mapping Form and save function for unmapped content type
+   * Tests Field Mapping Form and save function for unmapped content type.
    */
   protected function testUnmappedTypeFieldUI() {
     $manage_fields = 'admin/structure/types/manage/' . $this->type;
@@ -53,14 +53,15 @@ class RdfUiFieldMappingTest extends FieldUiTestBase {
     );
     $this->fieldUIAddNewField($manage_fields, $initial_edit);
 
-    // Display the "Manage fields RDF" screen and check that the expected fields are displayed
+    /* Display the "Manage fields RDF" screen and check that the expected fields
+     are displayed. */
     $this->drupalGet($rdf_mappings);
     $label = $initial_edit['fields[_add_new_field][label]'];
     $this->assertFieldByXPath('//table[@id="rdf-mapping"]//tr/td[1]', $label, 'Field is displayed in manage field RDF page.');
 
     $this->assertFieldByXPath('//table[@id="rdf-mapping"]//tr[@id="field-test"]/td[4]', 'Unmapped', 'Status displayed correctly when field is unmapped.');
 
-    //Add rdf-predicate and save
+    // Add rdf-predicate and save.
     $mapped_value = 'schema:name';
     $edit = array('fields[field_test][rdf-predicate]' => $mapped_value);
     $this->drupalPostForm($rdf_mappings, $edit, t('Save'));
@@ -73,7 +74,8 @@ class RdfUiFieldMappingTest extends FieldUiTestBase {
   }
 
   /**
-   * Tests Field Mapping Form and save function for content type mapped to a rdf type
+   * Tests Field Mapping Form and save function for content type mapped
+   * to a rdf type.
    */
   protected function testMappedTypeFieldUI() {
     $mapping = rdf_get_mapping('node', $this->type);
@@ -90,14 +92,15 @@ class RdfUiFieldMappingTest extends FieldUiTestBase {
     );
     $this->fieldUIAddNewField($manage_fields, $initial_edit);
 
-    // Display the "Manage fields RDF" screen and check that the expected fields are displayed
+    /* Display the "Manage fields RDF" screen and check that the expected fields
+     are displayed. */
     $this->drupalGet($rdf_mappings);
     $label = $initial_edit['fields[_add_new_field][label]'];
     $this->assertFieldByXPath('//table[@id="rdf-mapping"]//tr/td[1]', $label, 'Field is displayed in manage field RDF page.');
 
     $this->assertFieldByXPath('//table[@id="rdf-mapping"]//tr[@id="field-test"]/td[4]', 'Unmapped', 'Status displayed correctly when field is unmapped.');
 
-    //Add rdf-predicate and save
+    // Add rdf-predicate and save.
     $mapped_value = 'schema:birthDate';
     $edit = array('fields[field_test][rdf-predicate]' => $mapped_value);
     $this->drupalPostForm($rdf_mappings, $edit, t('Save'));

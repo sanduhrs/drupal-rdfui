@@ -24,6 +24,9 @@ class RdfUiContentMappingTest extends NodeTestBase {
    */
   public static $modules = array('rdfui', 'rdf', 'field_ui');
 
+  /**
+   * {@inheritdoc}
+   */
   public static function getInfo() {
     return array(
       'name' => 'RdfUI Content Mapping',
@@ -39,7 +42,7 @@ class RdfUiContentMappingTest extends NodeTestBase {
     // Create a content type via the user interface.
     $web_user = $this->drupalCreateUser(array(
       'bypass node access',
-      'administer content types'
+      'administer content types',
     ));
     $this->drupalLogin($web_user);
     $edit = array(
@@ -63,11 +66,10 @@ class RdfUiContentMappingTest extends NodeTestBase {
     $web_user = $this->drupalCreateUser(array(
       'bypass node access',
       'administer content types',
-      'administer node fields'
+      'administer node fields',
     ));
     $this->drupalLogin($web_user);
 
-    $instance = FieldInstanceConfig::loadByName('node', 'page', 'body');
     $edit_type = 'admin/structure/types/manage/page';
     // Verify that title and body fields are displayed.
     $this->drupalGet($edit_type);

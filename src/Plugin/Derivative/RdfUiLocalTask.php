@@ -19,8 +19,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Provides local task definitions for all entity bundles.
  */
 class RdfUiLocalTask extends DeriverBase implements ContainerDeriverInterface {
-
-
+  use StringTranslationTrait;
   /**
    * The route provider.
    *
@@ -29,7 +28,7 @@ class RdfUiLocalTask extends DeriverBase implements ContainerDeriverInterface {
   protected $routeProvider;
 
   /**
-   * The entity manager
+   * The entity manager.
    *
    * @var \Drupal\Core\Entity\EntityManagerInterface
    */
@@ -98,7 +97,7 @@ class RdfUiLocalTask extends DeriverBase implements ContainerDeriverInterface {
   /**
    * Alters the base_route definition for rdfui local tasks.
    *
-   * @param array $local_tasks
+   * @param $local_tasks array
    *   An array of local tasks plugin definitions, keyed by plugin ID.
    */
   public function alterLocalTasks(&$local_tasks) {

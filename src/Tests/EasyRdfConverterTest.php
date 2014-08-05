@@ -24,14 +24,9 @@ class EasyRdfConverterTest extends DrupalUnitTestBase {
    */
   public static $modules = array('rdf', 'rdfui');
 
-  public static function getInfo() {
-    return array(
-      'name' => 'Schema.Org mapping',
-      'description' => 'Tests the EasyRdfConverter Class.',
-      'group' => 'RdfUI',
-    );
-  }
-
+  /**
+   * @inheritdoc
+   */
   public function setUp() {
     parent::setUp();
     $this->graph = new EasyRdfConverter();

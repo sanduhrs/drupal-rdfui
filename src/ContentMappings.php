@@ -9,7 +9,6 @@ namespace Drupal\rdfui;
 
 use Drupal\Core\Form\FormStateInterface;
 
-
 /**
  * Rdf Ui Rdf Mapping for Content Types.
  */
@@ -17,19 +16,19 @@ class ContentMappings {
   /*@TODO Fix errors for adding content type mapping*/
 
   /**
-   * BuildForm method for the Schema.org mappings in \Drupal\node\NodeTypeForm
+   * BuildForm method for the Schema.org mappings in \Drupal\node\NodeTypeForm.
    *
-   * @see form_validate()
-   * @see submitform()
+   * @see formValidate()
+   * @see submitForm()
    */
-  public static function alter_form(array &$form, FormStateInterface $form_state) {
-    $typeOptions = new EasyRdfConverter();
-    $typeOptions->createGraph();
+  public static function alterForm(array &$form, FormStateInterface $form_state) {
+    $type_options = new EasyRdfConverter();
+    $type_options->createGraph();
     $entity_type = $form_state['controller']->getEntity();
 
-    $existingType = '';
+    $existing_type = '';
     if (!$entity_type->isNew()) {
-      $existingType = rdf_get_mapping('node', $entity_type->id())->getBundleMapping();
+      $existing_type = rdf_get_mapping('node', $entity_type->id())->getBundleMapping();
     }
 
     $form['rdf-mapping'] = array(
@@ -44,7 +43,7 @@ class ContentMappings {
       '#id' => 'rdf-predicate',
       '#type' => 'select',
       '#title' => t('Schema.org Type'),
-      '#options' => $typeOptions->getListTypes(),
+      '#options' => $type_options->getListTypes(),
       '#empty_option' => '',
       '#attached' => array(
         'library' => array(
@@ -54,7 +53,7 @@ class ContentMappings {
           drupal_get_path('module', 'rdfui') . '/css/rdfui.autocomplete.css',
         ),
       ),
-      '#default_value' => !empty($existingType) ? $existingType['types'][0] : '',
+      '#default_value' => !empty($existing_type) ? $existing_type['types'][0] : '',
       '#description' => t('Specify the type you want to associated to this content type e.g. Article, Blog, etc.'),
     );
 
@@ -63,32 +62,29 @@ class ContentMappings {
 
 
   /**
-   * Validate Schema.org mappings in \Drupal\node\NodeTypeForm
+   * Validate Schema.org mappings in \Drupal\node\NodeTypeForm.
    */
-  public static function form_validate(array &$form, FormStateInterface $form_state) {
-    /*To be implemented*/
+  public static function formValidate(array &$form, FormStateInterface $form_state) {
+    // To be implemented
   }
 
   /**
-   * Saves Schema.org mappings in \Drupal\node\NodeTypeForm
+   * Saves Schema.org mappings in \Drupal\node\NodeTypeForm.
    */
   public static function submitForm(array &$form, FormStateInterface $form_state) {
-    if (isset($form_state['input']['types'])) {
+    if (isset($form_state['values']['types'])) {
       $error = FALSE;
 
       $entity_type = $form_state['controller']->getEntity();
       $mapping = rdf_get_mapping('node', $entity_type->id());
       if ($entity_type->isNew()) {
-        $mapping = rdf_get_mapping('node', $form_state['input']['type']);
+        $mapping = rdf_get_mapping('node', $form_state['values']['type']);
       }
 
-      if (!empty($form_state['input']['types'])) {
-        $mapping->setBundleMapping(array('types' => array($form_state['input']['types'])))
+      if (!empty($form_state['values']['types'])) {
+        $mapping->setBundleMapping(array('types' => array($form_state['values']['types'])))
           ->save();
       }
     }
   }
-
-
 }
-
