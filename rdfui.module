@@ -1,8 +1,7 @@
 <?php
 /**
  * @file
- * The module that allows content types and fields to be mapped with
- * rdf data from Schema.org.
+ * Allows content types and fields to be mapped with rdf data from Schema.org.
  */
 
 use Drupal\Core\Routing\RouteMatchInterface;
@@ -16,7 +15,7 @@ function rdfui_help($route_name, RouteMatchInterface $route_match) {
     case 'help.page.rdfui':
       $output = '';
       $output .= '<h3>' . t('About') . '</h3>';
-      $output .= '<p>' . t('The RDF UI module provides an administrative user interface (UI) for mapping content types and fields with RDF schema. The module currently supports schemas from <a href="@schema">Schema.org</a>.',array('@schema' => url('http://schema.org/'))). '</p>';
+      $output .= '<p>' . t('The RDF UI module provides an administrative user interface (UI) for mapping content types and fields with RDF schema. The module currently supports schemas from <a href="@schema">Schema.org</a>.', array('@schema' => url('http://schema.org/'))) . '</p>';
       $output .= '<h3>' . t('Specifying Mappings') . '</h3>';
       $output .= '<dl>';
       $output .= '<dt>' . t('Content Types') . '</dt>';
@@ -47,6 +46,13 @@ function rdfui_form_node_type_edit_form_alter(&$form, &$form_state, $form_id) {
   $form['actions']['submit']['#submit'][] = 'rdfui_node_type_form_submit';
 }
 
+/**
+ * Handles submission of forms altered by rdfui_form_node_type_add_form_alter
+ * and rdfui_form_node_type_edit_form_alter hooks.
+ *
+ * @param $form
+ * @param $form_state
+ */
 function rdfui_node_type_form_submit(&$form, &$form_state) {
   ContentMappings::submitForm($form, $form_state);
 }

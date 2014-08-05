@@ -76,10 +76,9 @@ class FieldMappings extends OverviewBase {
 
     // Gather bundle information.
     $instances = array_filter(\Drupal::entityManager()
-      ->getFieldDefinitions($this->entity_type, $this->bundle), function ($field_definition) {
-        return $field_definition instanceof FieldInstanceConfigInterface;
-      }
-    );
+    ->getFieldDefinitions($this->entity_type, $this->bundle), function ($field_definition) {
+    return $field_definition instanceof FieldInstanceConfigInterface;
+    });
 
     $mappings = rdf_get_mapping($this->entity_type, $this->bundle);
     $options = NULL;

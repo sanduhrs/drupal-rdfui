@@ -22,14 +22,14 @@ class EasyRdfConverter {
   private $graph;
 
   /**
-   * list of Types specified in Schema.org as string.
+   * List of Types specified in Schema.org as string.
    *
    * @var array()
    */
   private $listTypes;
 
   /**
-   * list of Properties specified in Schema.org as string.
+   * List of Properties specified in Schema.org as string.
    *
    * @var array()
    */
@@ -47,17 +47,17 @@ class EasyRdfConverter {
    * Creates an EasyRdf_Graph object from the given uri.
    *
    * @param string $uri
-   *     uri of a web resource or path of the cached file.
-   *
+   *     Uri of a web resource or path of the cached file.
    * @param string $type
-   *    format of the document.
+   *    Format of the document.
    *
    * @throws \Doctrine\Common\Proxy\Exception\InvalidArgumentException
+   *    If incorrect type or url is passed as parameters.
    */
   public function createGraph($uri = "http://schema.org/docs/schema_org_rdfa.html", $type = "rdfa") {
     /*
      * Initialize an EasyRdf_Graph object using
-     * _construct(string $uri = null, string $data = null, string $format = null)
+     * _construct(string $uri = null, string $data = null,string $format = null)
      */
     if (!is_string($type) or $type == NULL or $type == '') {
       throw new InvalidArgumentException("\$type should be a string and cannot be null or empty");
@@ -84,7 +84,7 @@ class EasyRdfConverter {
   }
 
   /**
-   * Identify all types and properties of the graph separately
+   * Identify all types and properties of the graph separately.
    */
   private function iterateGraph() {
     $resource_list = $this->graph->resources();
@@ -106,7 +106,7 @@ class EasyRdfConverter {
    * Add Property label to list.
    *
    * @param \EasyRdf_Resource $value
-   *  an EasyRdf_Resource which is a property.
+   *   An EasyRdf_Resource which is a property.
    */
   private function addProperties(\EasyRdf_Resource $value) {
     if ($value != NULL) {
@@ -118,7 +118,7 @@ class EasyRdfConverter {
    * Add Type label to list.
    *
    * @param \EasyRdf_Resource $type
-   *  an EasyRdf_Resource which is a type.
+   *   An EasyRdf_Resource which is a type.
    */
   private function addType(\EasyRdf_Resource $type) {
     if ($type != NULL) {
@@ -148,11 +148,11 @@ class EasyRdfConverter {
    * Extract properties of a given type
    *
    * @param $type string
-   *  Schema.Org type of which the properties should be listed.
-   *  (eg. "schema:Person")
+   *   Schema.Org type of which the properties should be listed.
+   *   (eg. "schema:Person")
    *
    * @return array options
-   *  list of properties
+   *   List of properties.
    */
   public function getTypeProperties($type) {
     $tokens = explode(":", $type);
@@ -184,8 +184,9 @@ class EasyRdfConverter {
   /**
    * Returns description of the resource.
    *
-   * @param  $uri string
-   * @return mixed    Description of the resource or null.
+   * @param string $uri
+   * @return mixed
+   *   Description of the resource or null.
    */
   public function description($uri) {
     if (empty($uri)) {
@@ -212,11 +213,11 @@ class EasyRdfConverter {
       return NULL;
     }
     $label = $this->graph->label($uri);
-    if (!empty($comment)) {
+    if (!empty($label)) {
       return $label;
     }
 
-    $names=explode(":", $uri);
+    $names = explode(":", $uri);
     return $names[1];
   }
 }

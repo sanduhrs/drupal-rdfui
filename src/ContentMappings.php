@@ -65,7 +65,7 @@ class ContentMappings {
    * Validate Schema.org mappings in \Drupal\node\NodeTypeForm.
    */
   public static function formValidate(array &$form, FormStateInterface $form_state) {
-    // To be implemented
+    // To be implemented.
   }
 
   /**
@@ -73,8 +73,6 @@ class ContentMappings {
    */
   public static function submitForm(array &$form, FormStateInterface $form_state) {
     if (isset($form_state['values']['types'])) {
-      $error = FALSE;
-
       $entity_type = $form_state['controller']->getEntity();
       $mapping = rdf_get_mapping('node', $entity_type->id());
       if ($entity_type->isNew()) {

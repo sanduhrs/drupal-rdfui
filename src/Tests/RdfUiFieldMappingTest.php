@@ -53,8 +53,8 @@ class RdfUiFieldMappingTest extends FieldUiTestBase {
     );
     $this->fieldUIAddNewField($manage_fields, $initial_edit);
 
-    /* Display the "Manage fields RDF" screen and check that the expected fields
-     are displayed. */
+    // Display the "Manage fields RDF" screen and check that the expected fields
+    //  are displayed.
     $this->drupalGet($rdf_mappings);
     $label = $initial_edit['fields[_add_new_field][label]'];
     $this->assertFieldByXPath('//table[@id="rdf-mapping"]//tr/td[1]', $label, 'Field is displayed in manage field RDF page.');
@@ -69,7 +69,7 @@ class RdfUiFieldMappingTest extends FieldUiTestBase {
     $this->assertFieldByXPath('//table[@id="rdf-mapping"]//tr[@id="field-test"]/td[4]', 'Mapped', 'Status displayed correctly when field is mapped.');
 
     $mapping = rdf_get_mapping('node', $this->type);
-    $bundle_mapping=$mapping->getFieldMapping('field_test');
+    $bundle_mapping = $mapping->getFieldMapping('field_test');
     $this->assertEqual($bundle_mapping['properties'][0], $mapped_value, "Selected Rdf mappings saved.");
   }
 
@@ -92,8 +92,8 @@ class RdfUiFieldMappingTest extends FieldUiTestBase {
     );
     $this->fieldUIAddNewField($manage_fields, $initial_edit);
 
-    /* Display the "Manage fields RDF" screen and check that the expected fields
-     are displayed. */
+    // Display the "Manage fields RDF" screen and check that the expected fields
+    // are displayed.
     $this->drupalGet($rdf_mappings);
     $label = $initial_edit['fields[_add_new_field][label]'];
     $this->assertFieldByXPath('//table[@id="rdf-mapping"]//tr/td[1]', $label, 'Field is displayed in manage field RDF page.');
@@ -108,7 +108,7 @@ class RdfUiFieldMappingTest extends FieldUiTestBase {
     $this->assertFieldByXPath('//table[@id="rdf-mapping"]//tr[@id="field-test"]/td[4]', 'Mapped', 'Status displayed correctly when field is mapped.');
 
     $mapping = rdf_get_mapping('node', $this->type);
-    $bundle_mapping=$mapping->getFieldMapping('field_test');
+    $bundle_mapping = $mapping->getFieldMapping('field_test');
     $this->assertEqual($bundle_mapping['properties'][0], $mapped_value, "Selected Rdf mappings saved.");
   }
 }
