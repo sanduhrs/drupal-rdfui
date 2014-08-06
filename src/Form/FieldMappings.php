@@ -76,9 +76,9 @@ class FieldMappings extends OverviewBase {
 
     // Gather bundle information.
     $instances = array_filter(\Drupal::entityManager()
-    ->getFieldDefinitions($this->entity_type, $this->bundle), function ($field_definition) {
-      return $field_definition instanceof FieldInstanceConfigInterface;
-    });
+      ->getFieldDefinitions($this->entity_type, $this->bundle), function ($field_definition) {
+        return $field_definition instanceof FieldInstanceConfigInterface;
+      });
 
     $mappings = rdf_get_mapping($this->entity_type, $this->bundle);
     $options = NULL;
@@ -204,6 +204,16 @@ class FieldMappings extends OverviewBase {
     // Validate form.
     $form_values = $form_state['values']['fields'];
     $mapping = rdf_get_mapping($this->entity_type, $this->bundle);
+
+    // Add mapping for title field.
+    if ($this->entity_type==='node') {
+      if (empty($mapping->getFieldMapping('title'))) {
+        $mapping->setFieldMapping('title', array(
+            'properties' => array('schema:name'),
+          )
+        );
+      }
+    }
 
     foreach ($form_values as $key => $value) {
       $mapping->setFieldMapping($key, array(

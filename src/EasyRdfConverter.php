@@ -57,7 +57,8 @@ class EasyRdfConverter {
   public function createGraph($uri = "http://schema.org/docs/schema_org_rdfa.html", $type = "rdfa") {
     /*
      * Initialize an EasyRdf_Graph object using
-     * _construct(string $uri = null, string $data = null,string $format = null)
+     * _construct(string $uri = null, string $data = null,
+     *     string $format = null)
      */
     if (!is_string($type) or $type == NULL or $type == '') {
       throw new InvalidArgumentException("\$type should be a string and cannot be null or empty");
