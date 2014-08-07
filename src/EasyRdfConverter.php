@@ -148,11 +148,11 @@ class EasyRdfConverter {
   }
 
   /**
-   * Extract properties of a given type
+   * Extract properties of a given type.
    *
    * @param string $type
    *   Schema.Org type of which the properties should be listed.
-   *   (eg. "schema:Person")
+   *   (eg. "schema:Person").
    *
    * @return array options
    *   List of properties.
@@ -168,6 +168,15 @@ class EasyRdfConverter {
     return $options;
   }
 
+  /**
+   * Recursive function to extract properties.
+   *
+   * @param string $uri
+   *   Uri of schema type.
+   *
+   * @return array options
+   *   Array of properties of the type and all parent types.
+   */
   private function getProperties($uri) {
     $resource = array("type" => "uri", "value" => $uri);
     $props = $this->graph->resourcesMatching("http://schema.org/domainIncludes", $resource);
@@ -178,7 +187,7 @@ class EasyRdfConverter {
     }
 
     $parents = $this->graph->all($uri, "rdfs:subClassOf");
-    foreach ($parents as $key => $value) {
+    foreach ($parents as $value) {
       $options += $this->getProperties($value->getUri());
     }
     return $options;

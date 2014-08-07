@@ -55,7 +55,7 @@ class RdfUiContentMappingTest extends NodeTestBase {
     $type_exists = (bool) entity_load('node_type', 'foo');
     $this->assertTrue($type_exists, 'The new content type has been created in the database.');
     $mapping = rdf_get_mapping('node', 'foo');
-    $bundle_mapping=$mapping->getBundleMapping();
+    $bundle_mapping = $mapping->getBundleMapping();
     $type = $bundle_mapping['types'][0];
     $this->assertEqual($type, $edit['types'], 'Content mapping saved correctly.');
   }

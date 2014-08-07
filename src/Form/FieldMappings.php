@@ -206,7 +206,7 @@ class FieldMappings extends OverviewBase {
     $mapping = rdf_get_mapping($this->entity_type, $this->bundle);
 
     // Add mapping for title field.
-    if ($this->entity_type==='node') {
+    if ($this->entity_type === 'node') {
       if (empty($mapping->getFieldMapping('title'))) {
         $mapping->setFieldMapping('title', array(
             'properties' => array('schema:name'),
