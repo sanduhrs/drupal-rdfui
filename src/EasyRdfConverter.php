@@ -55,6 +55,7 @@ class EasyRdfConverter {
    *    If incorrect type or url is passed as parameters.
    */
   public function createGraph($uri = "http://schema.org/docs/schema_org_rdfa.html", $type = "rdfa") {
+    $uri="/home/sachini/workspace/RDFaLiteReflection.html";
     /*
      * Initialize an EasyRdf_Graph object using
      * _construct(string $uri = null, string $data = null,

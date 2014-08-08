@@ -25,7 +25,7 @@ class EasyRdfConverterTest extends DrupalUnitTestBase {
   public static $modules = array('rdf', 'rdfui');
 
   /**
-   * @inheritdoc
+   * {@inheritdoc}
    */
   public function setUp() {
     parent::setUp();

@@ -83,7 +83,7 @@ class RdfUiContentMappingTest extends NodeTestBase {
     );
     $this->drupalPostForm($edit_type, $edit, t('Save content type'));
     $mapping = rdf_get_mapping('node', 'page');
-    $type = $mapping->getBundleMapping()['types'][0];
-    $this->assertEqual($type, $edit['types'], 'Content mapping saved correctly.');
+    $type = $mapping->getBundleMapping();
+    $this->assertEqual($type['types'][0], $edit['types'], 'Content mapping saved correctly.');
   }
 }
