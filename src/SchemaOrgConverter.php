@@ -12,11 +12,11 @@ namespace Drupal\rdfui;
  */
 class SchemaOrgConverter extends EasyRdfConverter {
   /**
-   * Cache id
+   * Cache id.
    *
    * @var string
    */
-  private $cid='schema.org_converter';
+  private $cid = 'schema.org_converter';
 
   /**
    * Constructor.
@@ -36,9 +36,9 @@ class SchemaOrgConverter extends EasyRdfConverter {
     if ($cache = \Drupal::cache()->get($this->cid)) {
       // Fetch cached copy of graph & lists;
       $data = $cache->data;
-      $this->graph=$data['graph'];
-      $this->listProperties=$data['listProperties'];
-      $this->listTypes=$data['listTypes'];
+      $this->graph = $data['graph'];
+      $this->listProperties = $data['listProperties'];
+      $this->listTypes = $data['listTypes'];
     }
     else {
       $this->createGraph($uri, $type);
