@@ -1,19 +1,17 @@
 <?php
+
 /**
- * Created by PhpStorm.
- * User: sachini
- * Date: 7/27/14
- * Time: 1:50 AM
+ * @file
+ * Contains \Drupal\rdf_builder\Form\ContentBuilderForm.
  */
 
 namespace Drupal\rdf_builder\Form;
-
 
 use Drupal\Component\Utility\String;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
-use Drupal\rdfui\EasyRdfConverter;
+use Drupal\rdfui\SchemaOrgConverter;
 
 class ContentBuilderForm extends FormBase {
   /*@TODO Resolve naming conflicts and long field/content_type names
@@ -22,33 +20,61 @@ class ContentBuilderForm extends FormBase {
    */
 
   /**
+   * Easy_RDF Converter from rdfui.
+   *
    * @var /Drupal/rdfui/EasyRdfConverter
    */
   protected $converter;
 
   /**
-   *  The field type manager.
+   * The field type manager.
    *
    * @var \Drupal\node\Entity\NodeType
    */
   protected $entity;
 
   /**
+   * List of properties selected by user.
+   *
    * @var array
    */
   protected $properties;
 
   /**
+   * Existing or created RDF Mapping.
+   *
    * @var \Drupal\rdf\Entity\RdfMapping
    */
-  protected $rdf_mapping;
+  protected $rdfMapping;
 
   /**
    * Constructs a new ContentBuilder.
    */
   public function __construct() {
-    $this->converter = new EasyRdfConverter();
-    $this->converter->createGraph();
+    $this->converter = new SchemaOrgConverter();
+  }
+
+  /**
+   * Submit handler for Content Builder next button.
+   * Capture the values from page one and store them away so they can be used
+   * at final submit time.
+   *
+   * @param array $form
+   *   An associative array containing the structure of the form.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current state of the form.
+   */
+  public function next_submit(array &$form, FormStateInterface &$form_state) {
+
+    $form_state['page_values'][1] = $form_state['values'];
+
+    if (!empty($form_state['page_values'][2])) {
+      $form_state['values'] = $form_state['page_values'][2];
+    }
+
+    // When form rebuilds, it will look at this to figure which page to build.
+    $form_state['page_num'] = 2;
+    $form_state['rebuild'] = TRUE;
   }
 
   /**
@@ -65,7 +91,7 @@ class ContentBuilderForm extends FormBase {
 
     // Display page 2 if $form_state['page_num'] == 2
     if (!empty($form_state['page_num']) && $form_state['page_num'] == 2) {
-      return $this->buildForm_page_two($form, $form_state);
+      return $this->buildFormPageTwo($form, $form_state);
     }
 
     // Otherwise we build page 1.
@@ -102,7 +128,7 @@ class ContentBuilderForm extends FormBase {
       '#value' => 'Next >>',
       '#button_type' => 'primary',
       '#submit' => array(array($this, 'next_submit')),
-      '#validate' => array(array($this, 'next_validate')),
+      '#validate' => array(array($this, 'nextValidate')),
     );
     return $form;
   }
@@ -118,7 +144,7 @@ class ContentBuilderForm extends FormBase {
    * @return array
    *   The form structure.
    */
-  protected function buildForm_page_two(array $form, FormStateInterface $form_state) {
+  protected function buildFormPageTwo(array $form, FormStateInterface $form_state) {
     $form['#title'] = $this->t('Content types');
     $form['description'] = array(
       '#type' => 'item',
@@ -127,7 +153,6 @@ class ContentBuilderForm extends FormBase {
 
     $rdf_type = $form_state['page_values'][1]['rdf-type'];
     $properties = $this->converter->getTypeProperties($rdf_type);
-    //$widgets=\Drupal::service('plugin.manager.field.widget')->getDefinitions();
     $field_types = \Drupal::service('plugin.manager.field.field_type')
       ->getUiDefinitions();
 
@@ -156,31 +181,30 @@ class ContentBuilderForm extends FormBase {
     );
 
     foreach ($properties as $key => $value) {
-      $table[$key] = array(
-        '#attributes' => array(
-          'id' => drupal_html_class($key),
-        ),
-        'enable' => array(
-          '#type' => 'checkbox',
-          '#title' => $this->t('Enable'),
-          '#title_display' => 'invisible',
-        ),
-        'property' => array(
-          '#markup' => String::checkPlain($value),
-        ),
-        'type' => array(
-          '#type' => 'select',
-          '#title' => $this->t('Data Type'),
-          '#title_display' => 'invisible',
-          '#options' => $field_type_options,
-          '#empty_option' => $this->t('- Select a field type -'),
-          '#attributes' => array('class' => array('field-type-select')),
-          '#prefix' => '<div class="add-new-placeholder">&nbsp;</div>',
-        ),
-      );
     }
+    $table[$key] = array(
+      '#attributes' => array(
+        'id' => drupal_html_class($key),
+      ),
+      'enable' => array(
+        '#type' => 'checkbox',
+        '#title' => $this->t('Enable'),
+        '#title_display' => 'invisible',
+      ),
+      'property' => array(
+        '#markup' => String::checkPlain($value),
+      ),
+      'type' => array(
+        '#type' => 'select',
+        '#title' => $this->t('Data Type'),
+        '#title_display' => 'invisible',
+        '#options' => $field_type_options,
+        '#empty_option' => $this->t('- Select a field type -'),
+        '#attributes' => array('class' => array('field-type-select')),
+        '#prefix' => '<div class="add-new-placeholder">&nbsp;</div>',
+      ),
+    );
     // Fields.
-
     $table['#regions']['content']['rows_order'] = array();
     foreach (Element::children($table) as $name) {
       $table['#regions']['content']['rows_order'][] = $name;
@@ -188,12 +212,6 @@ class ContentBuilderForm extends FormBase {
 
     $form['fields'] = $table;
 
-    /*        $form['#title'] = $this->t('Content types');
-            $form['description'] = array(
-                '#type' => 'item',
-                '#title' => t('Choose fields to start with'),
-            );
-    */
     /*$field_options=array();
     foreach($properties as $key=>$value){
 
@@ -241,9 +259,9 @@ class ContentBuilderForm extends FormBase {
     $form['actions']['previous'] = array(
       '#type' => 'submit',
       '#value' => t('<< Back'),
-      '#submit' => array(array($this, 'page_two_back_submit')),
+      '#submit' => array(array($this, 'pageTwoBackSubmit')),
       '#limit_validation_errors' => array(),
-      '#validate' => array(array($this, 'page_two_back_validate')),
+      '#validate' => array(array($this, 'pageTwoBackValidate')),
     );
     return $form;
   }
@@ -256,31 +274,8 @@ class ContentBuilderForm extends FormBase {
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The current state of the form.
    */
-  public function next_validate(array $form, FormStateInterface $form_state) {
-    //validate optional
-  }
-
-  /**
-   * Submit handler for Content Builder next button.
-   * Capture the values from page one and store them away so they can be used
-   * at final submit time.
-   *
-   * @param array $form
-   *   An associative array containing the structure of the form.
-   * @param \Drupal\Core\Form\FormStateInterface $form_state
-   *   The current state of the form.
-   */
-  public function next_submit(array &$form, FormStateInterface &$form_state) {
-
-    $form_state['page_values'][1] = $form_state['values'];
-
-    if (!empty($form_state['page_values'][2])) {
-      $form_state['values'] = $form_state['page_values'][2];
-    }
-
-    // When form rebuilds, it will look at this to figure which page to build.
-    $form_state['page_num'] = 2;
-    $form_state['rebuild'] = TRUE;
+  public function nextValidate(array $form, FormStateInterface $form_state) {
+    // Validate optional.
   }
 
   /**
@@ -291,8 +286,8 @@ class ContentBuilderForm extends FormBase {
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The current state of the form.
    */
-  public function page_two_back_validate(array $form, FormStateInterface $form_state) {
-    //validation optional
+  public function pageTwoBackValidate(array $form, FormStateInterface $form_state) {
+    // Validation optional.
   }
 
   /**
@@ -303,7 +298,7 @@ class ContentBuilderForm extends FormBase {
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The current state of the form.
    */
-  public function page_two_back_submit(array &$form, FormStateInterface &$form_state) {
+  public function pageTwoBackSubmit(array &$form, FormStateInterface &$form_state) {
     $form_state['values'] = $form_state['page_values'][1];
     $form_state['page_num'] = 1;
     $form_state['rebuild'] = TRUE;
@@ -326,7 +321,7 @@ class ContentBuilderForm extends FormBase {
   /**
    * @inheritdoc
    *
-   * This is the final submit handler. Gather all the data together and create new content type
+   * Final submit handler- gather all data together and create new content type.
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
 
@@ -342,14 +337,14 @@ class ContentBuilderForm extends FormBase {
 
     $page_one_values = $form_state['page_values'][1];
     $rdf_type = $page_one_values['rdf-type'];
-    //$this->entity=
+
     $this->createNodeType($rdf_type);
 
-    $this->rdf_mapping = rdf_get_mapping('node', $this->entity->id());
-    $this->rdf_mapping->setBundleMapping(array('types' => array($rdf_type)));
+    $this->rdfMapping = rdf_get_mapping('node', $this->entity->id());
+    $this->rdfMapping->setBundleMapping(array('types' => array($rdf_type)));
 
     $this->createField();
-    $this->rdf_mapping->save();
+    $this->rdfMapping->save();
 
     drupal_set_message($this->t('Content Type %label created', array('%label' => $this->entity->label())));
     /*@TODO Revert all saved content type and fields in case of error*/
@@ -357,9 +352,10 @@ class ContentBuilderForm extends FormBase {
   }
 
   /**
-   * Create new node_type
+   * Create new node_type.
    *
-   * @param string $rdf_type uri of the resource
+   * @param string $rdf_type
+   *   Uri of the resource.
    */
   protected function createNodeType($rdf_type) {
     $type = explode(':', $rdf_type)[1];
@@ -379,7 +375,7 @@ class ContentBuilderForm extends FormBase {
   }
 
   /**
-   * create fields for the selected properties
+   * Create fields for the selected properties.
    */
   protected function createField() {
     $entity_type = 'node';
@@ -407,8 +403,8 @@ class ContentBuilderForm extends FormBase {
 
       // Create the field and instance.
       try {
-        $field = entity_create('field_storage_config', $field_storage)->save();
-        $ins = entity_create('field_instance_config', $instance)->save();
+        entity_create('field_storage_config', $field_storage)->save();
+        entity_create('field_instance_config', $instance)->save();
 
         // Make sure the field is displayed in the 'default' form mode (using
         // default widget and settings). It stays hidden for other form modes
@@ -424,8 +420,8 @@ class ContentBuilderForm extends FormBase {
           ->setComponent($field_name)
           ->save();
 
-        //rdf-mapping
-        $this->rdf_mapping->setFieldMapping($field_name, array(
+        // rdf-mapping.
+        $this->rdfMapping->setFieldMapping($field_name, array(
             'properties' => array($key),
           )
         );

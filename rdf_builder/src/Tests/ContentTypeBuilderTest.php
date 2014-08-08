@@ -25,7 +25,7 @@ class ContentTypeBuilderTest extends WebTestBase {
     'rdf',
     'field',
     'node',
-    'entity'
+    'entity',
   );
 
   /**
@@ -51,15 +51,15 @@ class ContentTypeBuilderTest extends WebTestBase {
   }
 
   /**
-   * Tests submission of Content Type Builder and creation of content type
+   * Tests submission of Content Type Builder and creation of content type.
    */
   protected function testContentTypeCreate() {
-    $this->edit_form_one();
+    $this->editFormOne();
 
     foreach (array('email', 'name') as $element) {
       $this->assertText($element, format_string('property "@element" of "@type" was found.', array(
         '@element' => $element,
-        '@type' => $this->rdf_type
+        '@type' => $this->rdf_type,
       )));
     }
 
@@ -101,9 +101,9 @@ class ContentTypeBuilderTest extends WebTestBase {
   }
 
   /**
-   * Tests first form of Content Type Builder and its submission
+   * Tests first form of Content Type Builder and its submission.
    */
-  protected function edit_form_one() {
+  protected function editFormOne() {
     $this->uri = 'admin/structure/types/rdf';
     $this->drupalGet($this->uri);
     $this->assertRaw('Create a content type by importing Schema.Org entity type.', "Form one displayed correctly.");
@@ -119,13 +119,13 @@ class ContentTypeBuilderTest extends WebTestBase {
   }
 
   /**
-   * Tests back button of second form in Content Type Builder
+   * Tests back button of second form in Content Type Builder.
    */
   protected function testNavigateBack() {
-    $this->edit_form_one();
+    $this->editFormOne();
     $this->drupalPostForm(NULL, array(), t('<< Back'));
     $this->assertRaw("Create a content type by importing Schema.Org entity type.", "Navigated back to form one.");
-    //test default option
+    // Test default option.
   }
 
 }
