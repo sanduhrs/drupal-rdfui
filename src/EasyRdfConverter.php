@@ -12,28 +12,28 @@ use Doctrine\Common\Proxy\Exception\InvalidArgumentException;
 /**
  * Extracts details of RDF resources from an RDFa document.
  */
-class EasyRdfConverter {
+abstract class EasyRdfConverter {
 
   /**
    * EasyRdf Graph of the loaded resource.
    *
    * @var \EasyRdf_Graph
    */
-  private $graph;
+  protected $graph;
 
   /**
    * List of Types specified in Schema.org as string.
    *
    * @var array()
    */
-  private $listTypes;
+  protected $listTypes;
 
   /**
    * List of Properties specified in Schema.org as string.
    *
    * @var array()
    */
-  private $listProperties;
+  protected $listProperties;
 
   /**
    * Constructor.
@@ -54,7 +54,7 @@ class EasyRdfConverter {
    * @throws \Doctrine\Common\Proxy\Exception\InvalidArgumentException
    *    If incorrect type or url is passed as parameters.
    */
-  public function createGraph($uri = "http://schema.org/docs/schema_org_rdfa.html", $type = "rdfa") {
+  protected function createGraph($uri, $type) {
     /*
      * Initialize an EasyRdf_Graph object using
      * _construct(string $uri = null, string $data = null,

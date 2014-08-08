@@ -22,8 +22,7 @@ class ContentMappings {
    * @see submitForm()
    */
   public static function alterForm(array &$form, FormStateInterface $form_state) {
-    $type_options = new EasyRdfConverter();
-    $type_options->createGraph();
+    $type_options = new SchemaOrgConverter();
     $entity_type = $form_state['controller']->getEntity();
 
     $existing_type = '';

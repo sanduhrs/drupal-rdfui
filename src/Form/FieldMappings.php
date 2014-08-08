@@ -15,6 +15,7 @@ use Drupal\Core\Render\Element;
 use Drupal\field\FieldInstanceConfigInterface;
 use Drupal\field_ui\OverviewBase;
 use Drupal\rdfui\EasyRdfConverter;
+use Drupal\rdfui\SchemaOrgConverter;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -47,8 +48,7 @@ class FieldMappings extends OverviewBase {
   public function __construct(EntityManagerInterface $entity_manager, FieldTypePluginManagerInterface $field_type_manager) {
     parent::__construct($entity_manager);
     $this->fieldTypeManager = $field_type_manager;
-    $this->rdfConverter = new EasyRdfConverter();
-    $this->rdfConverter->createGraph();
+    $this->rdfConverter = new SchemaOrgConverter();
   }
 
   /**

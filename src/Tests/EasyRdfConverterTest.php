@@ -8,10 +8,11 @@
 namespace Drupal\rdfui\Tests;
 
 use Drupal\rdfui\EasyRdfConverter;
+use Drupal\rdfui\SchemaOrgConverter;
 use Drupal\simpletest\DrupalUnitTestBase;
 
 /**
- * Tests the Easy Rdf Converter Class.
+ * Tests the Easy Rdf Converter Class & SchemaOrgConverter class.
  *
  * @group RdfUI
  */
@@ -29,8 +30,7 @@ class EasyRdfConverterTest extends DrupalUnitTestBase {
    */
   public function setUp() {
     parent::setUp();
-    $this->graph = new EasyRdfConverter();
-    $this->graph->createGraph();
+    $this->graph = new SchemaOrgConverter();
   }
 
   /**
