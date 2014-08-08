@@ -48,4 +48,3 @@ MAINTAINERS
 -----------
 Current maintainers:
  * Sachini Herath - https://www.drupal.org/user/2831117
- 
