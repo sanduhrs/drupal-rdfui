@@ -42,7 +42,7 @@ class SchemaOrgConverter extends EasyRdfConverter {
     }
     else {
       $this->createGraph($uri, $type);
-      $data = array(
+      $data=array(
         'graph' => $this->graph,
         'listProperties' => $this->listProperties,
         'listTypes' => $this->listTypes,
