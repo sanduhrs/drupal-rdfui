@@ -16,10 +16,11 @@ INTRODUCTION
 Drupal 8 RdfUI module provides User Interfaces for site builders to integrate
 schema.org seamlessly during the site building process.
 
-Content types could be mapped at the point of creation (admin/structure/types/add)
-or later (by using the edit form for content type) by specifying the type to be
-mapped under the "Schema.org Mappings" menu link. Fields can similarly
-be mapped to Schema.org properties at (admin/structure/types/manage/{entity_type_id}/fields/rdf).
+Content types could be mapped at the point of creation
+(admin/structure/types/add) or later (by using the edit form for content type)
+by specifying the type to be mapped under the "Schema.org Mappings" menu link.
+Fields can similarly be mapped to Schema.org properties at
+(admin/structure/types/manage/{entity_type_id}/fields/rdf).
 
 Refer project documentation for more information.
 
@@ -31,7 +32,8 @@ The module only depends on modules in Drupal 8 core.
 To install rdfui Module:
   * Place this module directory in your modules folder (this will usually be
     "modules/").
-  * Enable the module within your Drupal site at Administation >> Extend (admin/modules)
+  * Enable the module within your Drupal site at Administation >> Extend
+    (admin/modules)
 
 
 CONFIGURATION

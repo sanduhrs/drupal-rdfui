@@ -63,11 +63,11 @@
                         })
                         .click(function () {
                             input.focus();
-// Close if already visible
+// Close if already visible.
                             if (wasOpen) {
                                 return;
                             }
-// Pass empty string as value to search for, displaying all results
+// Pass empty string as value to search for, displaying all results.
                             input.autocomplete("search", "");
                         });
                 },
@@ -75,7 +75,7 @@
                     var matcher = new RegExp($.ui.autocomplete.escapeRegex(request.term), "i");
                     response(this.element.children("option").map(function () {
                         var text = $(this).text();
-                        if (this.value && ( !request.term || matcher.test(text) ))
+                        if (this.value && (!request.term || matcher.test(text)))
                             return {
                                 label: text,
                                 value: text,
@@ -84,11 +84,11 @@
                     }));
                 },
                 _removeIfInvalid: function (event, ui) {
-// Selected an item, nothing to do
+// Selected an item, nothing to do.
                     if (ui.item) {
                         return;
                     }
-// Search for a match (case-insensitive)
+// Search for a match (case-insensitive).
                     var value = this.input.val(),
                         valueLowerCase = value.toLowerCase(),
                         valid = false;
@@ -98,11 +98,11 @@
                             return false;
                         }
                     });
-// Found a match, nothing to do
+// Found a match, nothing to do.
                     if (valid) {
                         return;
                     }
-// Remove invalid value
+// Remove invalid value.
                     this.input
                         .val("")
                         .attr("title", value + " didn't match any item")
