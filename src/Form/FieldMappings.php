@@ -207,7 +207,8 @@ class FieldMappings extends OverviewBase {
 
     // Add mapping for title field.
     if ($this->entity_type === 'node') {
-      if (empty($mapping->getFieldMapping('title'))) {
+      $type=$mapping->getFieldMapping('title');
+      if (empty($type)) {
         $mapping->setFieldMapping('title', array(
             'properties' => array('schema:name'),
           )
