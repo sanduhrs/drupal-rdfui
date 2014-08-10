@@ -143,14 +143,14 @@ class FieldMappings extends OverviewBase {
         ),
         'type' => array(
           // '#type' => 'link',
-          '#title' => 'Data Type',
+          '#title' => $this->t('Data Type'),
           '#title_display' => 'invisible',
           /*'#route_name' => 'field_ui.field_edit_' . $this->entity_type,
           '#route_parameters' => $route_parameters,*/
           '#markup' => $this->t('Text'),
         ),
         'status' => array(
-          '#title' => 'Status',
+          '#title' => $this->t('Status'),
           '#title_display' => 'invisible',
           '#markup' => !empty($property['properties'][0]) ? 'Mapped' : 'Unmapped',
         ),
@@ -207,7 +207,7 @@ class FieldMappings extends OverviewBase {
 
     // Add mapping for title field.
     if ($this->entity_type === 'node') {
-      $type=$mapping->getFieldMapping('title');
+      $type = $mapping->getFieldMapping('title');
       if (empty($type)) {
         $mapping->setFieldMapping('title', array(
             'properties' => array('schema:name'),

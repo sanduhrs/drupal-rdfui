@@ -24,14 +24,14 @@ abstract class EasyRdfConverter {
   /**
    * List of Types specified in Schema.org as string.
    *
-   * @var array()
+   * @var array
    */
   protected $listTypes;
 
   /**
    * List of Properties specified in Schema.org as string.
    *
-   * @var array()
+   * @var array
    */
   protected $listProperties;
 
