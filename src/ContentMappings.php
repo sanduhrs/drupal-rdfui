@@ -64,7 +64,7 @@ class ContentMappings {
    * Validate Schema.org mappings in \Drupal\node\NodeTypeForm.
    */
   public static function formValidate(array &$form, FormStateInterface $form_state) {
-    // To be implemented.
+    // @TODO implement method if validation is required.
   }
 
   /**

@@ -110,7 +110,7 @@ class FieldMappings extends OverviewBase {
       '#regions' => $this->getRegions(),
       '#attributes' => array(
         'class' => array('rdfui-field-mappings'),
-        'id' => 'rdf-mapping',
+        'id' => drupal_html_class('rdf-mapping'),
       ),
     );
 
@@ -142,11 +142,8 @@ class FieldMappings extends OverviewBase {
           '#default_value' => !empty($property) ? $property['properties'][0] : '',
         ),
         'type' => array(
-          // '#type' => 'link',
           '#title' => $this->t('Data Type'),
           '#title_display' => 'invisible',
-          /*'#route_name' => 'field_ui.field_edit_' . $this->entity_type,
-          '#route_parameters' => $route_parameters,*/
           '#markup' => $this->t('Text'),
         ),
         'status' => array(
@@ -183,7 +180,6 @@ class FieldMappings extends OverviewBase {
         'title' => $this->t('Content'),
         'invisible' => TRUE,
         // @todo Bring back this message in https://drupal.org/node/1963340.
-        // 'message' => $this->t('No fields are present yet.'),
       ),
     );
   }
@@ -192,8 +188,7 @@ class FieldMappings extends OverviewBase {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
-
-    /*To be implemented*/
+    // @TODO implement method if validation is required.
   }
 
   /**
@@ -201,7 +196,6 @@ class FieldMappings extends OverviewBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
 
-    // Validate form.
     $form_values = $form_state['values']['fields'];
     $mapping = rdf_get_mapping($this->entity_type, $this->bundle);
 

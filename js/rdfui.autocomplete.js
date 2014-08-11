@@ -119,7 +119,7 @@
         }
       });
 
-      $('[id="rdf-predicate"]').combobox();
+      $('[id="rdf-predicate"]',context).combobox();
       $("#toggle").click(function () {
         $("#combobox").toggle();
       });
