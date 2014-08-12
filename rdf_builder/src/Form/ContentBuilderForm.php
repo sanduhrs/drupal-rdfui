@@ -350,7 +350,7 @@ class ContentBuilderForm extends FormBase {
     foreach ($this->properties as $key => $value) {
       $label = $this->converter->label($key);
       // Add the field prefix.
-      $field_name = $this->prefix. strtolower($label);
+      $field_name = $this->prefix . strtolower($label);
 
       $field_storage = array(
         'name' => $field_name,
