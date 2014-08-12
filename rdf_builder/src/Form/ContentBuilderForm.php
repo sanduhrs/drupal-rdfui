@@ -68,7 +68,7 @@ class ContentBuilderForm extends FormBase {
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The current state of the form.
    */
-  public function next_submit(array &$form, FormStateInterface &$form_state) {
+  public function nextSubmit(array &$form, FormStateInterface &$form_state) {
 
     $form_state['page_values'][1] = $form_state['values'];
 
@@ -131,7 +131,7 @@ class ContentBuilderForm extends FormBase {
       '#type' => 'submit',
       '#value' => $this->t('Next >>'),
       '#button_type' => 'primary',
-      '#submit' => array(array($this, 'next_submit')),
+      '#submit' => array(array($this, 'nextSubmit')),
       '#validate' => array(array($this, 'nextValidate')),
     );
     return $form;
@@ -324,7 +324,7 @@ class ContentBuilderForm extends FormBase {
    */
   protected function createNodeType($rdf_type) {
     $type = explode(':', $rdf_type);
-    $type=$this->prefix.$type[1];
+    $type = $this->prefix . $type[1];
 
     $values = array(
       'name' => $this->converter->label($rdf_type),
@@ -395,7 +395,7 @@ class ContentBuilderForm extends FormBase {
       catch (\Exception $e) {
         drupal_set_message($this->t('There was a problem creating field %label: !message', array(
           '%label' => $instance['label'],
-          '!message' => $e->getMessage()
+          '!message' => $e->getMessage(),
         )), 'error');
       }
     }
@@ -406,7 +406,9 @@ class ContentBuilderForm extends FormBase {
    *
    * @param int $length
    *   Length of the random string.
+   *
    * @return string
+   *   Return a random string.
    */
   private function randomString($length = 4) {
     $result = '';
