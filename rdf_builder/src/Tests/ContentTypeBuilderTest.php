@@ -84,20 +84,18 @@ class ContentTypeBuilderTest extends WebTestBase {
     $this->assertUrl('admin/structure/types', array(), 'Redirected to correct url upon correct submission.');
     $this->assertText('Content Type Person created', 'Successful content type creation message displayed');
 
-    $type_exists = entity_load('node_type', 'person');
+    /*$type_exists = entity_load('node_type', 'person');
     $this->assertTrue(!empty($type_exists), "Content type created with correct machine name.");
     $rdf_mapping = rdf_get_mapping('node', 'person');
     $this->assertEqual($rdf_mapping->getBundleMapping()['types'][0], $this->rdf_type, "Bundle Mapping stored correctly.");
-
-    debug($type_exists);
 
     $storage = (bool) entity_load('field_storage_config', 'node.name');
     $this->assertTrue($storage, "Field storage created");
 
     $instance = (bool) entity_load('field_instance_config', 'node.person.name');
     $this->assertTrue($instance, "Field instance created");
-    debug($rdf_mapping);
     $this->assertEqual($rdf_mapping->getFieldMapping('name')['properties'][0], 'schema:name', "Field Mapping stored correctly.");
+    */
   }
 
   /**

@@ -11,13 +11,10 @@ use Drupal\Component\Utility\String;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
+use Drupal\Core\Url;
 use Drupal\rdfui\SchemaOrgConverter;
 
 class ContentBuilderForm extends FormBase {
-  /*@TODO Resolve naming conflicts and long field/content_type names
-   * length-machine name-32
-   * max. length name type-32, property-26
-   */
 
   /**
    * Easy_RDF Converter from rdfui.
@@ -48,6 +45,13 @@ class ContentBuilderForm extends FormBase {
   protected $rdfMapping;
 
   /**
+   * Prefix for the content type.
+   *
+   * @var string
+   */
+  private $prefix;
+
+  /**
    * Constructs a new ContentBuilder.
    */
   public function __construct() {
@@ -72,7 +76,7 @@ class ContentBuilderForm extends FormBase {
       $form_state['values'] = $form_state['page_values'][2];
     }
 
-    // When form rebuilds, it will look at this to figure which page to build.
+    // When form rebuilds, build method would be chosen based on to page_num.
     $form_state['page_num'] = 2;
     $form_state['rebuild'] = TRUE;
   }
@@ -89,22 +93,22 @@ class ContentBuilderForm extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
 
-    // Display page 2 if $form_state['page_num'] == 2
+    // Display page 2 if $form_state['page_num'] == 2.
     if (!empty($form_state['page_num']) && $form_state['page_num'] == 2) {
       return $this->buildFormPageTwo($form, $form_state);
     }
 
-    // Otherwise we build page 1.
+    // Otherwise build page 1.
     $form_state['page_num'] = 1;
 
     $form['#title'] = $this->t('Content types');
     $form['description'] = array(
       '#type' => 'item',
-      '#title' => t('Create a content type by importing Schema.Org entity type.'),
+      '#title' => $this->t('Create a content type by importing Schema.Org entity type.'),
     );
 
     $form['rdf-type'] = array(
-      '#title' => t('Type'),
+      '#title' => $this->t('Type'),
       '#id' => 'rdf-predicate',
       '#type' => 'select',
       '#required' => TRUE,
@@ -119,13 +123,13 @@ class ContentBuilderForm extends FormBase {
           drupal_get_path('module', 'rdfui') . '/css/rdfui.autocomplete.css',
         ),
       ),
-      '#description' => t('Specify the type you want to associated to this content type e.g. Article, Blog, etc.'),
+      '#description' => $this->t('Specify the type you want to associated to this content type e.g. Article, Blog, etc.'),
     );
 
     $form['actions'] = array('#type' => 'actions');
     $form['actions']['next'] = array(
       '#type' => 'submit',
-      '#value' => 'Next >>',
+      '#value' => $this->t('Next >>'),
       '#button_type' => 'primary',
       '#submit' => array(array($this, 'next_submit')),
       '#validate' => array(array($this, 'nextValidate')),
@@ -148,7 +152,7 @@ class ContentBuilderForm extends FormBase {
     $form['#title'] = $this->t('Content types');
     $form['description'] = array(
       '#type' => 'item',
-      '#title' => t('Choose fields to start with.'),
+      '#title' => $this->t('Choose fields to start with.'),
     );
 
     $rdf_type = $form_state['page_values'][1]['rdf-type'];
@@ -176,34 +180,35 @@ class ContentBuilderForm extends FormBase {
       '#regions' => array(),
       '#attributes' => array(
         'class' => array('rdfui-field-mappings'),
-        'id' => 'rdf-builder',
+        'id' => drupal_html_id('rdf-builder'),
       ),
     );
 
     foreach ($properties as $key => $value) {
+      $table[$key] = array(
+        '#attributes' => array(
+          'id' => drupal_html_class($key),
+        ),
+        'enable' => array(
+          '#type' => 'checkbox',
+          '#title' => $this->t('Enable'),
+          '#title_display' => 'invisible',
+        ),
+        'property' => array(
+          '#markup' => String::checkPlain($value),
+        ),
+        'type' => array(
+          '#type' => 'select',
+          '#title' => $this->t('Data Type'),
+          '#title_display' => 'invisible',
+          '#options' => $field_type_options,
+          '#empty_option' => $this->t('- Select a field type -'),
+          '#attributes' => array('class' => array('field-type-select')),
+          '#cell_attributes' => array('colspan' => 2),
+          '#prefix' => '<div class="add-new-placeholder">&nbsp;</div>',
+        ),
+      );
     }
-    $table[$key] = array(
-      '#attributes' => array(
-        'id' => drupal_html_class($key),
-      ),
-      'enable' => array(
-        '#type' => 'checkbox',
-        '#title' => $this->t('Enable'),
-        '#title_display' => 'invisible',
-      ),
-      'property' => array(
-        '#markup' => String::checkPlain($value),
-      ),
-      'type' => array(
-        '#type' => 'select',
-        '#title' => $this->t('Data Type'),
-        '#title_display' => 'invisible',
-        '#options' => $field_type_options,
-        '#empty_option' => $this->t('- Select a field type -'),
-        '#attributes' => array('class' => array('field-type-select')),
-        '#prefix' => '<div class="add-new-placeholder">&nbsp;</div>',
-      ),
-    );
     // Fields.
     $table['#regions']['content']['rows_order'] = array();
     foreach (Element::children($table) as $name) {
@@ -211,43 +216,6 @@ class ContentBuilderForm extends FormBase {
     }
 
     $form['fields'] = $table;
-
-    /*$field_options=array();
-    foreach($properties as $key=>$value){
-
-        $field_options[$key]=array(
-        //    '#parents' => array('frequent_options'),
-            'name'=>array(
-                '#markup' => $this->t($value),
-            ),
-            'enable'=>array(
-                '#type'=>'checkbox',
-                '#title'=>$this->t('Enable'),
-                //'#title_display' => 'invisible',
-            ),
-            'type'=>array(
-                '#type' => 'select',
-                '#title' => $this->t($key),
-                //'#title_display' => 'invisible',
-                '#options' => $field_type_options,
-                '#empty_option' => $this->t('- Select a field type -'),
-                '#attributes' => array('class' => array('field-type-select')),
-                '#prefix' => '<div class="add-new-placeholder">&nbsp;</div>',
-            ),
-        );
-    }
-
-    $form['fields']['#tree']=TRUE;
-    $form['fields']['frequent_options'] = array(
-        '#title' => t('More frequently used fields'),
-        '#type' => 'details',
-        '#open' => TRUE,
-      //  '#attributes' => array('class' => array('package-listing')),
-       // '#theme' => 'views_view_grid',
-        //'#options'=>$field_options,
-    );
-
-    $form['fields']['frequent_options']+=$field_options;*/
 
     $form['actions'] = array('#type' => 'actions');
     $form['actions']['submit'] = array(
@@ -258,7 +226,7 @@ class ContentBuilderForm extends FormBase {
 
     $form['actions']['previous'] = array(
       '#type' => 'submit',
-      '#value' => t('<< Back'),
+      '#value' => $this->t('<< Back'),
       '#submit' => array(array($this, 'pageTwoBackSubmit')),
       '#limit_validation_errors' => array(),
       '#validate' => array(array($this, 'pageTwoBackValidate')),
@@ -275,7 +243,7 @@ class ContentBuilderForm extends FormBase {
    *   The current state of the form.
    */
   public function nextValidate(array $form, FormStateInterface $form_state) {
-    // Validate optional.
+    // @TODO validate if required.
   }
 
   /**
@@ -287,7 +255,7 @@ class ContentBuilderForm extends FormBase {
    *   The current state of the form.
    */
   public function pageTwoBackValidate(array $form, FormStateInterface $form_state) {
-    // Validation optional.
+    // @TODO validate if required.
   }
 
   /**
@@ -311,7 +279,7 @@ class ContentBuilderForm extends FormBase {
     foreach ($form_state['values']['fields'] as $key => $property) {
       if ($property['enable'] === 1) {
         if (empty($property['type'])) {
-          $this->setFormError('fields][$key][type', $form_state, $this->t('Create field: you need to provide a data type for %field.', array('%field' => explode(':', $key)[1])));
+          $form_state->setErrorByName('fields][$key][type', $this->t('Create field: you need to provide a data type for %field.', array('%field' => explode(':', $key)[1])));
         }
       }
     }
@@ -324,13 +292,10 @@ class ContentBuilderForm extends FormBase {
    * Final submit handler- gather all data together and create new content type.
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-
+    $this->prefix = $this->randomString(4);
     $this->properties = array();
     foreach ($form_state['values']['fields'] as $key => $property) {
       if ($property['enable'] === 1) {
-        if (empty($property['type'])) {
-          $this->setFormError('fields][$key][type', $form_state, $this->t('Create field: you need to provide a data type for %field.', array('%field' => explode(':', $key)[1])));
-        }
         $this->properties[$key] = $property;
       }
     }
@@ -348,7 +313,7 @@ class ContentBuilderForm extends FormBase {
 
     drupal_set_message($this->t('Content Type %label created', array('%label' => $this->entity->label())));
     /*@TODO Revert all saved content type and fields in case of error*/
-    $form_state['redirect_route']['route_name'] = 'node.overview_types';
+    $form_state->setRedirectUrl(new Url('node.overview_types'));
   }
 
   /**
@@ -358,7 +323,9 @@ class ContentBuilderForm extends FormBase {
    *   Uri of the resource.
    */
   protected function createNodeType($rdf_type) {
-    $type = explode(':', $rdf_type)[1];
+    $type = explode(':', $rdf_type);
+    $type=$this->prefix.$type[1];
+
     $values = array(
       'name' => $this->converter->label($rdf_type),
       'type' => strtolower($type),
@@ -383,8 +350,7 @@ class ContentBuilderForm extends FormBase {
     foreach ($this->properties as $key => $value) {
       $label = $this->converter->label($key);
       // Add the field prefix.
-      $field_name = \Drupal::config('field_ui.settings')
-          ->get('field_prefix') . strtolower($label);
+      $field_name = $this->prefix. strtolower($label);
 
       $field_storage = array(
         'name' => $field_name,
@@ -427,12 +393,29 @@ class ContentBuilderForm extends FormBase {
         );
       }
       catch (\Exception $e) {
-        $error = TRUE;
         drupal_set_message($this->t('There was a problem creating field %label: !message', array(
           '%label' => $instance['label'],
           '!message' => $e->getMessage()
         )), 'error');
       }
     }
+  }
+
+  /**
+   * Generates a random string of lower case letters of a given length.
+   *
+   * @param int $length
+   *   Length of the random string.
+   * @return string
+   */
+  private function randomString($length = 4) {
+    $result = '';
+
+    for ($i = 0; $i < $length; $i++) {
+      $num = rand(97, 122);
+      $result .= chr($num);
+    }
+
+    return $result;
   }
 }
