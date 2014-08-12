@@ -231,7 +231,7 @@ abstract class EasyRdfConverter {
     }
     $label = $this->graph->label($uri);
     if (!empty($label)) {
-      return $label;
+      return $label->getValue();
     }
 
     $names = explode(":", $uri);
