@@ -328,6 +328,11 @@ class ContentBuilderForm extends FormBase {
     $type = explode(':', $rdf_type);
     $type = $this->prefix . $type[1];
 
+    // Truncate if machine_name is longer than 32 char.
+    if (strlen($type) > 32) {
+      $type = substr($type, 0, 32);
+    }
+
     $values = array(
       'name' => $this->converter->label($rdf_type),
       'type' => strtolower($type),
@@ -351,8 +356,12 @@ class ContentBuilderForm extends FormBase {
     $bundle = $this->entity->id();
     foreach ($this->properties as $key => $value) {
       $label = $this->converter->label($key);
-      // Add the field prefix.
+
+      // Add the field prefix and truncate if longer than 32 char.
       $field_name = $this->prefix . strtolower($label);
+      if (strlen($field_name) > 32) {
+        $field_name = substr($field_name, 0, 32);
+      }
 
       $field_storage = array(
         'name' => $field_name,
