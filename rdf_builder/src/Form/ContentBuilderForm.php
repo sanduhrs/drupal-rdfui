@@ -420,6 +420,7 @@ class ContentBuilderForm extends FormBase {
       $result .= chr($num);
     }
 
+    $result = $result . '_';
     return $result;
   }
 }
