@@ -64,6 +64,11 @@ class EasyRdfConverterTest extends DrupalUnitTestBase {
     $this->assertTrue(in_array("author", $properties), 'Properties of parent Type(CreativeWork)loaded.');
     $this->assertTrue(in_array("name", $properties), 'Properties of base Type(Thing) loaded.');
     $this->assertFalse(in_array("birthDate", $properties), 'Properties not in the Type are not loaded.');
+
+    // Test that deprecated properties are not listed.
+    $properties = $this->graph->getTypeProperties("schema:Event");
+    $this->assertTrue(in_array("attendee", $properties), 'Property "attendee" of Type "Event" is listed.');
+    $this->assertFalse(in_array("attendees", $properties), 'Deprecated property "attendees" of Type "Event" is not listed.');
   }
 
 }

@@ -111,6 +111,10 @@ abstract class EasyRdfConverter {
    */
   private function addProperties(\EasyRdf_Resource $value) {
     if ($value != NULL) {
+      // Omit deprecated properties.
+      if ($value->get("schema:supercededBy")) {
+        return;
+      }
       $this->listProperties[$value->shorten()] = $value->label();
     }
   }
@@ -123,6 +127,10 @@ abstract class EasyRdfConverter {
    */
   private function addType(\EasyRdf_Resource $type) {
     if ($type != NULL) {
+      // Omit deprecated types.
+      if ($type->get("schema:supercededBy")) {
+        return;
+      }
       $this->listTypes[$type->shorten()] = $type->label();
     }
   }
@@ -183,6 +191,10 @@ abstract class EasyRdfConverter {
     $options = array();
 
     foreach ($property_list as $value) {
+      // Omit deprecated properties.
+      if ($value->get("schema:supercededBy")) {
+        continue;
+      }
       $options[$value->shorten()] = $value->get("rdfs:label")->getValue();
     }
 
