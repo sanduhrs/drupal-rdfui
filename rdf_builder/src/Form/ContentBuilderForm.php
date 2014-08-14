@@ -226,7 +226,6 @@ class ContentBuilderForm extends FormBase {
           '#empty_option' => $this->t('- Select a field type -'),
           '#attributes' => array('class' => array('field-type-select')),
           '#cell_attributes' => array('colspan' => 2),
-          '#prefix' => '<div class="add-new-placeholder">&nbsp;</div>',
         ),
       );
     }
