@@ -319,10 +319,10 @@ class ContentBuilderForm extends FormBase {
   }
 
   /**
-   * Create new node_type.
+   * Creates a new node_type.
    *
    * @param string $rdf_type
-   *   Uri of the resource.
+   *   URI of the resource.
    */
   protected function createNodeType($rdf_type) {
     $type = explode(':', $rdf_type);

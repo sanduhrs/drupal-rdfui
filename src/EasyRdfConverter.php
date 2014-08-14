@@ -44,15 +44,15 @@ abstract class EasyRdfConverter {
   }
 
   /**
-   * Creates an EasyRdf_Graph object from the given uri.
+   * Creates an EasyRdf_Graph object from the given URI.
    *
    * @param string $uri
-   *     Uri of a web resource or path of the cached file.
+   *     URI of a web resource or path of the cached file.
    * @param string $type
    *    Format of the document.
    *
    * @throws \Doctrine\Common\Proxy\Exception\InvalidArgumentException
-   *    If incorrect type or url is passed as parameters.
+   *    If invalid type or URL is passed as parameters.
    */
   protected function createGraph($uri, $type) {
     /*
@@ -85,7 +85,7 @@ abstract class EasyRdfConverter {
   }
 
   /**
-   * Identify all types and properties of the graph separately.
+   * Identifies all types and properties of the graph separately.
    */
   private function iterateGraph() {
     $resource_list = $this->graph->resources();
@@ -104,7 +104,7 @@ abstract class EasyRdfConverter {
   }
 
   /**
-   * Add Property label to list.
+   * Adds Property label to list.
    *
    * @param \EasyRdf_Resource $value
    *   An EasyRdf_Resource which is a property.
@@ -116,7 +116,7 @@ abstract class EasyRdfConverter {
   }
 
   /**
-   * Add Type label to list.
+   * Adds Type label to list.
    *
    * @param \EasyRdf_Resource $type
    *   An EasyRdf_Resource which is a type.
@@ -128,7 +128,7 @@ abstract class EasyRdfConverter {
   }
 
   /**
-   * Get list of Schema.org properties.
+   * Gets a list of Schema.org properties.
    *
    * @return array
    *    Array of all properties in the graph.
@@ -138,23 +138,23 @@ abstract class EasyRdfConverter {
   }
 
   /**
-   * Get list of Schema.org types.
+   * Gets a list of Schema.org types.
    *
    * @return array
-   *    Array of all properties in the graph.
+   *    Array of all types in the graph.
    */
   public function getListTypes() {
     return $this->listTypes;
   }
 
   /**
-   * Extract properties of a given type.
+   * Extracts properties of a given type.
    *
    * @param string $type
    *   Schema.Org type of which the properties should be listed.
    *   (eg. "schema:Person").
    *
-   * @return array options
+   * @return array|null
    *   List of properties.
    */
   public function getTypeProperties($type) {
@@ -172,17 +172,17 @@ abstract class EasyRdfConverter {
    * Recursive function to extract properties.
    *
    * @param string $uri
-   *   Uri of schema type.
+   *   URI of schema type.
    *
-   * @return array options
+   * @return array|null
    *   Array of properties of the type and all parent types.
    */
   private function getProperties($uri) {
     $resource = array("type" => "uri", "value" => $uri);
-    $props = $this->graph->resourcesMatching("http://schema.org/domainIncludes", $resource);
+    $property_list = $this->graph->resourcesMatching("http://schema.org/domainIncludes", $resource);
     $options = array();
 
-    foreach ($props as $value) {
+    foreach ($property_list as $value) {
       $options[$value->shorten()] = $value->get("rdfs:label")->getValue();
     }
 
@@ -194,10 +194,10 @@ abstract class EasyRdfConverter {
   }
 
   /**
-   * Get description of the resource.
+   * Gets the description of the resource.
    *
    * @param string $uri
-   *   Uri of the resource (eg: schema:Person).
+   *   URI of the resource (eg: schema:Person).
    *
    * @return mixed
    *   Description of the resource or null.
@@ -216,10 +216,10 @@ abstract class EasyRdfConverter {
   }
 
   /**
-   * Get label of the resource.
+   * Gets label of the resource.
    *
    * @param string $uri
-   *   Uri of the resource (eg: schema:Person).
+   *   URI of the resource (eg: schema:Person).
    *
    * @return string
    *   Label of the resource, if not shortened name.

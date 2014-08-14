@@ -13,7 +13,6 @@ use Drupal\Core\Form\FormStateInterface;
  * Rdf Ui Rdf Mapping for Content Types.
  */
 class ContentMappings {
-  /*@TODO Fix errors for adding content type mapping*/
 
   /**
    * BuildForm method for the Schema.org mappings in \Drupal\node\NodeTypeForm.
@@ -61,7 +60,7 @@ class ContentMappings {
 
 
   /**
-   * Validate Schema.org mappings in \Drupal\node\NodeTypeForm.
+   * Validates Schema.org mappings in \Drupal\node\NodeTypeForm.
    */
   public static function formValidate(array &$form, FormStateInterface $form_state) {
     // @TODO implement method if validation is required.

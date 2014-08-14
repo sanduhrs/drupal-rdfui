@@ -34,7 +34,7 @@ class SchemaOrgConverter extends EasyRdfConverter {
     $type = "rdfa";
 
     if ($cache = \Drupal::cache()->get($this->cid)) {
-      // Fetch cached copy of graph & lists;
+      // Fetch cached copy of graph & lists.
       $data = $cache->data;
       $this->graph = $data['graph'];
       $this->listProperties = $data['listProperties'];
