@@ -226,10 +226,11 @@ class ContentBuilderForm extends FormBase {
 
     $form['actions']['previous'] = array(
       '#type' => 'submit',
-      '#value' => $this->t('<< Back'),
+      '#value' => $this->t('< Back'),
       '#submit' => array(array($this, 'pageTwoBackSubmit')),
       '#limit_validation_errors' => array(),
       '#validate' => array(array($this, 'pageTwoBackValidate')),
+      '#weight' => -1,
     );
     return $form;
   }

@@ -108,7 +108,7 @@ class ContentTypeBuilderTest extends WebTestBase {
    */
   protected function testNavigateBack() {
     $this->editFormOne();
-    $this->drupalPostForm(NULL, array(), t('<< Back'));
+    $this->drupalPostForm(NULL, array(), t('< Back'));
     $this->assertRaw("Create a content type by importing Schema.Org entity type.", "Navigated back to form one.");
     // Test default option.
   }
