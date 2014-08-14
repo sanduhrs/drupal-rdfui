@@ -249,4 +249,30 @@ abstract class EasyRdfConverter {
     $names = explode(":", $uri);
     return $names[1];
   }
+
+  /**
+   * Gets data types in range of the property.
+   *
+   * @param string $uri
+   *   URI of the resource (eg: schema:name).
+   *
+   * @return null|array
+   *   Array containing URIs of the datatype, if not null.
+   */
+  public function getRangeDataTypes($uri) {
+    if (empty($uri)) {
+      drupal_set_message($this->t("Invalid URI"));
+      return NULL;
+    }
+    $range_datatypes = $this->graph->allResources($uri, "schema:rangeIncludes");
+    if (!empty($range_datatypes)) {
+      $range_datatype_uris = array();
+      foreach ($range_datatypes as $type) {
+        array_push($range_datatype_uris, $type->getUri());
+      }
+      return $range_datatype_uris;
+    }
+    return NULL;
+  }
+
 }

@@ -70,6 +70,7 @@ class ContentTypeBuilderTest extends WebTestBase {
       'fields[schema:email][enable]' => '1',
       'fields[schema:email][type]' => 'email',
       'fields[schema:name][enable]' => '1',
+      'fields[schema:name][type]' => '',
     );
 
     $this->drupalPostForm(NULL, $edit, t('Save'));

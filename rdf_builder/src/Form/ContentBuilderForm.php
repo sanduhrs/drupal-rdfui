@@ -52,10 +52,30 @@ class ContentBuilderForm extends FormBase {
   private $prefix;
 
   /**
+   * Array mapping schema.org data types to field types.
+   *
+   * @var array
+   */
+  private $datatype_field_mappings;
+
+  /**
    * Constructs a new ContentBuilder.
    */
   public function __construct() {
     $this->converter = new SchemaOrgConverter();
+    $this->datatype_field_mappings = array(
+      'http://schema.org/Text' => 'text',
+      'http://schema.org/PostalAddress' => 'text_long',
+      'http://schema.org/Number' => 'integer',
+      'http://schema.org/MediaObject' => 'file',
+      'http://schema.org/AudioObject' => 'file',
+      'http://schema.org/DateTime' => 'datetime',
+      'http://schema.org/Date' => 'datetime',
+      'http://schema.org/Integer' => 'integer',
+      'http://schema.org/Time' => 'datetime',
+      'http://schema.org/ImageObject' => 'image',
+      'http://schema.org/Boolean' => 'boolean',
+    );
   }
 
   /**
@@ -202,6 +222,7 @@ class ContentBuilderForm extends FormBase {
           '#title' => $this->t('Data Type'),
           '#title_display' => 'invisible',
           '#options' => $field_type_options,
+          '#default_value' => $this->getDefaultFieldType($key),
           '#empty_option' => $this->t('- Select a field type -'),
           '#attributes' => array('class' => array('field-type-select')),
           '#cell_attributes' => array('colspan' => 2),
@@ -432,5 +453,25 @@ class ContentBuilderForm extends FormBase {
 
     $result = $result . '_';
     return $result;
+  }
+
+  /**
+   * Gets default datatype for a given URI.
+   *
+   * @param string $uri
+   *   URI of Schema.org property.
+   *
+   * @return string
+   *   Default field type or text if there is no better match.
+   */
+  protected function getDefaultFieldType($uri) {
+    $range_datatypes = $this->converter->getRangeDataTypes($uri);
+
+    foreach ($range_datatypes as $datatype) {
+      if (array_key_exists($datatype, $this->datatype_field_mappings)) {
+        return $this->datatype_field_mappings[$datatype];
+      }
+    }
+    return 'text';
   }
 }
