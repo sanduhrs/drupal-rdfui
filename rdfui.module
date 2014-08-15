@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * Allows content types and fields to be mapped with rdf data from Schema.org.
+ * Allows content types and fields to be mapped with RDF data from Schema.org.
  */
 
 use Drupal\Core\Routing\RouteMatchInterface;

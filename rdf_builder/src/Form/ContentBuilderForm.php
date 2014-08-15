@@ -418,7 +418,7 @@ class ContentBuilderForm extends FormBase {
           ->setComponent($field_name)
           ->save();
 
-        // rdf-mapping.
+        // RDF Mapping.
         $this->rdfMapping->setFieldMapping($field_name, array(
             'properties' => array($key),
           )

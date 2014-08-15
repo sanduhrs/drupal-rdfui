@@ -19,7 +19,7 @@ use Drupal\rdfui\SchemaOrgConverter;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Rdf Ui Rdf Mapping form.
+ * RDF UI Field Mapping form.
  */
 class FieldMappings extends OverviewBase {
 
@@ -31,7 +31,7 @@ class FieldMappings extends OverviewBase {
   protected $fieldTypeManager;
 
   /**
-   * The Easy Rdf Converter.
+   * The EasyRdfConverter.
    *
    * @var \Drupal\rdfui\EasyRdfConverter
    */
@@ -103,7 +103,7 @@ class FieldMappings extends OverviewBase {
       '#tree' => TRUE,
       '#header' => array(
         $this->t('Label'),
-        $this->t('Rdf Predicate'),
+        $this->t('RDF Property'),
         $this->t('Data Type'),
         $this->t('Status'),
       ),
@@ -127,7 +127,7 @@ class FieldMappings extends OverviewBase {
         'rdf-predicate' => array(
           '#id' => 'rdf-predicate',
           '#type' => 'select',
-          '#title' => $this->t('Rdf Property'),
+          '#title' => $this->t('RDF Property'),
           '#title_display' => 'invisible',
           '#options' => $options,
           '#empty_option' => '',

@@ -11,9 +11,9 @@ use Drupal\field\Entity\FieldInstanceConfig;
 use Drupal\node\Tests\NodeTestBase;
 
 /**
- * Tests related to adding and editing rdf mappings for node types.
+ * Tests related to adding and editing RDF mappings for node types.
  *
- * @group RdfUI
+ * @group RDF UI
  */
 class RdfUiContentMappingTest extends NodeTestBase {
 
@@ -29,9 +29,9 @@ class RdfUiContentMappingTest extends NodeTestBase {
    */
   public static function getInfo() {
     return array(
-      'name' => 'RdfUI Content Mapping',
-      'description' => 'Ensures that Rdf mappings for Content type works correctly.',
-      'group' => 'RdfUI',
+      'name' => 'RDF UI Content Mapping',
+      'description' => 'Ensures that the RDF mappings for a Content type works correctly.',
+      'group' => 'RDF UI',
     );
   }
 

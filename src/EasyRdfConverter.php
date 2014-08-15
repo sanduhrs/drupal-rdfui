@@ -47,7 +47,7 @@ abstract class EasyRdfConverter {
    * Creates an EasyRdf_Graph object from the given URI.
    *
    * @param string $uri
-   *     URI of a web resource or path of the cached file.
+   *     URL of a web resource or path of the cached file.
    * @param string $type
    *    Format of the document.
    *

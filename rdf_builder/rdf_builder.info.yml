@@ -1,4 +1,4 @@
-name: Rdf Builder
+name: RDF UI Builder
 type: module
 description: 'Schema.org driven Content Typr Builder for Drupal 8'
 package: Custom

@@ -10,7 +10,7 @@ namespace Drupal\rdfui;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
- * Rdf Ui Rdf Mapping for Content Types.
+ * RDF UI Rdf Mapping for Content Types.
  */
 class ContentMappings {
 

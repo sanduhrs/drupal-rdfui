@@ -95,7 +95,7 @@ class RdfUiLocalTask extends DeriverBase implements ContainerDeriverInterface {
   }
 
   /**
-   * Alters the base_route definition for rdfui local tasks.
+   * Alters the base_route definition for RDF UI local tasks.
    *
    * @param array $local_tasks
    *   An array of local tasks plugin definitions, keyed by plugin ID.

@@ -10,9 +10,9 @@ namespace Drupal\rdfui\Tests;
 use Drupal\field_ui\Tests\FieldUiTestBase;
 
 /**
- * Tests the functionality of the RdfUI Field Mapping form.
+ * Tests the functionality of the RDF UI Field Mapping form.
  *
- * @group RdfUI
+ * @group RDF UI
  */
 class RdfUiFieldMappingTest extends FieldUiTestBase {
 
@@ -26,9 +26,9 @@ class RdfUiFieldMappingTest extends FieldUiTestBase {
    */
   public static function getInfo() {
     return array(
-      'name' => 'RdfUI Field Mapping',
+      'name' => 'RDF UI Field Mapping',
       'description' => 'Tests the functionality of the FieldMapping Form.',
-      'group' => 'RdfUI',
+      'group' => 'RDF UI',
     );
   }
 
@@ -61,7 +61,7 @@ class RdfUiFieldMappingTest extends FieldUiTestBase {
 
     $this->assertFieldByXPath('//table[@id="rdf-mapping"]//tr[@id="field-test"]/td[4]', 'Unmapped', 'Status displayed correctly when field is unmapped.');
 
-    // Add rdf-predicate and save.
+    // Add RDF property and save.
     $mapped_value = 'schema:name';
     $edit = array('fields[field_test][rdf-predicate]' => $mapped_value);
     $this->drupalPostForm($rdf_mappings, $edit, t('Save'));
@@ -70,11 +70,11 @@ class RdfUiFieldMappingTest extends FieldUiTestBase {
 
     $mapping = rdf_get_mapping('node', $this->type);
     $bundle_mapping = $mapping->getFieldMapping('field_test');
-    $this->assertEqual($bundle_mapping['properties'][0], $mapped_value, "Selected Rdf mappings saved.");
+    $this->assertEqual($bundle_mapping['properties'][0], $mapped_value, "Selected RDF mappings saved.");
   }
 
   /**
-   * Tests FieldMappingForm for content type mapped to a rdf type.
+   * Tests FieldMappingForm for content type mapped to a RDF type.
    */
   protected function testMappedTypeFieldUI() {
     $mapping = rdf_get_mapping('node', $this->type);
@@ -99,7 +99,7 @@ class RdfUiFieldMappingTest extends FieldUiTestBase {
 
     $this->assertFieldByXPath('//table[@id="rdf-mapping"]//tr[@id="field-test"]/td[4]', 'Unmapped', 'Status displayed correctly when field is unmapped.');
 
-    // Add rdf-predicate and save.
+    // Add RDF property and save.
     $mapped_value = 'schema:birthDate';
     $edit = array('fields[field_test][rdf-predicate]' => $mapped_value);
     $this->drupalPostForm($rdf_mappings, $edit, t('Save'));
@@ -108,6 +108,6 @@ class RdfUiFieldMappingTest extends FieldUiTestBase {
 
     $mapping = rdf_get_mapping('node', $this->type);
     $bundle_mapping = $mapping->getFieldMapping('field_test');
-    $this->assertEqual($bundle_mapping['properties'][0], $mapped_value, "Selected Rdf mappings saved.");
+    $this->assertEqual($bundle_mapping['properties'][0], $mapped_value, "Selected RDF mappings saved.");
   }
 }

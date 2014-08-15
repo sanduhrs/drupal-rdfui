@@ -12,7 +12,7 @@ use Drupal\simpletest\WebTestBase;
 /**
  * Tests the Content Type Builder.
  *
- * @group Rdf Builder
+ * @group RDF UI Builder
  */
 class ContentTypeBuilderTest extends WebTestBase {
 
@@ -35,7 +35,7 @@ class ContentTypeBuilderTest extends WebTestBase {
     return array(
       'name' => 'Schema.Org driven Content Type Builder',
       'description' => 'Tests the functionality of the ContentBuilder Form.',
-      'group' => 'RDF Builder',
+      'group' => 'RDF UI Builder',
     );
   }
 

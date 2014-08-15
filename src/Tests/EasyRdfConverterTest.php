@@ -14,7 +14,7 @@ use Drupal\simpletest\DrupalUnitTestBase;
 /**
  * Tests the Easy Rdf Converter Class & SchemaOrgConverter class.
  *
- * @group RdfUI
+ * @group RDF UI
  */
 class EasyRdfConverterTest extends DrupalUnitTestBase {
 

@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------------
-                        Drupal 8 RdfUI module
+                        Drupal 8 RDF UI module
 --------------------------------------------------------------------------------
 
 CONTENTS
@@ -13,8 +13,8 @@ CONTENTS
 
 INTRODUCTION
 ------------
-Drupal 8 RdfUI module provides User Interfaces for site builders to integrate
-schema.org seamlessly during the site building process.
+The Drupal 8 RDF UI module provides User Interfaces for site builders to
+integrate schema.org seamlessly during the site building process.
 
 Content types could be mapped at the point of creation
 (admin/structure/types/add) or later (by using the edit form for content type)
@@ -29,7 +29,7 @@ INSTALLATION
 ------------
 The module only depends on modules in Drupal 8 core.
 
-To install rdfui Module:
+To install RDF UI Module:
   * Place this module directory in your modules folder (this will usually be
     "modules/").
   * Enable the module within your Drupal site at Administation >> Extend
