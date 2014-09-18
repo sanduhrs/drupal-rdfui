@@ -112,7 +112,7 @@ abstract class EasyRdfConverter {
   private function addProperties(\EasyRdf_Resource $value) {
     if ($value != NULL) {
       // Omit deprecated properties.
-      if ($value->get("schema:supercededBy")) {
+      if ($value->get("schema:supersededBy")) {
         return;
       }
       $this->listProperties[$value->shorten()] = $value->label();
@@ -128,7 +128,7 @@ abstract class EasyRdfConverter {
   private function addType(\EasyRdf_Resource $type) {
     if ($type != NULL) {
       // Omit deprecated types.
-      if ($type->get("schema:supercededBy")) {
+      if ($type->get("schema:supersededBy")) {
         return;
       }
       $this->listTypes[$type->shorten()] = $type->label();
@@ -192,7 +192,7 @@ abstract class EasyRdfConverter {
 
     foreach ($property_list as $value) {
       // Omit deprecated properties.
-      if ($value->get("schema:supercededBy")) {
+      if ($value->get("schema:supersededBy")) {
         continue;
       }
       $options[$value->shorten()] = $value->get("rdfs:label")->getValue();
