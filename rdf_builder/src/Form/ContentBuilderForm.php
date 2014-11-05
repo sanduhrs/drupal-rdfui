@@ -56,7 +56,7 @@ class ContentBuilderForm extends FormBase {
    *
    * @var array
    */
-  private $datatype_field_mappings;
+  protected $datatype_field_mappings;
 
   /**
    * Constructs a new ContentBuilder.
@@ -90,15 +90,15 @@ class ContentBuilderForm extends FormBase {
    */
   public function nextSubmit(array &$form, FormStateInterface &$form_state) {
 
-    $form_state['page_values'][1] = $form_state['values'];
+    $form_state->set(['page_values','1'],$form_state->getValues());
 
-    if (!empty($form_state['page_values'][2])) {
-      $form_state['values'] = $form_state['page_values'][2];
+    if (!is_null($form_state->get(['page_values','2']))) {
+      $form_state->setValues($form_state->get(['page_values','2']));
     }
 
     // When form rebuilds, build method would be chosen based on to page_num.
-    $form_state['page_num'] = 2;
-    $form_state['rebuild'] = TRUE;
+    $form_state->set('page_num', 2);
+    $form_state->setRebuild(TRUE);
   }
 
   /**
@@ -114,12 +114,12 @@ class ContentBuilderForm extends FormBase {
   public function buildForm(array $form, FormStateInterface $form_state) {
 
     // Display page 2 if $form_state['page_num'] == 2.
-    if (!empty($form_state['page_num']) && $form_state['page_num'] == 2) {
+    if (!is_null($form_state->get('page_num')) && $form_state->get('page_num')== 2) {
       return $this->buildFormPageTwo($form, $form_state);
     }
 
     // Otherwise build page 1.
-    $form_state['page_num'] = 1;
+    $form_state->set('page_num',1);
 
     $form['#title'] = $this->t('Content types');
     $form['description'] = array(
@@ -134,7 +134,7 @@ class ContentBuilderForm extends FormBase {
       '#required' => TRUE,
       '#options' => $this->converter->getListTypes(),
       '#empty_option' => '',
-      '#default_value' => !empty($form_state['values']['rdf-type']) ? $form_state['values']['rdf-type'] : '',
+      '#default_value' => !is_null($form_state->getValue('rdf-type')) ? $form_state->getValue('rdf-type') : '',
       '#attached' => array(
         'library' => array(
           'rdfui/drupal.rdfui.autocomplete',
@@ -175,7 +175,7 @@ class ContentBuilderForm extends FormBase {
       '#title' => $this->t('Choose fields to start with.'),
     );
 
-    $rdf_type = $form_state['page_values'][1]['rdf-type'];
+    $rdf_type = $form_state->get(['page_values',1,'rdf-type']);
     $properties = $this->converter->getTypeProperties($rdf_type);
     $field_types = \Drupal::service('plugin.manager.field.field_type')
       ->getUiDefinitions();
@@ -288,16 +288,16 @@ class ContentBuilderForm extends FormBase {
    *   The current state of the form.
    */
   public function pageTwoBackSubmit(array &$form, FormStateInterface &$form_state) {
-    $form_state['values'] = $form_state['page_values'][1];
-    $form_state['page_num'] = 1;
-    $form_state['rebuild'] = TRUE;
+    $form_state->setValues($form_state->get(['page_values', 1]));
+    $form_state->set('page_num', 1);
+    $form_state->setRebuild(TRUE);
   }
 
   /**
    * @inheritdoc
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
-    foreach ($form_state['values']['fields'] as $key => $property) {
+    foreach ($form_state->getValue('fields') as $key => $property) {
       if ($property['enable'] === 1) {
         if (empty($property['type'])) {
           $form_state->setErrorByName('fields][$key][type', $this->t('Create field: you need to provide a data type for %field.', array('%field' => explode(':', $key)[1])));
@@ -315,13 +315,13 @@ class ContentBuilderForm extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $this->prefix = $this->randomString(4);
     $this->properties = array();
-    foreach ($form_state['values']['fields'] as $key => $property) {
+    foreach ($form_state->getValue('fields') as $key => $property) {
       if ($property['enable'] === 1) {
         $this->properties[$key] = $property;
       }
     }
 
-    $page_one_values = $form_state['page_values'][1];
+    $page_one_values = $form_state->get(['page_values',1]);
     $rdf_type = $page_one_values['rdf-type'];
 
     $this->createNodeType($rdf_type);
@@ -385,7 +385,7 @@ class ContentBuilderForm extends FormBase {
       }
 
       $field_storage = array(
-        'name' => $field_name,
+        'field_name' => $field_name,
         'entity_type' => $entity_type,
         'type' => $value['type'],
         'translatable' => TRUE,
@@ -402,8 +402,7 @@ class ContentBuilderForm extends FormBase {
       // Create the field and instance.
       try {
         entity_create('field_storage_config', $field_storage)->save();
-        entity_create('field_instance_config', $instance)->save();
-
+        entity_create('field_config', $instance)->save();
         // Make sure the field is displayed in the 'default' form mode (using
         // default widget and settings). It stays hidden for other form modes
         // until it is explicitly configured.

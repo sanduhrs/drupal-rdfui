@@ -15,7 +15,7 @@ function rdfui_help($route_name, RouteMatchInterface $route_match) {
     case 'help.page.rdfui':
       $output = '';
       $output .= '<h3>' . t('About') . '</h3>';
-      $output .= '<p>' . t('The RDF UI module provides an administrative user interface (UI) for mapping content types and fields with RDF schema. The module currently supports schemas from <a href="@schema">Schema.org</a>.', array('@schema' => url('http://schema.org/'))) . '</p>';
+      $output .= '<p>' . t('The RDF UI module provides an administrative user interface (UI) for mapping content types and fields with RDF schema. The module currently supports schemas from <a href="@schema">Schema.org</a>.', array('@schema' => 'http://schema.org/')) . '</p>';
       $output .= '<h3>' . t('Specifying Mappings') . '</h3>';
       $output .= '<dl>';
       $output .= '<dt>' . t('Content Types') . '</dt>';

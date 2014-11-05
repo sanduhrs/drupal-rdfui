@@ -12,12 +12,12 @@ use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Field\FieldTypePluginManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
-use Drupal\field\FieldInstanceConfigInterface;
+use Drupal\field\FieldConfigInterface;
 use Drupal\field_ui\OverviewBase;
 use Drupal\rdfui\EasyRdfConverter;
 use Drupal\rdfui\SchemaOrgConverter;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * RDF UI Field Mapping form.
  */
@@ -77,7 +77,7 @@ class FieldMappings extends OverviewBase {
     // Gather bundle information.
     $instances = array_filter(\Drupal::entityManager()
       ->getFieldDefinitions($this->entity_type, $this->bundle), function ($field_definition) {
-        return $field_definition instanceof FieldInstanceConfigInterface;
+        return $field_definition instanceof FieldConfigInterface;
       });
 
     $mappings = rdf_get_mapping($this->entity_type, $this->bundle);
@@ -196,7 +196,7 @@ class FieldMappings extends OverviewBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
 
-    $form_values = $form_state['values']['fields'];
+    $form_values = $form_state->getValue('fields');
     $mapping = rdf_get_mapping($this->entity_type, $this->bundle);
 
     // Add mapping for title field.

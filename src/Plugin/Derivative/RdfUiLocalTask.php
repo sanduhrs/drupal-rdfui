@@ -68,8 +68,7 @@ class RdfUiLocalTask extends DeriverBase implements ContainerDeriverInterface {
     $this->derivatives = array();
 
     foreach ($this->entityManager->getDefinitions() as $entity_type_id => $entity_type) {
-      if ($entity_type->isFieldable() && $entity_type->hasLinkTemplate('admin-form')) {
-
+      if ($entity_type->get('field_ui_base_route')) {
         $this->derivatives['field_overview_' . $entity_type_id] = array(
           'route_name' => "field_ui.overview_$entity_type_id",
           'weight' => -1,

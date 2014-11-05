@@ -22,7 +22,7 @@ class ContentMappings {
    */
   public static function alterForm(array &$form, FormStateInterface $form_state) {
     $type_options = new SchemaOrgConverter();
-    $entity_type = $form_state['controller']->getEntity();
+    $entity_type = $form_state->getFormObject()->getEntity();
 
     $existing_type = '';
     if (!$entity_type->isNew()) {
@@ -70,15 +70,15 @@ class ContentMappings {
    * Saves Schema.org mappings in \Drupal\node\NodeTypeForm.
    */
   public static function submitForm(array &$form, FormStateInterface $form_state) {
-    if (isset($form_state['values']['types'])) {
-      $entity_type = $form_state['controller']->getEntity();
+    if (!is_null($form_state->getValue('types'))) {
+      $entity_type = $form_state->getFormObject()->getEntity();
       $mapping = rdf_get_mapping('node', $entity_type->id());
       if ($entity_type->isNew()) {
-        $mapping = rdf_get_mapping('node', $form_state['values']['type']);
+        $mapping = rdf_get_mapping('node', $form_state->getValue('type'));
       }
 
-      if (!empty($form_state['values']['types'])) {
-        $mapping->setBundleMapping(array('types' => array($form_state['values']['types'])))
+      if (!is_null($form_state->getValue('types'))) {
+        $mapping->setBundleMapping(array('types' => array($form_state->getValue('types'))))
           ->save();
       }
     }
