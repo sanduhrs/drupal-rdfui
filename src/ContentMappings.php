@@ -47,9 +47,6 @@ class ContentMappings {
         'library' => array(
           'rdfui/drupal.rdfui.autocomplete',
         ),
-        'css' => array(
-          drupal_get_path('module', 'rdfui') . '/css/rdfui.autocomplete.css',
-        ),
       ),
       '#default_value' => !empty($existing_type) ? $existing_type['types'][0] : '',
       '#description' => t('Specify the type you want to associated to this content type e.g. Article, Blog, etc.'),
@@ -70,14 +67,14 @@ class ContentMappings {
    * Saves Schema.org mappings in \Drupal\node\NodeTypeForm.
    */
   public static function submitForm(array &$form, FormStateInterface $form_state) {
-    if (!is_null($form_state->getValue('types'))) {
+    if ($form_state->hasValue('types')) {
       $entity_type = $form_state->getFormObject()->getEntity();
       $mapping = rdf_get_mapping('node', $entity_type->id());
       if ($entity_type->isNew()) {
-        $mapping = rdf_get_mapping('node', $form_state->getValue('type'));
+        $mapping = rdf_get_mapping('node', $form_state->getValue('types'));
       }
 
-      if (!is_null($form_state->getValue('types'))) {
+      if ($form_state->hasValue('types')) {
         $mapping->setBundleMapping(array('types' => array($form_state->getValue('types'))))
           ->save();
       }

@@ -101,7 +101,7 @@ class RdfUiLocalTask extends DeriverBase implements ContainerDeriverInterface {
    */
   public function alterLocalTasks(array &$local_tasks) {
     foreach ($this->entityManager->getDefinitions() as $entity_type => $entity_info) {
-      if ($entity_info->isFieldable() && $entity_info->hasLinkTemplate('admin-form')) {
+      if ($entity_type->get('field_ui_base_route')) {
         $admin_form = $entity_info->getLinkTemplate('admin-form');
 
         $local_tasks["field_ui.fields:rdf_$entity_type"]['base_route'] = $admin_form;

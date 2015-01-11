@@ -7,21 +7,25 @@
 
 namespace Drupal\rdfui\Form;
 
+use Drupal\Component\Plugin\PluginManagerBase;
 use Drupal\Component\Utility\String;
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityManagerInterface;
-use Drupal\Core\Field\FieldTypePluginManagerInterface;
+use Drupal\Core\Extension\ModuleHandlerInterface;
+use Drupal\Core\Field\FieldTypePluginManager;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\field\FieldConfigInterface;
-use Drupal\field_ui\OverviewBase;
+use Drupal\field_ui\FormDisplayOverview;
 use Drupal\rdfui\EasyRdfConverter;
 use Drupal\rdfui\SchemaOrgConverter;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
+
 /**
  * RDF UI Field Mapping form.
  */
-class FieldMappings extends OverviewBase {
+class FieldMappings extends FormDisplayOverview{
 
   /**
    * The field type manager.
@@ -42,11 +46,17 @@ class FieldMappings extends OverviewBase {
    *
    * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
    *   The entity manager.
-   * @param \Drupal\Core\Field\FieldTypePluginManagerInterface $field_type_manager
+   * @param \Drupal\Core\Field\FieldTypePluginManager $field_type_manager
    *   The field type manager.
+   * @param \Drupal\Component\Plugin\PluginManagerBase $plugin_manager
+   *   The widget or formatter plugin manager.
+   * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
+   *   The module handler to use for invoking hooks.
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   The configuration factory.
    */
-  public function __construct(EntityManagerInterface $entity_manager, FieldTypePluginManagerInterface $field_type_manager) {
-    parent::__construct($entity_manager);
+  public function __construct(EntityManagerInterface $entity_manager, FieldTypePluginManager $field_type_manager, PluginManagerBase $plugin_manager, ModuleHandlerInterface $module_handler, ConfigFactoryInterface $config_factory) {
+    parent::__construct($entity_manager, $field_type_manager, $plugin_manager, $module_handler, $config_factory);
     $this->fieldTypeManager = $field_type_manager;
     $this->rdfConverter = new SchemaOrgConverter();
   }
@@ -57,7 +67,10 @@ class FieldMappings extends OverviewBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('entity.manager'),
-      $container->get('plugin.manager.field.field_type')
+      $container->get('plugin.manager.field.field_type'),
+      $container->get('plugin.manager.field.widget'),
+      $container->get('module_handler'),
+      $container->get('config.factory')
     );
   }
 
@@ -135,9 +148,6 @@ class FieldMappings extends OverviewBase {
             'library' => array(
               'rdfui/drupal.rdfui.autocomplete',
             ),
-            'css' => array(
-              drupal_get_path('module', 'rdfui') . '/css/rdfui.autocomplete.css',
-            ),
           ),
           '#default_value' => !empty($property) ? $property['properties'][0] : '',
         ),
@@ -192,7 +202,7 @@ class FieldMappings extends OverviewBase {
   }
 
   /**
-   * Overrides \Drupal\field_ui\OverviewBase::submitForm().
+   * Overrides \Drupal\field_ui\FormDisplayOverview::submitForm().
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
 

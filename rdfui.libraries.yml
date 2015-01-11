@@ -2,9 +2,9 @@ drupal.rdfui.autocomplete:
   version: VERSION
   js:
     js/rdfui.autocomplete.js: {}
-#  css:
-#    component:
-#      css/rdfui.autocomplete.css: {}
+  css:
+    theme:
+      css/rdfui.autocomplete.css: {}
   dependencies:
     - core/drupal.autocomplete
     - core/jquery

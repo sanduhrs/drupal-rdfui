@@ -7,6 +7,7 @@
 
 namespace Drupal\rdf_builder\Form;
 
+use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\String;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -64,8 +65,8 @@ class ContentBuilderForm extends FormBase {
   public function __construct() {
     $this->converter = new SchemaOrgConverter();
     $this->datatype_field_mappings = array(
-      'http://schema.org/Text' => 'text',
-      'http://schema.org/PostalAddress' => 'text_long',
+      'http://schema.org/Text' => 'string',
+      'http://schema.org/PostalAddress' => 'string_long',
       'http://schema.org/Number' => 'integer',
       'http://schema.org/MediaObject' => 'file',
       'http://schema.org/AudioObject' => 'file',
@@ -90,15 +91,15 @@ class ContentBuilderForm extends FormBase {
    */
   public function nextSubmit(array &$form, FormStateInterface &$form_state) {
 
-    $form_state->set(['page_values','1'],$form_state->getValues());
+    $form_state->set(['page_values', 1], $form_state->getValues());
 
-    if (!is_null($form_state->get(['page_values','2']))) {
-      $form_state->setValues($form_state->get(['page_values','2']));
+    if ($form_state->has(['page_values', 2])) {
+      $form_state->setValues($form_state->get(['page_values', 2]));
     }
 
     // When form rebuilds, build method would be chosen based on to page_num.
     $form_state->set('page_num', 2);
-    $form_state->setRebuild(TRUE);
+    $form_state->setRebuild();
   }
 
   /**
@@ -113,13 +114,13 @@ class ContentBuilderForm extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
 
-    // Display page 2 if $form_state['page_num'] == 2.
-    if (!is_null($form_state->get('page_num')) && $form_state->get('page_num')== 2) {
+    // Display page 2 if $form_state->get('page_num') == 2.
+    if ($form_state->has('page_num') && $form_state->get('page_num') == 2) {
       return $this->buildFormPageTwo($form, $form_state);
     }
 
     // Otherwise build page 1.
-    $form_state->set('page_num',1);
+    $form_state->set('page_num', 1);
 
     $form['#title'] = $this->t('Content types');
     $form['description'] = array(
@@ -134,13 +135,10 @@ class ContentBuilderForm extends FormBase {
       '#required' => TRUE,
       '#options' => $this->converter->getListTypes(),
       '#empty_option' => '',
-      '#default_value' => !is_null($form_state->getValue('rdf-type')) ? $form_state->getValue('rdf-type') : '',
+      '#default_value' => $form_state->getValue('rdf-type', ''),
       '#attached' => array(
         'library' => array(
           'rdfui/drupal.rdfui.autocomplete',
-        ),
-        'css' => array(
-          drupal_get_path('module', 'rdfui') . '/css/rdfui.autocomplete.css',
         ),
       ),
       '#description' => $this->t('Specify the type you want to associated to this content type e.g. Article, Blog, etc.'),
@@ -175,7 +173,7 @@ class ContentBuilderForm extends FormBase {
       '#title' => $this->t('Choose fields to start with.'),
     );
 
-    $rdf_type = $form_state->get(['page_values',1,'rdf-type']);
+    $rdf_type = $form_state->get(['page_values', 1, 'rdf-type']);
     $properties = $this->converter->getTypeProperties($rdf_type);
     $field_types = \Drupal::service('plugin.manager.field.field_type')
       ->getUiDefinitions();
@@ -200,14 +198,14 @@ class ContentBuilderForm extends FormBase {
       '#regions' => array(),
       '#attributes' => array(
         'class' => array('rdfui-field-mappings'),
-        'id' => drupal_html_id('rdf-builder'),
+        'id' => Html::getId('rdf-builder'),
       ),
     );
 
     foreach ($properties as $key => $value) {
       $table[$key] = array(
         '#attributes' => array(
-          'id' => drupal_html_class($key),
+          'id' => Html::getClass($key),
         ),
         'enable' => array(
           '#type' => 'checkbox',
@@ -290,7 +288,7 @@ class ContentBuilderForm extends FormBase {
   public function pageTwoBackSubmit(array &$form, FormStateInterface &$form_state) {
     $form_state->setValues($form_state->get(['page_values', 1]));
     $form_state->set('page_num', 1);
-    $form_state->setRebuild(TRUE);
+    $form_state->setRebuild();
   }
 
   /**
@@ -321,7 +319,7 @@ class ContentBuilderForm extends FormBase {
       }
     }
 
-    $page_one_values = $form_state->get(['page_values',1]);
+    $page_one_values = $form_state->get(['page_values', 1]);
     $rdf_type = $page_one_values['rdf-type'];
 
     $this->createNodeType($rdf_type);
@@ -403,6 +401,7 @@ class ContentBuilderForm extends FormBase {
       try {
         entity_create('field_storage_config', $field_storage)->save();
         entity_create('field_config', $instance)->save();
+
         // Make sure the field is displayed in the 'default' form mode (using
         // default widget and settings). It stays hidden for other form modes
         // until it is explicitly configured.
@@ -470,6 +469,6 @@ class ContentBuilderForm extends FormBase {
         return $this->datatype_field_mappings[$datatype];
       }
     }
-    return 'text';
+    return 'string';
   }
 }
