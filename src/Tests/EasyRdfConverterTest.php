@@ -7,16 +7,15 @@
 
 namespace Drupal\rdfui\Tests;
 
-use Drupal\rdfui\EasyRdfConverter;
 use Drupal\rdfui\SchemaOrgConverter;
-use Drupal\simpletest\DrupalUnitTestBase;
+use Drupal\simpletest\KernelTestBase;
 
 /**
  * Tests the Easy Rdf Converter Class & SchemaOrgConverter class.
  *
  * @group RDF UI
  */
-class EasyRdfConverterTest extends DrupalUnitTestBase {
+class EasyRdfConverterTest extends KernelTestBase {
 
   /**
    * Modules to enable.
