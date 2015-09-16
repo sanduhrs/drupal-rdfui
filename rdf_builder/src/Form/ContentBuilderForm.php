@@ -8,6 +8,7 @@
 namespace Drupal\rdf_builder\Form;
 
 use Drupal\Component\Utility\Html;
+use Drupal\Component\Utility\SafeMarkup;
 use Drupal\Component\Utility\String;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -213,7 +214,7 @@ class ContentBuilderForm extends FormBase {
           '#title_display' => 'invisible',
         ),
         'property' => array(
-          '#markup' => String::checkPlain($value),
+          '#markup' => SafeMarkup::checkPlain($value),
         ),
         'type' => array(
           '#type' => 'select',
@@ -332,7 +333,7 @@ class ContentBuilderForm extends FormBase {
 
     drupal_set_message($this->t('Content Type %label created', array('%label' => $this->entity->label())));
     /*@TODO Revert all saved content type and fields in case of error*/
-    $form_state->setRedirectUrl(new Url('field_ui.overview_node', array(
+    $form_state->setRedirectUrl(new Url('entity.node.field_ui_fields', array(
       'node_type' => $this->entity->id(),
     )));
   }

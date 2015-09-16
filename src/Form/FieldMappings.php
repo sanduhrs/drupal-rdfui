@@ -7,32 +7,19 @@
 
 namespace Drupal\rdfui\Form;
 
-use Drupal\Component\Plugin\PluginManagerBase;
+use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\String;
-use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Entity\EntityManagerInterface;
-use Drupal\Core\Extension\ModuleHandlerInterface;
-use Drupal\Core\Field\FieldTypePluginManager;
+use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\field\FieldConfigInterface;
-use Drupal\field_ui\FormDisplayOverview;
-use Drupal\rdfui\EasyRdfConverter;
 use Drupal\rdfui\SchemaOrgConverter;
-
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * RDF UI Field Mapping form.
  */
-class FieldMappings extends FormDisplayOverview{
-
-  /**
-   * The field type manager.
-   *
-   * @var \Drupal\Core\Field\FieldTypePluginManagerInterface
-   */
-  protected $fieldTypeManager;
+class FieldMappings extends FormBase {
 
   /**
    * The EasyRdfConverter.
@@ -41,72 +28,50 @@ class FieldMappings extends FormDisplayOverview{
    */
   protected $rdfConverter;
 
-  /**
-   * Constructs a new FieldOverview.
-   *
-   * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
-   *   The entity manager.
-   * @param \Drupal\Core\Field\FieldTypePluginManager $field_type_manager
-   *   The field type manager.
-   * @param \Drupal\Component\Plugin\PluginManagerBase $plugin_manager
-   *   The widget or formatter plugin manager.
-   * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
-   *   The module handler to use for invoking hooks.
-   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
-   *   The configuration factory.
-   */
-  public function __construct(EntityManagerInterface $entity_manager, FieldTypePluginManager $field_type_manager, PluginManagerBase $plugin_manager, ModuleHandlerInterface $module_handler, ConfigFactoryInterface $config_factory) {
-    parent::__construct($entity_manager, $field_type_manager, $plugin_manager, $module_handler, $config_factory);
-    $this->fieldTypeManager = $field_type_manager;
-    $this->rdfConverter = new SchemaOrgConverter();
-  }
+  protected $displayContext = 'form';
+
+  protected $entityTypeId;
+
+  protected $bundle;
 
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container) {
+  public static function create(ContainerInterface $container)
+  {
     return new static(
-      $container->get('entity.manager'),
       $container->get('plugin.manager.field.field_type'),
-      $container->get('plugin.manager.field.widget'),
-      $container->get('module_handler'),
-      $container->get('config.factory')
+      $container->get('plugin.manager.field.widget')
     );
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getFormId() {
-    return 'rdfui_field_mappings_form';
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function buildForm(array $form, FormStateInterface $form_state, $entity_type_id = NULL, $bundle = NULL) {
-    parent::buildForm($form, $form_state, $entity_type_id, $bundle);
+    $this->entityTypeId = $entity_type_id;
+    $this->bundle = $bundle;
 
+    $this->rdfConverter = new SchemaOrgConverter();
     // Gather bundle information.
     $instances = array_filter(\Drupal::entityManager()
-      ->getFieldDefinitions($this->entity_type, $this->bundle), function ($field_definition) {
-        return $field_definition instanceof FieldConfigInterface;
-      });
+      ->getFieldDefinitions($entity_type_id, $bundle), function ($field_definition) {
+      return $field_definition instanceof FieldConfigInterface;
+    });
 
-    $mappings = rdf_get_mapping($this->entity_type, $this->bundle);
+    $mappings = rdf_get_mapping($this->entityTypeId, $this->bundle);
     $options = NULL;
-    $bundle = $mappings->getBundleMapping();
+    $bundle_mapping = $mappings->getBundleMapping();
 
-    if (!empty($bundle)) {
-      $type = $bundle['types']['0'];
+    if (!empty($bundle_mapping)) {
+      $type = $bundle_mapping['types']['0'];
       $options = $this->rdfConverter->getTypeProperties($type);
-    }
-    else {
+    } else {
       $options = $this->rdfConverter->getListProperties();
     }
 
     $form += array(
-      '#entity_type' => $this->entity_type,
+      '#entity_type' => $this->entityTypeId,
       '#bundle' => $this->bundle,
       '#fields' => array_keys($instances),
     );
@@ -123,7 +88,7 @@ class FieldMappings extends FormDisplayOverview{
       '#regions' => $this->getRegions(),
       '#attributes' => array(
         'class' => array('rdfui-field-mappings'),
-        'id' => drupal_html_id('rdf-mapping'),
+        'id' => Html::getUniqueId('rdf-mapping'),
       ),
     );
 
@@ -132,10 +97,10 @@ class FieldMappings extends FormDisplayOverview{
       $property = $mappings->getFieldMapping($name);
       $table[$name] = array(
         '#attributes' => array(
-          'id' => drupal_html_id($name),
+          'id' => Html::getUniqueId($name),
         ),
         'label' => array(
-          '#markup' => String::checkPlain($instance->getLabel()),
+          '#markup' => $this->t($instance->getLabel()),
         ),
         'rdf-predicate' => array(
           '#id' => 'rdf-predicate',
@@ -207,10 +172,10 @@ class FieldMappings extends FormDisplayOverview{
   public function submitForm(array &$form, FormStateInterface $form_state) {
 
     $form_values = $form_state->getValue('fields');
-    $mapping = rdf_get_mapping($this->entity_type, $this->bundle);
+    $mapping = rdf_get_mapping($this->entityTypeId, $this->bundle);
 
     // Add mapping for title field.
-    if ($this->entity_type === 'node') {
+    if ($this->entityTypeId === 'node') {
       $type = $mapping->getFieldMapping('title');
       if (empty($type)) {
         $mapping->setFieldMapping('title', array(
@@ -229,6 +194,16 @@ class FieldMappings extends FormDisplayOverview{
     $mapping->save();
 
     drupal_set_message($this->t('Your settings have been saved.'));
+  }
+
+  /**
+   * Returns a unique string identifying the form.
+   *
+   * @return string
+   *   The unique string identifying the form.
+   */
+  public function getFormId() {
+    return "rdfui_field_mapping_form";
   }
 
 }

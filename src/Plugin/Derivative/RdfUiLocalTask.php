@@ -68,16 +68,16 @@ class RdfUiLocalTask extends DeriverBase implements ContainerDeriverInterface {
     $this->derivatives = array();
 
     foreach ($this->entityManager->getDefinitions() as $entity_type_id => $entity_type) {
-      if ($entity_type->get('field_ui_base_route')) {
-        $this->derivatives['field_overview_' . $entity_type_id] = array(
-          'route_name' => "field_ui.overview_$entity_type_id",
-          'weight' => -1,
+      if ($entity_type->get('field_ui_base_route') && $entity_type_id === "node") {
+
+        $this->derivatives["overview_$entity_type_id"] = array(
+          'route_name' => "entity.$entity_type_id.field_ui_fields",
           'title' => $this->t('Fields'),
           'parent_id' => "field_ui.fields:overview_$entity_type_id",
         );
 
-        $this->derivatives['rdf_' . $entity_type_id] = array(
-          'route_name' => "field_ui.field_rdf_$entity_type_id",
+        $this->derivatives["rdf_$entity_type_id"] = array(
+          'route_name' => "entity.$entity_type_id.rdf_ui_fields",
           'weight' => 2,
           'title' => $this->t('RDF Mappings'),
           'parent_id' => "field_ui.fields:overview_$entity_type_id",
@@ -100,12 +100,10 @@ class RdfUiLocalTask extends DeriverBase implements ContainerDeriverInterface {
    *   An array of local tasks plugin definitions, keyed by plugin ID.
    */
   public function alterLocalTasks(array &$local_tasks) {
-    foreach ($this->entityManager->getDefinitions() as $entity_type => $entity_info) {
-      if ($entity_type->get('field_ui_base_route')) {
-        $admin_form = $entity_info->getLinkTemplate('admin-form');
-
-        $local_tasks["field_ui.fields:rdf_$entity_type"]['base_route'] = $admin_form;
-        $local_tasks["field_ui.fields:field_overview_$entity_type"]['base_route'] = $admin_form;
+    foreach ($this->entityManager->getDefinitions() as $entity_type_id => $entity_type) {
+      if ($route_name = $entity_type->get('field_ui_base_route') && $entity_type_id === "node") {
+        $local_tasks["field_ui.fields:rdf_$entity_type_id"]['base_route'] = $route_name;
+        $local_tasks["field_ui.fields:overview_$entity_type_id"]['base_route'] = $route_name;
       }
     }
   }

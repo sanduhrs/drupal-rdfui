@@ -49,7 +49,6 @@ class RouteSubscriber extends RouteSubscriberBase {
    */
   protected function alterRoutes(RouteCollection $collection) {
     foreach ($this->manager->getDefinitions() as $entity_type_id => $entity_type) {
-      $defaults = array();
       if ($route_name = $entity_type->get('field_ui_base_route')) {
         // Try to get the route from the current collection.
         if (!$entity_route = $collection->get($route_name)) {
@@ -59,16 +58,23 @@ class RouteSubscriber extends RouteSubscriberBase {
 
         $options = array();
         if (($bundle_entity_type = $entity_type->getBundleEntityType()) && $bundle_entity_type !== 'bundle') {
-          $options['parameters'][$entity_type->getBundleEntityType()] = array(
-            'type' => 'entity:' . $entity_type->getBundleEntityType(),
+          $options['parameters'][$bundle_entity_type] = array(
+            'type' => 'entity:' . $bundle_entity_type,
           );
+
+          // Special parameter used to easily recognize all Field UI routes.
+          $options['_field_ui'] = TRUE;
         }
 
-        // If the entity type has no bundles, use the entity type.
-        $defaults['entity_type_id'] = $entity_type_id;
-        if (!$entity_type->hasKey('bundle')) {
-          $defaults['bundle'] = $entity_type_id;
+        $defaults = array(
+          'entity_type_id' => $entity_type_id,
+        );
+        // If the entity type has no bundles and it doesn't use {bundle} in its
+        // admin path, use the entity type.
+        if (strpos($path, '{bundle}') === FALSE) {
+          $defaults['bundle'] = !$entity_type->hasKey('bundle') ? $entity_type_id : '';
         }
+
         $route = new Route(
           "$path/fields/rdf",
           array(
@@ -78,7 +84,7 @@ class RouteSubscriber extends RouteSubscriberBase {
           array('_permission' => 'administer ' . $entity_type_id . ' fields'),
           $options
         );
-        $collection->add("field_ui.field_rdf_$entity_type_id", $route);
+        $collection->add("entity.{$entity_type_id}.rdf_ui_fields", $route);
       }
     }
   }
