@@ -9,7 +9,6 @@ namespace Drupal\rdf_builder\Form;
 
 use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\SafeMarkup;
-use Drupal\Component\Utility\String;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
@@ -189,7 +188,7 @@ class ContentBuilderForm extends FormBase {
     asort($field_type_options);
 
     $table = array(
-      '#type' => 'field_ui_table',
+      '#type' => 'table',
       '#tree' => TRUE,
       '#header' => array(
         $this->t('Enable'),
@@ -315,7 +314,7 @@ class ContentBuilderForm extends FormBase {
     $this->prefix = $this->randomString(4);
     $this->properties = array();
     foreach ($form_state->getValue('fields') as $key => $property) {
-      if ($property['enable'] === 1) {
+      if ($property['enable'] == 1) {
         $this->properties[$key] = $property;
       }
     }
@@ -360,7 +359,7 @@ class ContentBuilderForm extends FormBase {
     );
 
     try {
-      $this->entity = entity_create('node_type', $values);
+      $this->entity =  \Drupal::entityTypeManager()->getStorage('node_type')->create($values);
       $this->entity->save();
     }
     catch (\Exception $e) {
@@ -400,8 +399,8 @@ class ContentBuilderForm extends FormBase {
 
       // Create the field and instance.
       try {
-        entity_create('field_storage_config', $field_storage)->save();
-        entity_create('field_config', $instance)->save();
+        \Drupal::entityTypeManager()->getStorage('field_storage_config')->create($field_storage)->save();
+        \Drupal::entityTypeManager()->getStorage('field_config')->create($instance)->save();
 
         // Make sure the field is displayed in the 'default' form mode (using
         // default widget and settings). It stays hidden for other form modes

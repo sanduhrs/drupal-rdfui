@@ -77,7 +77,7 @@ class FieldMappings extends FormBase {
     );
 
     $table = array(
-      '#type' => 'field_ui_table',
+      '#type' => 'table',
       '#tree' => TRUE,
       '#header' => array(
         $this->t('Label'),

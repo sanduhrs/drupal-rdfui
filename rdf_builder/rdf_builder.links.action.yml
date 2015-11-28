@@ -2,4 +2,4 @@ rdf_builder.type_add:
   route_name: rdf_builder.content
   title: 'Add Schema.org Content Type'
   appears_on:
-    - entity.node_type.collection
+    - 'entity.node_type.collection'
