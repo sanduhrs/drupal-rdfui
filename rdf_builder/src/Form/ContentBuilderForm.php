@@ -296,7 +296,7 @@ class ContentBuilderForm extends FormBase {
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     foreach ($form_state->getValue('fields') as $key => $property) {
-      if ($property['enable'] === 1) {
+      if ($property['enable'] == 1) {
         if (empty($property['type'])) {
           $form_state->setErrorByName('fields][$key][type', $this->t('Create field: you need to provide a data type for %field.', array('%field' => explode(':', $key)[1])));
         }
