@@ -4,6 +4,7 @@
  */
 
 (function ($, Drupal) {
+  'use strict';
   Drupal.behaviors.rdfui = {
     attach: function (context, settings) {
 
@@ -17,8 +18,8 @@
           this._createShowAllButton();
         },
         _createAutocomplete: function () {
-          var selected = this.element.children(":selected"),
-            value = selected.val() ? selected.text() : "";
+          var selected = this.element.children(":selected");
+          var value = selected.val() ? selected.text() : "";
           this.input = $("<input>")
             .appendTo(this.wrapper)
             .val(value)
@@ -43,8 +44,8 @@
           });
         },
         _createShowAllButton: function () {
-          var input = this.input,
-            wasOpen = false;
+          var input = this.input;
+          var wasOpen = false;
           $("<a>")
             .attr("tabIndex", -1)
             .attr("title", "Show All Items")
@@ -89,9 +90,9 @@
             return;
           }
           // Search for a match (case-insensitive).
-          var value = this.input.val(),
-            valueLowerCase = value.toLowerCase(),
-            valid = false;
+          var value = this.input.val();
+          var valueLowerCase = value.toLowerCase();
+          var valid = false;
           this.element.children("option").each(function () {
             if ($(this).text().toLowerCase() === valueLowerCase) {
               this.selected = valid = true;
@@ -126,5 +127,5 @@
       $('.custom-combobox-input').attr("placeholder", "-Select Predicate-");
     }
 
-  }
+  };
 })(jQuery, Drupal);
