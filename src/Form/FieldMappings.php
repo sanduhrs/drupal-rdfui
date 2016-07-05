@@ -62,8 +62,8 @@ class FieldMappings extends FormBase {
     $mappings = rdf_get_mapping($this->entityTypeId, $this->bundle);
     $options = NULL;
     $bundle_mapping = $mappings->getBundleMapping();
-
-    if (!empty($bundle_mapping)) {
+    
+    if ((!empty($bundle_mapping)) && (!empty($bundle_mapping['types']['0']))) {
       $type = $bundle_mapping['types']['0'];
       $options = $this->rdfConverter->getTypeProperties($type);
     } else {
