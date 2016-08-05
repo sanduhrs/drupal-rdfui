@@ -1,9 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\rdfui\EasyRdfConverter.
- */
 
 namespace Drupal\rdfui;
 

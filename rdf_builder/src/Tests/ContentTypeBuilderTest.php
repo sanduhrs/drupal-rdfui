@@ -1,9 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\rdf_builder\Tests\ContentTypeBuilderTest.
- */
 
 namespace Drupal\rdf_builder\Tests;
 

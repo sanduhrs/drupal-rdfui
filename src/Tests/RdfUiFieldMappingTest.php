@@ -1,9 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\rdfui\Tests\RdfUiFieldMappingTest.
- */
 
 namespace Drupal\rdfui\Tests;
 

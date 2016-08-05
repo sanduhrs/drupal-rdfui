@@ -1,9 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\rdfui\Form\FieldMappings.
- */
 
 namespace Drupal\rdfui\Form;
 

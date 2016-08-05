@@ -1,9 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\rdfui\Routing\RouteSubscriber.
- */
 
 namespace Drupal\rdfui\Routing;
 

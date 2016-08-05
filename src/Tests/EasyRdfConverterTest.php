@@ -1,9 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\rdfui\Tests\EasyRdfConverterTest.
- */
 
 namespace Drupal\rdfui\Tests;
 

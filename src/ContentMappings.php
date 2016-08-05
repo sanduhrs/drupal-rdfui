@@ -1,9 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\rdfui\ContentMappings.
- */
 
 namespace Drupal\rdfui;
 

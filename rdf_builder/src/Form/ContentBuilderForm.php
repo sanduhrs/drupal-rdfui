@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\rdf_builder\Form\ContentBuilderForm.
- */
-
 namespace Drupal\rdf_builder\Form;
 
 use Drupal\Component\Utility\Html;

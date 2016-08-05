@@ -1,9 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\rdfui\Plugin\Derivative\RdfUiLocalTask.
- */
 
 namespace Drupal\rdfui\Plugin\Derivative;
 

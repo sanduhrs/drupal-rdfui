@@ -1,9 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\rdfui\SchemaOrgConverter.
- */
 
 namespace Drupal\rdfui;
 
