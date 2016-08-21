@@ -1,7 +1,7 @@
 name: RDF UI
 type: module
 description: 'Allow the site builders to integrate schema.org mappings to Drupal 8 sites'
-package: Custom
+package: SEO
 core: 8.x
 hidden: false
 
