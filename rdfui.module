@@ -4,6 +4,7 @@
  * Allows content types and fields to be mapped with RDF data from Schema.org.
  */
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\rdfui\ContentMappings;
 
@@ -57,6 +58,6 @@ function rdfui_form_node_type_edit_form_alter(&$form, &$form_state, $form_id) {
  * @see rdfui_form_node_type_add_form_alter()
  * @see rdfui_form_node_type_edit_form_alter()
  */
-function rdfui_node_type_form_submit(array &$form, \Drupal\Core\Form\FormStateInterface $form_state) {
+function rdfui_node_type_form_submit(array &$form, FormStateInterface $form_state) {
   ContentMappings::submitForm($form, $form_state);
 }

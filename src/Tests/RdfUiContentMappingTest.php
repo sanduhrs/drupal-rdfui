@@ -48,7 +48,7 @@ class RdfUiContentMappingTest extends NodeTestBase {
       'types' => 'schema:Person',
     );
     $this->drupalPostForm('admin/structure/types/add', $edit, t('Save and manage fields'));
-    $type_exists = (bool) entity_load('node_type', 'foo');
+    $type_exists = (bool) \Drupal::service('entity_type.manager')->getStorage('node_type')->load('foo');
     $this->assertTrue($type_exists, 'The new content type has been created in the database.');
     $mapping = rdf_get_mapping('node', 'foo');
     $bundle_mapping = $mapping->getBundleMapping();

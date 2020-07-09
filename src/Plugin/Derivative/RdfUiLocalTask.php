@@ -4,7 +4,7 @@
 namespace Drupal\rdfui\Plugin\Derivative;
 
 use Drupal\Component\Plugin\Derivative\DeriverBase;
-use Drupal\Core\Entity\EntityManagerInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\Discovery\ContainerDeriverInterface;
 use Drupal\Core\Routing\RouteProviderInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
@@ -24,25 +24,25 @@ class RdfUiLocalTask extends DeriverBase implements ContainerDeriverInterface {
   protected $routeProvider;
 
   /**
-   * The entity manager.
+   * The entity type manager.
    *
-   * @var \Drupal\Core\Entity\EntityManagerInterface
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
-  protected $entityManager;
+  protected $entityTypeManager;
 
   /**
    * Creates an FieldUiLocalTask object.
    *
    * @param \Drupal\Core\Routing\RouteProviderInterface $route_provider
    *   The route provider.
-   * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity manager.
    * @param \Drupal\Core\StringTranslation\TranslationInterface $string_translation
    *   The translation manager.
    */
-  public function __construct(RouteProviderInterface $route_provider, EntityManagerInterface $entity_manager, TranslationInterface $string_translation) {
+  public function __construct(RouteProviderInterface $route_provider, EntityTypeManagerInterface $entity_type_manager, TranslationInterface $string_translation) {
     $this->routeProvider = $route_provider;
-    $this->entityManager = $entity_manager;
+    $this->entityTypeManager = $entity_type_manager;
     $this->stringTranslation = $string_translation;
   }
 
@@ -52,7 +52,7 @@ class RdfUiLocalTask extends DeriverBase implements ContainerDeriverInterface {
   public static function create(ContainerInterface $container, $base_plugin_id) {
     return new static(
       $container->get('router.route_provider'),
-      $container->get('entity.manager'),
+      $container->get('entity_type.manager'),
       $container->get('string_translation')
     );
   }
@@ -63,7 +63,7 @@ class RdfUiLocalTask extends DeriverBase implements ContainerDeriverInterface {
   public function getDerivativeDefinitions($base_plugin_definition) {
     $this->derivatives = array();
 
-    foreach ($this->entityManager->getDefinitions() as $entity_type_id => $entity_type) {
+    foreach ($this->entityTypeManager->getDefinitions() as $entity_type_id => $entity_type) {
       if ($entity_type->get('field_ui_base_route') && $entity_type_id === "node") {
 
         $this->derivatives["overview_$entity_type_id"] = array(
@@ -96,7 +96,7 @@ class RdfUiLocalTask extends DeriverBase implements ContainerDeriverInterface {
    *   An array of local tasks plugin definitions, keyed by plugin ID.
    */
   public function alterLocalTasks(array &$local_tasks) {
-    foreach ($this->entityManager->getDefinitions() as $entity_type_id => $entity_type) {
+    foreach ($this->entityTypeManager->getDefinitions() as $entity_type_id => $entity_type) {
       if ($route_name = $entity_type->get('field_ui_base_route') && $entity_type_id === "node") {
         $local_tasks["field_ui.fields:rdf_$entity_type_id"]['base_route'] = $route_name;
         $local_tasks["field_ui.fields:overview_$entity_type_id"]['base_route'] = $route_name;

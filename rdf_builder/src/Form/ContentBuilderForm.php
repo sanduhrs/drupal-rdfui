@@ -3,7 +3,6 @@
 namespace Drupal\rdf_builder\Form;
 
 use Drupal\Component\Utility\Html;
-use Drupal\Component\Utility\SafeMarkup;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
@@ -208,7 +207,7 @@ class ContentBuilderForm extends FormBase {
           '#title_display' => 'invisible',
         ),
         'property' => array(
-          '#markup' => SafeMarkup::checkPlain($value),
+          '#markup' => Html::escape($value),
         ),
         'type' => array(
           '#type' => 'select',
@@ -325,7 +324,8 @@ class ContentBuilderForm extends FormBase {
     $this->createField();
     $this->rdfMapping->save();
 
-    drupal_set_message($this->t('Content Type %label created', array('%label' => $this->entity->label())));
+    $this->messenger()->addMessage($this->t('Content Type %label created', ['%label' => $this->entity->label()]));
+
     /*@TODO Revert all saved content type and fields in case of error*/
     $form_state->setRedirectUrl(new Url('entity.node.field_ui_fields', array(
       'node_type' => $this->entity->id(),
@@ -358,7 +358,7 @@ class ContentBuilderForm extends FormBase {
       $this->entity->save();
     }
     catch (\Exception $e) {
-      drupal_set_message('type', $this->t("Error saving content type %invalid.", array('%invalid' => $rdf_type)));
+      $this->messenger()->addMessage($this->t('Error saving content type %invalid.', ['%invalid' => $rdf_type]));
     }
   }
 
@@ -400,14 +400,14 @@ class ContentBuilderForm extends FormBase {
         // Make sure the field is displayed in the 'default' form mode (using
         // default widget and settings). It stays hidden for other form modes
         // until it is explicitly configured.
-        entity_get_form_display($entity_type, $bundle, 'default')
+        \Drupal::service('entity_display.repository')->getFormDisplay($entity_type, $bundle, 'default')
           ->setComponent($field_name)
           ->save();
 
         // Make sure the field is displayed in the 'default' view mode (using
         // default formatter and settings). It stays hidden for other view
         // modes until it is explicitly configured.
-        entity_get_display($entity_type, $bundle, 'default')
+        \Drupal::service('entity_display.repository')->getFormDisplay($entity_type, $bundle, 'default')
           ->setComponent($field_name)
           ->save();
 
@@ -418,10 +418,10 @@ class ContentBuilderForm extends FormBase {
         );
       }
       catch (\Exception $e) {
-        drupal_set_message($this->t('There was a problem creating field %label: !message', array(
+        $this->messenger()->addError($this->t('There was a problem creating field %label: !message', array(
           '%label' => $instance['label'],
           '!message' => $e->getMessage(),
-        )), 'error');
+        )));
       }
     }
   }

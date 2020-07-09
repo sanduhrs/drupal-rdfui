@@ -3,7 +3,7 @@
 
 namespace Drupal\rdfui\Routing;
 
-use Drupal\Core\Entity\EntityManagerInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Routing\RouteSubscriberBase;
 use Drupal\Core\Routing\RoutingEvents;
 use Symfony\Component\Routing\Route;
@@ -24,10 +24,10 @@ class RouteSubscriber extends RouteSubscriberBase {
   /**
    * Constructs a RouteSubscriber object.
    *
-   * @param \Drupal\Core\Entity\EntityManagerInterface $manager
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $manager
    *   The entity type manager.
    */
-  public function __construct(EntityManagerInterface $manager) {
+  public function __construct(EntityTypeManagerInterface $manager) {
     $this->manager = $manager;
   }
 

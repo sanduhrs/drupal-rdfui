@@ -2,13 +2,8 @@ name: RDF UI Builder
 type: module
 description: 'Schema.org driven Content Type Builder for Drupal 8'
 package: SEO
-core: 8.x
+core_version_requirement: ^8 || ^9
 hidden: false
 
 dependencies:
   - rdfui
-
-
-
-
-

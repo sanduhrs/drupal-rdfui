@@ -1,9 +1,9 @@
 <?php
 
-
 namespace Drupal\rdfui;
 
-use Doctrine\Common\Proxy\Exception\InvalidArgumentException;
+use EasyRdf\Graph;
+use EasyRdf\Resource;
 
 /**
  * Extracts details of RDF resources from an RDFa document.
@@ -13,7 +13,7 @@ abstract class EasyRdfConverter {
   /**
    * EasyRdf Graph of the loaded resource.
    *
-   * @var \EasyRdf_Graph
+   * @var \EasyRdf\Graph
    */
   protected $graph;
 
@@ -40,14 +40,14 @@ abstract class EasyRdfConverter {
   }
 
   /**
-   * Creates an EasyRdf_Graph object from the given URI.
+   * Creates an \EasyRdf\Graph object from the given URI.
    *
    * @param string $uri
    *     URL of a web resource or path of the cached file.
    * @param string $type
    *    Format of the document.
    *
-   * @throws \Doctrine\Common\Proxy\Exception\InvalidArgumentException
+   * @throws \InvalidArgumentException
    *    If invalid type or URL is passed as parameters.
    */
   protected function createGraph($uri, $type) {
@@ -57,25 +57,25 @@ abstract class EasyRdfConverter {
      *     string $format = null)
      */
     if (!is_string($type) or $type == NULL or $type == '') {
-      throw new InvalidArgumentException("\$type should be a string and cannot be null or empty");
+      throw new \InvalidArgumentException("\$type should be a string and cannot be null or empty");
     }
     if (!is_string($uri) or $uri == NULL or $uri == '') {
-      throw new InvalidArgumentException("\$uri should be a string and cannot be null or empty");
+      throw new \InvalidArgumentException("\$uri should be a string and cannot be null or empty");
     }
 
     try {
       if (preg_match('#^http#i', $uri) === 1) {
-        $this->graph = new \EasyRdf_Graph($uri, NULL, $type);
+        $this->graph = new Graph($uri, NULL, $type);
         $this->graph->load();
       }
       else {
-        $this->graph = new \EasyRdf_Graph(NULL);
+        $this->graph = new Graph(NULL);
         $this->graph->parseFile($uri);
       }
       $this->iterateGraph();
     }
     catch (\Exception $e) {
-      throw new InvalidArgumentException("Invalid uri + $e");
+      throw new \InvalidArgumentException("Invalid uri + $e");
     }
 
   }
@@ -102,10 +102,10 @@ abstract class EasyRdfConverter {
   /**
    * Adds Property label to list.
    *
-   * @param \EasyRdf_Resource $value
+   * @param \EasyRdf\Resource $value
    *   An EasyRdf_Resource which is a property.
    */
-  private function addProperties(\EasyRdf_Resource $value) {
+  private function addProperties(Resource $value) {
     if ($value != NULL) {
       // Omit deprecated properties.
       if ($value->get("schema:supersededBy")) {
@@ -118,10 +118,10 @@ abstract class EasyRdfConverter {
   /**
    * Adds Type label to list.
    *
-   * @param \EasyRdf_Resource $type
+   * @param \EasyRdf\Resource $type
    *   An EasyRdf_Resource which is a type.
    */
-  private function addType(\EasyRdf_Resource $type) {
+  private function addType(Resource $type) {
     if ($type != NULL) {
       // Omit deprecated types.
       if ($type->get("schema:supersededBy")) {
@@ -160,6 +160,8 @@ abstract class EasyRdfConverter {
    *
    * @return array|null
    *   List of properties.
+   *
+   * @throws \Exception
    */
   public function getTypeProperties($type) {
     $tokens = explode(":", $type);
@@ -207,12 +209,12 @@ abstract class EasyRdfConverter {
    * @param string $uri
    *   URI of the resource (eg: schema:Person).
    *
-   * @return mixed
+   * @return string|null
    *   Description of the resource or null.
    */
   public function description($uri) {
     if (empty($uri)) {
-      drupal_set_message($this->t("Invalid uri"));
+      \Drupal::messenger()->addStatus($this->t("Invalid uri"));
       return NULL;
     }
 
@@ -234,7 +236,7 @@ abstract class EasyRdfConverter {
    */
   public function label($uri) {
     if (empty($uri)) {
-      drupal_set_message($this->t("Invalid uri"));
+      \Drupal::messenger()->addStatus($this->t("Invalid uri"));
       return NULL;
     }
     $label = $this->graph->label($uri);
@@ -252,12 +254,12 @@ abstract class EasyRdfConverter {
    * @param string $uri
    *   URI of the resource (eg: schema:name).
    *
-   * @return null|array
+   * @return array|null
    *   Array containing URIs of the datatype, if not null.
    */
   public function getRangeDataTypes($uri) {
     if (empty($uri)) {
-      drupal_set_message($this->t("Invalid URI"));
+      \Drupal::messenger()->addStatus($this->t("Invalid URI"));
       return NULL;
     }
     $range_datatypes = $this->graph->allResources($uri, "schema:rangeIncludes");

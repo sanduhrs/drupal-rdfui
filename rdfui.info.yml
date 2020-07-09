@@ -2,15 +2,11 @@ name: RDF UI
 type: module
 description: 'Allow the site builders to integrate schema.org mappings to Drupal 8 sites'
 package: SEO
-core: 8.x
+core_version_requirement: ^8 || ^9
 hidden: false
 
 dependencies:
-  - node
-  - rdf
-  - field
-
-
-
-
-
+  - drupal:node
+  - drupal:rdf
+  - drupal:field
+  - drupal:system (>= 8.5.x)

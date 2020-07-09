@@ -50,15 +50,16 @@ class FieldMappings extends FormBase {
 
     $this->rdfConverter = new SchemaOrgConverter();
     // Gather bundle information.
-    $instances = array_filter(\Drupal::entityManager()
+    $instances = array_filter(\Drupal::service('entity_field.manager')
       ->getFieldDefinitions($entity_type_id, $bundle), function ($field_definition) {
-      return $field_definition instanceof FieldConfigInterface;
-    });
+        return $field_definition instanceof FieldConfigInterface;
+      }
+    );
 
     $mappings = rdf_get_mapping($this->entityTypeId, $this->bundle);
     $options = NULL;
     $bundle_mapping = $mappings->getBundleMapping();
-    
+
     if ((!empty($bundle_mapping)) && (!empty($bundle_mapping['types']['0']))) {
       $type = $bundle_mapping['types']['0'];
       $options = $this->rdfConverter->getTypeProperties($type);
@@ -189,7 +190,7 @@ class FieldMappings extends FormBase {
     }
     $mapping->save();
 
-    drupal_set_message($this->t('Your settings have been saved.'));
+    $this->messenger()->addStatus($this->t('Your settings have been saved.'));
   }
 
   /**
