@@ -32,6 +32,10 @@
   font-weight: normal;
 }
 
+.ui-button {
+  border: 1px solid #d3d3d3;
+}
+
 .ui-button-icon-only {
   width: 2.2em;
 }
