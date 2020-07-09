@@ -64,7 +64,7 @@ class RdfUiLocalTask extends DeriverBase implements ContainerDeriverInterface {
     $this->derivatives = array();
     foreach ($this->entityTypeManager->getDefinitions() as $entity_type_id => $entity_type) {
       if ($entity_type->get('field_ui_base_route')
-        && ($entity_type_id === "node" || $entity_type_id === "user")) {
+        && ($entity_type_id === "node" || $entity_type_id === "user" || $entity_type_id === "taxonomy_term")) {
 
         $this->derivatives["overview_$entity_type_id"] = array(
           'route_name' => "entity.$entity_type_id.field_ui_fields",
