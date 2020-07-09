@@ -1,0 +1,11 @@
+<?php
+
+use Drupal\rdfui\SchemaOrgConverter;
+
+/**
+ * Implements hook_install().
+ */
+function rdfui_install() {
+  // Initialize the rdf schema.
+  $converter = new SchemaOrgConverter();
+}
