@@ -62,9 +62,9 @@ class RdfUiLocalTask extends DeriverBase implements ContainerDeriverInterface {
    */
   public function getDerivativeDefinitions($base_plugin_definition) {
     $this->derivatives = array();
-
     foreach ($this->entityTypeManager->getDefinitions() as $entity_type_id => $entity_type) {
-      if ($entity_type->get('field_ui_base_route') && $entity_type_id === "node") {
+      if ($entity_type->get('field_ui_base_route')
+        && ($entity_type_id === "node" || $entity_type_id === "user")) {
 
         $this->derivatives["overview_$entity_type_id"] = array(
           'route_name' => "entity.$entity_type_id.field_ui_fields",
@@ -97,7 +97,9 @@ class RdfUiLocalTask extends DeriverBase implements ContainerDeriverInterface {
    */
   public function alterLocalTasks(array &$local_tasks) {
     foreach ($this->entityTypeManager->getDefinitions() as $entity_type_id => $entity_type) {
-      if ($route_name = $entity_type->get('field_ui_base_route') && $entity_type_id === "node") {
+      if ($route_name = $entity_type->get('field_ui_base_route')
+        && ($entity_type_id === "node" || $entity_type_id === "user")) {
+
         $local_tasks["field_ui.fields:rdf_$entity_type_id"]['base_route'] = $route_name;
         $local_tasks["field_ui.fields:overview_$entity_type_id"]['base_route'] = $route_name;
       }
