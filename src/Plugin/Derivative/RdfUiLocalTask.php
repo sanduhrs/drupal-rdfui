@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Drupal\rdfui\Plugin\Derivative;
 
 use Drupal\Component\Plugin\Derivative\DeriverBase;
@@ -15,7 +14,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Provides local task definitions for all entity bundles.
  */
 class RdfUiLocalTask extends DeriverBase implements ContainerDeriverInterface {
+
   use StringTranslationTrait;
+
   /**
    * The route provider.
    *
@@ -61,11 +62,18 @@ class RdfUiLocalTask extends DeriverBase implements ContainerDeriverInterface {
    * {@inheritdoc}
    */
   public function getDerivativeDefinitions($base_plugin_definition) {
-    $this->derivatives = array();
+    $this->derivatives = [];
+
+    $entity_type_ids = [
+      'user',
+      'node',
+      'comment',
+      'taxonomy_term',
+    ];
+
     foreach ($this->entityTypeManager->getDefinitions() as $entity_type_id => $entity_type) {
       if ($entity_type->get('field_ui_base_route')
-        && ($entity_type_id === "node" || $entity_type_id === "user")) {
-
+          && (in_array($entity_type_id, $entity_type_ids))) {
         $this->derivatives["overview_$entity_type_id"] = array(
           'route_name' => "entity.$entity_type_id.field_ui_fields",
           'title' => $this->t('Fields'),
