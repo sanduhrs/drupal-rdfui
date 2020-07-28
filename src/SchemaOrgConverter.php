@@ -26,7 +26,7 @@ class SchemaOrgConverter extends EasyRdfConverter {
    * {@inheritdoc}
    */
   private function create() {
-    $uri = "https://schema.org/version/latest/schema.rdf";
+    $uri = "https://schema.org/version/latest/schemaorg-current-http.rdf";
     $type = "rdfa";
 
     if ($cache = \Drupal::cache()->get($this->cid)) {
